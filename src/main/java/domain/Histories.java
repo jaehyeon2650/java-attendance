@@ -1,5 +1,8 @@
 package domain;
 
+import static java.time.DayOfWeek.SATURDAY;
+import static java.time.DayOfWeek.SUNDAY;
+
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -29,8 +32,12 @@ public class Histories {
             String result = history.getAttendanceResult();
             results.put(result, results.getOrDefault(result, 0) + 1);
         });
-        for(int i=1;i<day;i++){
-            LocalDateTime time = LocalDateTime.of()
+        for (int i = 1; i < day; i++) {
+            LocalDateTime time = LocalDateTime.of(standard.getYear(), standard.getMonthValue(), i, 0, 0);
+            if (!(time.getDayOfWeek() == SATURDAY) && !(time.getDayOfWeek() == SUNDAY) && (time.getMonthValue() == 12
+                    && time.getDayOfMonth() == 25) && !hasHistory(time)) {
+                results.put("결석", results.getOrDefault("결석", 0) + 1);
+            }
         }
         return results;
     }
