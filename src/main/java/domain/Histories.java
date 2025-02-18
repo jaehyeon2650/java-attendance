@@ -39,4 +39,18 @@ public class Histories {
         }
         return "정상 대상자";
     }
+
+    public boolean hasHistory(LocalDateTime time) {
+        return histories.stream()
+                .anyMatch(history -> (history.getAttendanceTime().getDayOfMonth() == time.getDayOfMonth()) &&
+                        (history.getAttendanceTime().getMonthValue() == time.getMonthValue()));
+    }
+
+    public void deleteHistory(LocalDateTime time) {
+        History findHistory = histories.stream()
+                .filter(history -> (history.getAttendanceTime().getDayOfMonth() == time.getDayOfMonth()) &&
+                        (history.getAttendanceTime().getMonthValue() == time.getMonthValue())).findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당 날짜 출석 기록이 없습니다."));
+        histories.remove(findHistory);
+    }
 }

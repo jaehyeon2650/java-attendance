@@ -7,7 +7,7 @@ import static java.time.DayOfWeek.SUNDAY;
 import java.time.LocalDateTime;
 
 public class History {
-    //ToDO 출석 수정 - 삭제 or 수정
+
     private final LocalDateTime attendanceTime;
     private final String attendanceResult;
 
