@@ -9,13 +9,15 @@ import java.time.LocalDateTime;
 public class History {
     //ToDO 출석 수정 - 삭제 or 수정
     private final LocalDateTime attendanceTime;
+    private final String attendanceResult;
 
     public History(LocalDateTime attendanceTime) {
         validateHistory(attendanceTime);
         this.attendanceTime = attendanceTime;
+        attendanceResult = getAttendanceResult(attendanceTime);
     }
 
-    public String getAttendanceResult() {
+    public String getAttendanceResult(LocalDateTime attendanceTime) {
         if (attendanceTime.getDayOfWeek() == MONDAY) {
             if (attendanceTime.isAfter(LocalDateTime.of(attendanceTime.getYear(), attendanceTime.getMonth(),
                     attendanceTime.getDayOfMonth(),
@@ -61,7 +63,13 @@ public class History {
                     )
             );
         }
-
     }
 
+    public LocalDateTime getAttendanceTime() {
+        return attendanceTime;
+    }
+
+    public String getAttendanceResult() {
+        return attendanceResult;
+    }
 }
