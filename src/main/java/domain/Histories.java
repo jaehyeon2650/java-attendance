@@ -30,7 +30,7 @@ public class Histories {
             results.put(result, results.getOrDefault(result, 0) + 1);
         });
         for(int i=1;i<day;i++){
-            LocalDateTime time
+            LocalDateTime time = LocalDateTime.of()
         }
         return results;
     }
