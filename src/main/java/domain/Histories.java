@@ -53,4 +53,16 @@ public class Histories {
                 .orElseThrow(() -> new IllegalArgumentException("해당 날짜 출석 기록이 없습니다."));
         histories.remove(findHistory);
     }
+
+    public List<LocalDateTime> getHistories() {
+        return histories.stream()
+                .map(History::getAttendanceTime)
+                .toList();
+    }
+
+    public void editHistory(LocalDateTime time) {
+        deleteHistory(time);
+        histories.add(new History(time));
+    }
+
 }

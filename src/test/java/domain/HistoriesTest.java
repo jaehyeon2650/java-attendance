@@ -110,4 +110,21 @@ public class HistoriesTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("해당 날짜 출석 기록이 없습니다.");
     }
+
+    @Test
+    void editHistory() {
+        List<LocalDateTime> historiesTimes = List.of(LocalDateTime.of(2024, 12, 13, 10, 9),
+                LocalDateTime.of(2024, 12, 11, 10, 9),
+                LocalDateTime.of(2024, 12, 12, 10, 9),
+                LocalDateTime.of(2024, 12, 17, 10, 40)
+
+        );
+        Histories histories = new Histories(historiesTimes);
+        LocalDateTime time = LocalDateTime.of(2024, 12, 17, 11, 50);
+        histories.editHistory(time);
+        List<LocalDateTime> historiesResult = histories.getHistories();
+
+        boolean editContain = historiesResult.contains(time);
+        assertThat(editContain).isEqualTo(true);
+    }
 }
