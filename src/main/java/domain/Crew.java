@@ -19,5 +19,13 @@ public class Crew {
         }
     }
 
+    public boolean checkAttendance(LocalDateTime history) {
+        return histories.hasHistory(history);
+    }
+
+    public void addAttendance(LocalDateTime history) {
+        histories.addHistory(history);
+    }
+
 
 }
