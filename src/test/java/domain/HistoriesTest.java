@@ -6,18 +6,32 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class HistoriesTest {
 
     // 지각, 결석, 정상 개수 출력
     @Test
-    void historiesTest() {
-        List<LocalDateTime> historiesTimes = List.of(LocalDateTime.of(2024, 12, 18, 9, 0),
-                LocalDateTime.of(2024, 12, 18, 10, 6),
+    void historiesTest1() {
+        List<LocalDateTime> historiesTimes = List.of(LocalDateTime.of(2024, 12, 16, 9, 0),
+                LocalDateTime.of(2024, 12, 17, 10, 6),
                 LocalDateTime.of(2024, 12, 18, 10, 35));
         Histories histories = new Histories(historiesTimes);
         Map<String, Integer> result = histories.getAttendanceResultCount();
+        assertThat(result.get("지각")).isEqualTo(1);
+        assertThat(result.get("결석")).isEqualTo(1);
+        assertThat(result.get("정상")).isEqualTo(1);
+    }
+
+    @Test
+    void historiesTest2() {
+        List<LocalDateTime> historiesTimes = List.of(LocalDateTime.of(2024, 12, 16, 9, 0),
+                LocalDateTime.of(2024, 12, 17, 10, 6),
+                LocalDateTime.of(2024, 12, 18, 10, 35));
+        Histories histories = new Histories(historiesTimes);
+        LocalDateTime standard = LocalDateTime.of(2024, 12, 18, 10, 35);
+        Map<String, Integer> result = histories.getAttendanceResultCount(standard);
         assertThat(result.get("지각")).isEqualTo(1);
         assertThat(result.get("결석")).isEqualTo(1);
         assertThat(result.get("정상")).isEqualTo(1);
@@ -126,5 +140,36 @@ public class HistoriesTest {
 
         boolean editContain = historiesResult.contains(time);
         assertThat(editContain).isEqualTo(true);
+    }
+
+    @DisplayName("출석 기록이 있으면 예외를 발생한다.")
+    @Test
+    void addHistory1() {
+        List<LocalDateTime> historiesTimes = List.of(LocalDateTime.of(2024, 12, 13, 10, 9),
+                LocalDateTime.of(2024, 12, 11, 10, 9),
+                LocalDateTime.of(2024, 12, 12, 10, 9),
+                LocalDateTime.of(2024, 12, 17, 10, 40)
+
+        );
+        Histories histories = new Histories(historiesTimes);
+        LocalDateTime attendanceTime = LocalDateTime.of(2024, 12, 17, 10, 40);
+        assertThatThrownBy(() -> histories.addHistory(attendanceTime))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 이미 출석하셨습니다.");
+    }
+
+    @Test
+    void addHistory2() {
+        List<LocalDateTime> historiesTimes = List.of(LocalDateTime.of(2024, 12, 13, 10, 9),
+                LocalDateTime.of(2024, 12, 11, 10, 9),
+                LocalDateTime.of(2024, 12, 12, 10, 9),
+                LocalDateTime.of(2024, 12, 17, 10, 40)
+
+        );
+        Histories histories = new Histories(historiesTimes);
+        LocalDateTime attendanceTime = LocalDateTime.of(2024, 12, 18, 10, 40);
+        histories.addHistory(attendanceTime);
+
+        assertThat(histories.hasHistory(attendanceTime)).isTrue();
     }
 }

@@ -22,6 +22,19 @@ public class Histories {
         return results;
     }
 
+    public Map<String, Integer> getAttendanceResultCount(LocalDateTime standard) {
+        int day = standard.getDayOfMonth();
+        Map<String, Integer> results = new HashMap<>();
+        histories.forEach(history -> {
+            String result = history.getAttendanceResult();
+            results.put(result, results.getOrDefault(result, 0) + 1);
+        });
+        for(int i=1;i<day;i++){
+            LocalDateTime time
+        }
+        return results;
+    }
+
     public String classifyAbsenceLevel() {
         Map<String, Integer> results = getAttendanceResultCount();
         int absentCount = results.getOrDefault("결석", 0);
@@ -62,6 +75,13 @@ public class Histories {
 
     public void editHistory(LocalDateTime time) {
         deleteHistory(time);
+        histories.add(new History(time));
+    }
+
+    public void addHistory(LocalDateTime time) {
+        if (hasHistory(time)) {
+            throw new IllegalArgumentException("[ERROR] 이미 출석하셨습니다.");
+        }
         histories.add(new History(time));
     }
 
