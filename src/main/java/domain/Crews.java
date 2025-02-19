@@ -66,4 +66,10 @@ public class Crews {
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않은 크루입니다."));
         return findCrew.getAttendanceAllResult(localDateTime);
     }
+
+    public List<Crew> getHighAbsenceLevelCrews(LocalDateTime localDateTime){
+        return crews.stream()
+                .filter(crew -> !crew.getClassifyAbsenceLevel(localDateTime).equals("정상")).toList();
+    }
+
 }
