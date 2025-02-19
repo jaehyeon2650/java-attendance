@@ -1,8 +1,11 @@
 package View;
 
+import dto.AbsenceCrewDto;
+import dto.AbsenceCrewsDto;
 import dto.HistoriesDto;
 import dto.HistoryDto;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import util.Convertor;
 
@@ -19,7 +22,7 @@ public class OutputVIew {
         String formattedOutput = Convertor.dateFormattingForOutput(before);
         formattedOutput += " (" + beforeResult + ") -> ";
         String timeFormatOutput = Convertor.timeFormattingForOutput(editTime);
-        timeFormatOutput += "(" + editResult + ") 수정 완료!";
+        timeFormatOutput += " (" + editResult + ") 수정 완료!";
         System.out.println(formattedOutput + timeFormatOutput);
     }
 
@@ -37,9 +40,22 @@ public class OutputVIew {
         System.out.printf("결석: %d회\n",result.getOrDefault("결석",0));
         String classifyResult =historiesDto.classifyAbsenceLevel();
         System.out.println();
-        if(!classifyResult .equals("정상 대상자")){
-            System.out.printf("%s입니다.\n",classifyResult);
+        if(!classifyResult .equals("정상")){
+            System.out.printf("%s 대상자 입니다.\n",classifyResult);
         }
+        System.out.println();
+    }
+
+    public void printDangerous(AbsenceCrewsDto crewsDto){
+        System.out.println("제적 위험자 조회 결과");
+        List<AbsenceCrewDto> crews = crewsDto.getCrews();
+        crews.forEach(crew->{
+            Map<String, Integer> results = crew.getResults();
+            System.out.printf("- %s: 결석 %d회,지각 %d회 (%s)\n",crew.getUsername(),
+                    results.getOrDefault("결석",0),
+                    results.getOrDefault("지각",0),
+                    crew.getClassifyAbsenceLevel());
+        });
         System.out.println();
     }
 }
