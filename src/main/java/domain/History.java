@@ -62,6 +62,13 @@ public class History implements Comparable<History> {
                     )
             );
         }
+
+        if (!(attendanceTime.getHour()==23 && attendanceTime.getMinute()==59)
+                && (attendanceTime.isBefore(LocalDateTime.of(attendanceTime.getYear(),attendanceTime.getMonthValue(),attendanceTime.getDayOfMonth(),8,0))||
+                (attendanceTime.isAfter(LocalDateTime.of(attendanceTime.getYear(),attendanceTime.getMonthValue(),attendanceTime.getDayOfMonth(),23,0)))
+        )){
+            throw new IllegalArgumentException("[ERROR] 캠퍼스 운영 시간은 08:00~23:00 입니다.");
+        }
     }
 
     public LocalDateTime getAttendanceTime() {
