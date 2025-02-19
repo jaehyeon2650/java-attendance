@@ -6,8 +6,7 @@ import static java.time.DayOfWeek.SUNDAY;
 
 import java.time.LocalDateTime;
 
-public class History {
-
+public class History implements Comparable<History> {
     private final LocalDateTime attendanceTime;
     private final String attendanceResult;
 
@@ -29,7 +28,7 @@ public class History {
                     13, 05))) {
                 return "지각";
             }
-            return "정상";
+            return "출석";
         }
         if (attendanceTime.isAfter(
                 LocalDateTime.of(attendanceTime.getYear(), attendanceTime.getMonth(), attendanceTime.getDayOfMonth(),
@@ -41,7 +40,7 @@ public class History {
                         10, 05))) {
             return "지각";
         }
-        return "정상";
+        return "출석";
     }
 
     private void validateHistory(LocalDateTime attendanceTime) {
@@ -76,5 +75,10 @@ public class History {
     public boolean isBeforeHistory(LocalDateTime time){
         LocalDateTime standardTime = LocalDateTime.of(time.getYear(),time.getMonthValue(),time.getDayOfMonth(),0,0);
         return attendanceTime.isBefore(standardTime);
+    }
+
+    @Override
+    public int compareTo(History o) {
+        return this.attendanceTime.compareTo(o.attendanceTime);
     }
 }
