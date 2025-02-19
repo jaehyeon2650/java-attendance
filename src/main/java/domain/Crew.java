@@ -27,5 +27,11 @@ public class Crew {
         histories.addHistory(history);
     }
 
+    public List<LocalDateTime> getBeforeHistories(LocalDateTime standard){
+        return histories.getHistories(standard);
+    }
 
+    public String getUserName() {
+        return userName;
+    }
 }
