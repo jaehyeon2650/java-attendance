@@ -25,5 +25,21 @@ public class HistoryTest {
                 .hasMessageContaining("등교일이 아닙니다.");
     }
 
+    @Test
+    void isBeforeHistory1(){
+        LocalDateTime time = LocalDateTime.of(2024,12,17,10,7);
+        History history = new History(time);
+        LocalDateTime testTime = LocalDateTime.of(2024,12,17,10,7);
+        boolean check=history.isBeforeHistory(testTime);
+        assertThat(check).isFalse();
+    }
 
+    @Test
+    void isBeforeHistory2(){
+        LocalDateTime time = LocalDateTime.of(2024,12,17,10,7);
+        History history = new History(time);
+        LocalDateTime testTime = LocalDateTime.of(2024,12,18,10,7);
+        boolean check=history.isBeforeHistory(testTime);
+        assertThat(check).isTrue();
+    }
 }

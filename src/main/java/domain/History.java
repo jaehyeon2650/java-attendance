@@ -72,4 +72,9 @@ public class History {
     public String getAttendanceResult() {
         return attendanceResult;
     }
+
+    public boolean isBeforeHistory(LocalDateTime time){
+        LocalDateTime standardTime = LocalDateTime.of(time.getYear(),time.getMonthValue(),time.getDayOfMonth(),0,0);
+        return attendanceTime.isBefore(standardTime);
+    }
 }
