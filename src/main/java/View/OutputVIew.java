@@ -1,20 +1,23 @@
 package View;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.Locale;
+import util.Convertor;
 
 public class OutputVIew {
 
-
     public void printAttendanceConfirmation(LocalDateTime attendanceTime, String attendanceResult) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM월 dd일 E요일 HH:mm", Locale.KOREAN);
-        Date dateAttendanceTime = Date.from(attendanceTime.atZone(ZoneId.systemDefault()).toInstant());
-        String formattedOutput = dateFormat.format(dateAttendanceTime);
+        String formattedOutput = Convertor.dateFormattingForOutput(attendanceTime);
         formattedOutput += " (" + attendanceResult + ")";
         System.out.println(formattedOutput);
+    }
+
+    public void printEditAttendance(LocalDateTime before, String beforeResult, LocalDateTime editTime,
+                                    String editResult) {
+        String formattedOutput = Convertor.dateFormattingForOutput(before);
+        formattedOutput += " (" + beforeResult + ") -> ";
+        String timeFormatOutput = Convertor.timeFormattingForOutput(editTime);
+        timeFormatOutput += "(" + editResult + ") 수정 완료!";
+        System.out.println(formattedOutput + timeFormatOutput);
     }
 }
 
