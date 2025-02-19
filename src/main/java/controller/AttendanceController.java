@@ -2,12 +2,17 @@ package controller;
 
 import View.InputView;
 import View.OutputVIew;
+import domain.Crew;
 import domain.Crews;
 import domain.History;
+import dto.AbsenceCrewDto;
+import dto.AbsenceCrewsDto;
 import dto.HistoriesDto;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AttendanceController {
 
@@ -35,7 +40,7 @@ public class AttendanceController {
                 getAllAttendance();
             }
             if(answer.equals("4")){
-
+                getAbsenceUsers();
             }
         }while (!answer.equals("Q"));
     }
@@ -66,6 +71,19 @@ public class AttendanceController {
         String classifyAbsenceLevel = crews.getClassifyAbsenceLevel(username, newDate);
         HistoriesDto historiesDto = HistoriesDto.of(username,beforeHistory,attendanceAllResult,classifyAbsenceLevel);
         outputVIew.printHistories(historiesDto);
+    }
+
+    private void getAbsenceUsers(){
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime newDate = LocalDateTime.of(2024, 12, now.getDayOfMonth(), now.getHour(), now.getMinute());
+        List<Crew> members = crews.getHighAbsenceLevelCrews(newDate);
+        List<AbsenceCrewDto> crewDtos = members.stream().map(member ->{
+            Map<String, Integer> results = crews.getAttendanceAllResult(member.getUserName(), newDate);
+            String classifyAbsenceLevel = crews.getClassifyAbsenceLevel(member.getUserName(), newDate);
+            return new AbsenceCrewDto(member.getUserName(),results,classifyAbsenceLevel);
+        }).collect(Collectors.toList());
+        AbsenceCrewsDto crewsDto = new AbsenceCrewsDto(crewDtos);
+        outputVIew.printDangerous(crewsDto);
     }
 
 }
