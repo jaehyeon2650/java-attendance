@@ -28,22 +28,23 @@ public class Histories {
     public Map<String, Integer> getAttendanceResultCount(LocalDateTime standard) {
         int day = standard.getDayOfMonth();
         Map<String, Integer> results = new HashMap<>();
-        histories.forEach(history -> {
+        histories.stream().filter(history -> history.isBeforeHistory(standard))
+                .forEach(history -> {
             String result = history.getAttendanceResult();
             results.put(result, results.getOrDefault(result, 0) + 1);
         });
         for (int i = 1; i < day; i++) {
             LocalDateTime time = LocalDateTime.of(standard.getYear(), standard.getMonthValue(), i, 0, 0);
-            if (!(time.getDayOfWeek() == SATURDAY) && !(time.getDayOfWeek() == SUNDAY) && (time.getMonthValue() == 12
-                    && time.getDayOfMonth() == 25) && !hasHistory(time)) {
+            if (!(time.getDayOfWeek() == SATURDAY) && !(time.getDayOfWeek() == SUNDAY) && !((time.getMonthValue() == 12
+                    && time.getDayOfMonth() == 25)) && !hasHistory(time)) {
                 results.put("결석", results.getOrDefault("결석", 0) + 1);
             }
         }
         return results;
     }
 
-    public String classifyAbsenceLevel() {
-        Map<String, Integer> results = getAttendanceResultCount();
+    public String classifyAbsenceLevel(LocalDateTime standard) {
+        Map<String, Integer> results = getAttendanceResultCount(standard);
         int absentCount = results.getOrDefault("결석", 0);
         int lateCount = results.getOrDefault("지각", 0);
         absentCount += (lateCount / 3);

@@ -11,19 +11,7 @@ import org.junit.jupiter.api.Test;
 
 public class HistoriesTest {
 
-    // 지각, 결석, 정상 개수 출력
-    @Test
-    void historiesTest1() {
-        List<LocalDateTime> historiesTimes = List.of(LocalDateTime.of(2024, 12, 16, 9, 0),
-                LocalDateTime.of(2024, 12, 17, 10, 6),
-                LocalDateTime.of(2024, 12, 18, 10, 35));
-        Histories histories = new Histories(historiesTimes);
-        Map<String, Integer> result = histories.getAttendanceResultCount();
-        assertThat(result.get("지각")).isEqualTo(1);
-        assertThat(result.get("결석")).isEqualTo(1);
-        assertThat(result.get("정상")).isEqualTo(1);
-    }
-
+    @DisplayName("출석 결과 카운팅 오늘 날짜 제외 테스트")
     @Test
     void historiesTest2() {
         List<LocalDateTime> historiesTimes = List.of(LocalDateTime.of(2024, 12, 16, 9, 0),
@@ -33,18 +21,19 @@ public class HistoriesTest {
         LocalDateTime standard = LocalDateTime.of(2024, 12, 18, 10, 35);
         Map<String, Integer> result = histories.getAttendanceResultCount(standard);
         assertThat(result.get("지각")).isEqualTo(1);
-        assertThat(result.get("결석")).isEqualTo(1);
+        assertThat(result.get("결석")).isEqualTo(10);
         assertThat(result.get("정상")).isEqualTo(1);
     }
 
-
+    @DisplayName("출석 결과 카운팅에 따른 면담 대상자 테스트")
     @Test
     void classifyAbsenceLevel() {
         List<LocalDateTime> historiesTimes = List.of(LocalDateTime.of(2024, 12, 18, 10, 35),
                 LocalDateTime.of(2024, 12, 18, 10, 35),
                 LocalDateTime.of(2024, 12, 18, 10, 35));
         Histories histories = new Histories(historiesTimes);
-        String result = histories.classifyAbsenceLevel();
+        LocalDateTime standard = LocalDateTime.of(2024, 12, 19, 10, 35);
+        String result = histories.classifyAbsenceLevel(standard);
 
         assertThat(result).isEqualTo("면담 대상자");
     }
@@ -59,7 +48,8 @@ public class HistoriesTest {
 
         );
         Histories histories = new Histories(historiesTimes);
-        String result = histories.classifyAbsenceLevel();
+        LocalDateTime standard= LocalDateTime.of(2024, 12, 19, 10, 40);
+        String result = histories.classifyAbsenceLevel(standard);
 
         assertThat(result).isEqualTo("경고 대상자");
     }
