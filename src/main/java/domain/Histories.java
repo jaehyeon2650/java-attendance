@@ -16,15 +16,6 @@ public class Histories {
         this.histories = histories.stream().map(History::new).collect(Collectors.toList());
     }
 
-    public Map<String, Integer> getAttendanceResultCount() {
-        Map<String, Integer> results = new HashMap<>();
-        histories.forEach(history -> {
-            String result = history.getAttendanceResult();
-            results.put(result, results.getOrDefault(result, 0) + 1);
-        });
-        return results;
-    }
-
     public Map<String, Integer> getAttendanceResultCount(LocalDateTime standard) {
         int day = standard.getDayOfMonth();
         Map<String, Integer> results = new HashMap<>();
@@ -75,9 +66,11 @@ public class Histories {
         histories.remove(findHistory);
     }
 
-    public List<LocalDateTime> getHistories() {
+    public List<LocalDateTime> getHistories(LocalDateTime standard) {
         return histories.stream()
+                .filter(history -> history.isBeforeHistory(standard))
                 .map(History::getAttendanceTime)
+                .sorted()
                 .toList();
     }
 
@@ -92,5 +85,14 @@ public class Histories {
         }
         histories.add(new History(time));
     }
+
+    public String getHistoryResult(LocalDateTime time){
+        History findHistory = histories.stream()
+                .filter(history -> (history.getAttendanceTime().getDayOfMonth() == time.getDayOfMonth()) &&
+                        (history.getAttendanceTime().getMonthValue() == time.getMonthValue())).findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당 날짜 출석 기록이 없습니다."));
+        return findHistory.getAttendanceResult();
+    }
+
 
 }

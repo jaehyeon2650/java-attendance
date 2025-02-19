@@ -35,7 +35,7 @@ public class HistoriesTest {
         LocalDateTime standard = LocalDateTime.of(2024, 12, 19, 10, 35);
         String result = histories.classifyAbsenceLevel(standard);
 
-        assertThat(result).isEqualTo("면담 대상자");
+        assertThat(result).isEqualTo("제적 대상자");
     }
 
 
@@ -51,7 +51,7 @@ public class HistoriesTest {
         LocalDateTime standard= LocalDateTime.of(2024, 12, 19, 10, 40);
         String result = histories.classifyAbsenceLevel(standard);
 
-        assertThat(result).isEqualTo("경고 대상자");
+        assertThat(result).isEqualTo("제적 대상자");
     }
 
     @Test
@@ -126,7 +126,8 @@ public class HistoriesTest {
         Histories histories = new Histories(historiesTimes);
         LocalDateTime time = LocalDateTime.of(2024, 12, 17, 11, 50);
         histories.editHistory(time);
-        List<LocalDateTime> historiesResult = histories.getHistories();
+        LocalDateTime standard = LocalDateTime.of(2024, 12, 18, 11, 50);
+        List<LocalDateTime> historiesResult = histories.getHistories(standard);
 
         boolean editContain = historiesResult.contains(time);
         assertThat(editContain).isEqualTo(true);
@@ -161,5 +162,38 @@ public class HistoriesTest {
         histories.addHistory(attendanceTime);
 
         assertThat(histories.hasHistory(attendanceTime)).isTrue();
+    }
+    @DisplayName("출석 확인 - 지각 테스트")
+    @Test
+    void getTodayHistoryResult(){
+
+        String expected = "지각";
+
+        List<LocalDateTime> historiesTimes = List.of(LocalDateTime.of(2024, 12, 13, 10, 9),
+                LocalDateTime.of(2024, 12, 11, 10, 9),
+                LocalDateTime.of(2024, 12, 12, 10, 9),
+                LocalDateTime.of(2024, 12, 17, 10, 40)
+
+        );
+        Histories histories = new Histories(historiesTimes);
+        LocalDateTime todayTime = LocalDateTime.of(2024,12,12,10,40);
+        assertThat(histories.getHistoryResult(todayTime)).isEqualTo("지각");
+    }
+    @DisplayName("출석 확인 - 지각 테스트")
+    @Test
+    void getTodayHistoryResult2(){
+
+
+
+        List<LocalDateTime> historiesTimes = List.of(LocalDateTime.of(2024, 12, 13, 10, 9),
+                LocalDateTime.of(2024, 12, 11, 10, 9),
+                LocalDateTime.of(2024, 12, 12, 10, 9),
+                LocalDateTime.of(2024, 12, 17, 10, 40)
+
+        );
+        Histories histories = new Histories(historiesTimes);
+        LocalDateTime todayTime = LocalDateTime.of(2024,12,18,10,40);
+        assertThatThrownBy(()->histories.getHistoryResult(todayTime))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }
