@@ -2,11 +2,11 @@ package domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,30 +17,31 @@ public class CrewsTest {
 
     @BeforeEach
     void beforeEach(){
-        String username1 = "쿠기";
+        String username1 = "쿠키";
         String username2 = "빙봉";
-        List<LocalDateTime> historiesTimes1 = List.of(LocalDateTime.of(2024, 12, 18, 10, 35),
-                LocalDateTime.of(2024, 12, 18, 10, 35),
-                LocalDateTime.of(2024, 12, 18, 10, 35));
-        List<LocalDateTime> historiesTimes2 = List.of(LocalDateTime.of(2024, 12, 18, 10, 35),
-                LocalDateTime.of(2024, 12, 18, 10, 35),
-                LocalDateTime.of(2024, 12, 18, 10, 35));
+        List<LocalDateTime> historiesTimes1 = List.of(LocalDateTime.of(2024, 12, 4, 10, 35),
+                LocalDateTime.of(2024, 12, 3, 10, 35),
+                LocalDateTime.of(2024, 12, 2, 10, 35));
+        List<LocalDateTime> historiesTimes2 = List.of(LocalDateTime.of(2024, 12, 4, 10, 35),
+                LocalDateTime.of(2024, 12, 3, 10, 35),
+                LocalDateTime.of(2024, 12, 2, 10, 35));
         Map<String,List<LocalDateTime>> crews = new HashMap<>();
         crews.put(username1,historiesTimes1);
         crews.put(username2,historiesTimes2);
-        this.crews=new Crews(crews);
+        this.crews=new Crews(crews, LocalDate.of(2024,12,5));
     }
 
     @Test
     public void getCrewHistory(){
         // given
         LocalDateTime standard = LocalDateTime.of(2024, 12, 19, 10, 35);
-        List<LocalDateTime> expected = List.of(LocalDateTime.of(2024, 12, 18, 10, 35),
-                LocalDateTime.of(2024, 12, 18, 10, 35),
-                LocalDateTime.of(2024, 12, 18, 10, 35));
+        List<LocalDateTime> expected = List.of(LocalDateTime.of(2024, 12, 2, 10, 35),
+                LocalDateTime.of(2024, 12, 3, 10, 35),
+                LocalDateTime.of(2024, 12, 4, 10, 35));
         // when
-        List<LocalDateTime> result = crews.getBeforeHistory("빙봉",standard);
-        assertThat(result).isEqualTo(expected);
+        List<History> result = crews.getBeforeHistory("쿠키",standard);
+        List<LocalDateTime> resultTime = result.stream().map(History::getAttendanceTime).toList();
+        assertThat(resultTime).isEqualTo(expected);
     }
 
     @DisplayName("조회 정렬 테스트")
@@ -49,11 +50,12 @@ public class CrewsTest {
         // given
         LocalDateTime standard = LocalDateTime.of(2024, 12, 19, 10, 35);
         // when
-        List<LocalDateTime> result = crews.getBeforeHistory("빙봉",standard);
-        List<LocalDateTime> expected = List.of(LocalDateTime.of(2024, 12, 13, 10, 35),
-                LocalDateTime.of(2024, 12, 16, 10, 35),
-                LocalDateTime.of(2024, 12, 17, 10, 35));
-        assertThat(result).isEqualTo(expected);
+        List<History> result = crews.getBeforeHistory("빙봉",standard);
+        List<LocalDateTime> resultTime = result.stream().map(History::getAttendanceTime).toList();
+        List<LocalDateTime> expected = List.of(LocalDateTime.of(2024, 12, 2, 10, 35),
+                LocalDateTime.of(2024, 12, 3, 10, 35),
+                LocalDateTime.of(2024, 12, 4, 10, 35));
+        assertThat(resultTime).isEqualTo(expected);
     }
 
     @DisplayName("회원 출석 확인 테스트")
@@ -63,8 +65,9 @@ public class CrewsTest {
         LocalDateTime attendanceTime = LocalDateTime.of(2024, 12, 19, 10, 35);
         crews.addHistory(username,attendanceTime);
         LocalDateTime standardTime = LocalDateTime.of(2024, 12, 20, 10, 35);
-        List<LocalDateTime> beforeHistory = crews.getBeforeHistory(username, standardTime);
-        boolean check = beforeHistory.contains(attendanceTime);
+        List<History> result= crews.getBeforeHistory(username, standardTime);
+        List<LocalDateTime> resultTime = result.stream().map(History::getAttendanceTime).toList();
+        boolean check = resultTime.contains(attendanceTime);
         assertThat(check).isTrue();
     }
 }

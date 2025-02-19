@@ -3,7 +3,9 @@ package domain;
 import static java.time.DayOfWeek.SATURDAY;
 import static java.time.DayOfWeek.SUNDAY;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,25 +14,32 @@ import java.util.stream.Collectors;
 public class Histories {
     private final List<History> histories;
 
-    public Histories(List<LocalDateTime> histories) {
-        this.histories = histories.stream().map(History::new).collect(Collectors.toList());
+    public Histories(List<LocalDateTime> histories, LocalDate standard) {
+        List<LocalDateTime> copy = new ArrayList<>(histories);
+        int day = standard.getDayOfMonth();
+        for (int i = 1; i < day; i++) {
+            LocalDate time = LocalDate.of(standard.getYear(), standard.getMonthValue(),i);
+            if (!(time.getDayOfWeek() == SATURDAY) && !(time.getDayOfWeek() == SUNDAY) && !((time.getMonthValue() == 12
+                    && time.getDayOfMonth() == 25)) && !checkHasAttendanceTime(copy,time)) {
+                copy.add(LocalDateTime.of(standard.getYear(),standard.getMonthValue(),i,23,59));
+            }
+        }
+        this.histories = copy.stream().map(History::new).collect(Collectors.toList());
+    }
+
+    private boolean checkHasAttendanceTime(List<LocalDateTime> histories, LocalDate standard){
+        return histories.stream()
+                .map(LocalDateTime::toLocalDate)
+                .anyMatch(date -> date.equals(standard));
     }
 
     public Map<String, Integer> getAttendanceResultCount(LocalDateTime standard) {
-        int day = standard.getDayOfMonth();
         Map<String, Integer> results = new HashMap<>();
         histories.stream().filter(history -> history.isBeforeHistory(standard))
                 .forEach(history -> {
             String result = history.getAttendanceResult();
             results.put(result, results.getOrDefault(result, 0) + 1);
         });
-        for (int i = 1; i < day; i++) {
-            LocalDateTime time = LocalDateTime.of(standard.getYear(), standard.getMonthValue(), i, 0, 0);
-            if (!(time.getDayOfWeek() == SATURDAY) && !(time.getDayOfWeek() == SUNDAY) && !((time.getMonthValue() == 12
-                    && time.getDayOfMonth() == 25)) && !hasHistory(time)) {
-                results.put("결석", results.getOrDefault("결석", 0) + 1);
-            }
-        }
         return results;
     }
 
@@ -66,10 +75,9 @@ public class Histories {
         histories.remove(findHistory);
     }
 
-    public List<LocalDateTime> getHistories(LocalDateTime standard) {
+    public List<History> getHistories(LocalDateTime standard) {
         return histories.stream()
                 .filter(history -> history.isBeforeHistory(standard))
-                .map(History::getAttendanceTime)
                 .sorted()
                 .toList();
     }
