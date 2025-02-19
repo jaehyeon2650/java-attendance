@@ -1,16 +1,18 @@
 package domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public class Crew {
     private final String userName;
     private final Histories histories;
 
-    public Crew(String userName, List<LocalDateTime> histories) {
+    public Crew(String userName, List<LocalDateTime> histories, LocalDate standard) {
         validateName(userName);
         this.userName = userName;
-        this.histories = new Histories(histories);
+        this.histories = new Histories(histories,standard);
     }
 
     public void validateName(String userName) {
@@ -27,7 +29,7 @@ public class Crew {
         histories.addHistory(history);
     }
 
-    public List<LocalDateTime> getBeforeHistories(LocalDateTime standard){
+    public List<History> getBeforeHistories(LocalDateTime standard){
         return histories.getHistories(standard);
     }
 
@@ -45,5 +47,13 @@ public class Crew {
 
     public LocalDateTime getHistoryDate(LocalDateTime time){
         return histories.getHistory(time);
+    }
+
+    public String getClassifyAbsenceLevel(LocalDateTime time){
+        return histories.classifyAbsenceLevel(time);
+    }
+
+    public Map<String,Integer> getAttendanceAllResult(LocalDateTime time){
+        return histories.getAttendanceResultCount(time);
     }
 }

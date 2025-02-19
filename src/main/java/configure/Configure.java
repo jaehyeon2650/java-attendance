@@ -4,6 +4,8 @@ import View.InputView;
 import View.OutputVIew;
 import controller.AttendanceController;
 import domain.Crews;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import util.CsvReader;
 
 public class Configure {
@@ -35,7 +37,8 @@ public class Configure {
 
     private Crews crews(){
         if(crews == null){
-            crews = new Crews(CsvReader.loadAttendanceData());
+            LocalDate now = LocalDate.now();
+            crews = new Crews(CsvReader.loadAttendanceData(), LocalDate.of(2024,12,now.getDayOfMonth()));
         }
         return crews;
     }
