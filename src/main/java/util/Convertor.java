@@ -20,6 +20,9 @@ public class Convertor {
 
     public static String dateFormattingForOutput(LocalDateTime localDateTime){
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM월 dd일 E요일 HH:mm", Locale.KOREAN);
+        if((localDateTime.getHour()==23)&(localDateTime.getMinute()==59)){
+            dateFormat = new SimpleDateFormat("MM월 dd일 E요일 --:--", Locale.KOREAN);
+        }
         Date dateAttendanceTime = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
         return dateFormat.format(dateAttendanceTime);
 
