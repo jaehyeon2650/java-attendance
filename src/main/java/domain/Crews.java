@@ -29,4 +29,26 @@ public class Crews {
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않은 크루입니다."));
         findCrew.addAttendance(attendanceTime);
     }
+
+    public String getHistoryResult(String username, LocalDateTime attendanceTime){
+        Crew findCrew = crews.stream()
+                .filter(crew -> crew.getUserName().equals(username)).findAny()
+                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않은 크루입니다."));
+        return findCrew.getHistoryResult(attendanceTime);
+    }
+
+    public LocalDateTime getHistory(String username,LocalDateTime localDateTime){
+        Crew findCrew = crews.stream()
+                .filter(crew -> crew.getUserName().equals(username)).findAny()
+                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않은 크루입니다."));
+        return findCrew.getHistoryDate(localDateTime);
+    }
+
+    public String editHistory(String username, LocalDateTime localDateTime){
+        Crew findCrew = crews.stream()
+                .filter(crew -> crew.getUserName().equals(username)).findAny()
+                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않은 크루입니다."));
+        findCrew.editHistory(localDateTime);
+        return findCrew.getHistoryResult(localDateTime);
+    }
 }

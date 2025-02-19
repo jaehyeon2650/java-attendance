@@ -31,7 +31,19 @@ public class Crew {
         return histories.getHistories(standard);
     }
 
+    public String getHistoryResult(LocalDateTime attendanceTime){
+        return histories.getHistoryResult(attendanceTime);
+    }
+
     public String getUserName() {
         return userName;
+    }
+
+    public void editHistory(LocalDateTime attendanceTime){
+        histories.editHistory(attendanceTime);
+    }
+
+    public LocalDateTime getHistoryDate(LocalDateTime time){
+        return histories.getHistory(time);
     }
 }

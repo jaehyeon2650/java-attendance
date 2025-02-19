@@ -94,5 +94,11 @@ public class Histories {
         return findHistory.getAttendanceResult();
     }
 
-
+    public LocalDateTime getHistory(LocalDateTime time){
+        History findHistory = histories.stream()
+                .filter(history -> (history.getAttendanceTime().getDayOfMonth() == time.getDayOfMonth()) &&
+                        (history.getAttendanceTime().getMonthValue() == time.getMonthValue())).findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당 날짜 출석 기록이 없습니다."));
+        return findHistory.getAttendanceTime();
+    }
 }
