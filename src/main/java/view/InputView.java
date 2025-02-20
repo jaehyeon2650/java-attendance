@@ -1,4 +1,4 @@
-package View;
+package view;
 
 import constants.SelectionOption;
 import java.time.LocalDateTime;
@@ -9,14 +9,14 @@ public class InputView {
 
     private static final Scanner SCANNER = new Scanner(System.in);
 
-    public SelectionOption getMenu(){
-        System.out.printf("오늘은 %s입니다. 기능을 선택해주세요\n",Convertor.dateFormattingForInput(LocalDateTime.now()));
+    public SelectionOption getMenu() {
+        System.out.printf("오늘은 %s입니다. 기능을 선택해주세요\n", Convertor.dateFormattingForInput(LocalDateTime.now()));
         System.out.println("1. 출석 확인");
         System.out.println("2. 출석 수정");
         System.out.println("3. 크루별 출석 기록 확인");
         System.out.println("4. 제적 위험자 확인");
         System.out.println("Q. 종료");
-        return SelectionOption.getSelectOption(SCANNER .nextLine());
+        return SelectionOption.getSelectOption(SCANNER.nextLine());
     }
 
     public String getName() {
@@ -39,6 +39,6 @@ public class InputView {
         String date = SCANNER.nextLine();
         System.out.println("언제로 변경하겠습니까?");
         String time = SCANNER.nextLine();
-        return Convertor.editDayOfMonth(date,time);
+        return Convertor.editDayOfMonth(date, time);
     }
 }

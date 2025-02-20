@@ -1,4 +1,4 @@
-package View;
+package view;
 
 import static domain.AbsenceLevel.NORMAL;
 import static domain.AttendanceResult.ABSENCE;
