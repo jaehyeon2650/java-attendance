@@ -13,7 +13,7 @@ public class HistoryTest {
     void history() {
         LocalDateTime time = LocalDateTime.of(2025, 2, 18, 10, 7);
         History history = new History(time);
-        String result = history.getAttendanceResult();
+        String result = history.getAttendanceResult().getResult();
         assertThat(result).isEqualTo("지각");
     }
 

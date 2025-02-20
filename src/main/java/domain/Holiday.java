@@ -1,4 +1,4 @@
-package constants;
+package domain;
 
 import static java.time.DayOfWeek.SATURDAY;
 import static java.time.DayOfWeek.SUNDAY;

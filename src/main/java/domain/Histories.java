@@ -3,7 +3,6 @@ package domain;
 import static domain.History.ABSENT_DEFAULT_HOUR;
 import static domain.History.ABSENT_DEFAULT_MINUTE;
 
-import constants.Holiday;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class Histories {
         Map<String, Integer> results = new HashMap<>();
         histories.stream().filter(history -> history.isBeforeHistory(standard))
                 .forEach(history -> {
-                    String result = history.getAttendanceResult();
+                    String result = history.getAttendanceResult().getResult();
                     results.put(result, results.getOrDefault(result, 0) + 1);
                 });
         return results;
@@ -100,7 +99,7 @@ public class Histories {
                 .filter(history -> (history.getAttendanceTime().getDayOfMonth() == time.getDayOfMonth()) &&
                         (history.getAttendanceTime().getMonthValue() == time.getMonthValue())).findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("해당 날짜 출석 기록이 없습니다."));
-        return findHistory.getAttendanceResult();
+        return findHistory.getAttendanceResult().getResult();
     }
 
     public LocalDateTime getHistory(LocalDateTime time) {
