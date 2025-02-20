@@ -44,6 +44,7 @@ public class Crews {
 
     public String editHistory(String username, LocalDateTime localDateTime) {
         Crew findCrew = getCrew(username);
+        findCrew.editHistory(localDateTime);
         return findCrew.getHistoryResult(localDateTime);
     }
 
