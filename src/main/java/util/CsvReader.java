@@ -14,6 +14,9 @@ public class CsvReader {
     private static final String FILE = "src/main/resources/attendances.csv";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private static final String DELIMITER = ",";
+    private static final int USERNAME_INDEX = 0;
+    private static final int TIME_INDEX = 1;
+    private static final int LIMIT_INDEX = 2;
 
     public static Map<String, List<LocalDateTime>> loadAttendanceData() {
         Map<String, List<LocalDateTime>> crewsMap = new HashMap<>();
@@ -35,11 +38,11 @@ public class CsvReader {
 
     private static void processLine(String line, Map<String, List<LocalDateTime>> crewsMap) {
         String[] parts = line.split(DELIMITER);
-        if (parts.length != 2) {
+        if (parts.length != LIMIT_INDEX) {
             throw new IllegalArgumentException("[ERROR] 잘못된 데이터 형식입니다: " + line);
         }
-        String username = parts[0].trim();
-        LocalDateTime dateTime = LocalDateTime.parse(parts[1].trim(), FORMATTER);
+        String username = parts[USERNAME_INDEX].trim();
+        LocalDateTime dateTime = LocalDateTime.parse(parts[TIME_INDEX].trim(), FORMATTER);
         if (!crewsMap.containsKey(username)) {
             crewsMap.put(username, new ArrayList<>());
         }

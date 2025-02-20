@@ -42,6 +42,10 @@ public class History implements Comparable<History> {
 
     private void validateHistory(LocalDateTime attendanceTime) {
         Holiday.validate(attendanceTime);
+        validateOpeningHours(attendanceTime);
+    }
+
+    private void validateOpeningHours(LocalDateTime attendanceTime) {
         if (!(attendanceTime.getHour() == ABSENT_DEFAULT_HOUR && attendanceTime.getMinute() == ABSENT_DEFAULT_MINUTE)
                 && (attendanceTime.isBefore(LocalDateTime.of(attendanceTime.getYear(), attendanceTime.getMonthValue(),
                 attendanceTime.getDayOfMonth(), START_TIME, 0)) ||

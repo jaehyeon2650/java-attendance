@@ -21,7 +21,6 @@ public enum AttendanceResult {
         this.mintues = mintues;
     }
 
-
     public static AttendanceResult findAttendanceResult(LocalDateTime localDateTime) {
         if (localDateTime.getDayOfWeek() == MONDAY) {
             return getMondayResult(localDateTime);

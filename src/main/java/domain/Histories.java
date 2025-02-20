@@ -20,19 +20,9 @@ public class Histories {
         List<LocalDateTime> copy = new ArrayList<>(histories);
         int day = standard.getDayOfMonth();
         for (int i = 1; i < day; i++) {
-            LocalDate time = LocalDate.of(standard.getYear(), standard.getMonthValue(), i);
-            if (!Holiday.isHoliday(time) && !checkHasAttendanceTime(copy, time)) {
-                copy.add(LocalDateTime.of(standard.getYear(), standard.getMonthValue(), i, ABSENT_DEFAULT_HOUR,
-                        ABSENT_DEFAULT_MINUTE));
-            }
+            addAbsenceHistory(standard, i, copy);
         }
         this.histories = copy.stream().map(History::new).collect(Collectors.toList());
-    }
-
-    private boolean checkHasAttendanceTime(List<LocalDateTime> histories, LocalDate standard) {
-        return histories.stream()
-                .map(LocalDateTime::toLocalDate)
-                .anyMatch(date -> date.equals(standard));
     }
 
     public Map<String, Integer> getAttendanceResultCount(LocalDateTime standard) {
@@ -99,5 +89,20 @@ public class Histories {
                         (history.getAttendanceTime().getMonthValue() == time.getMonthValue())).findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 해당 날짜 출석 기록이 없습니다."));
         return findHistory.getAttendanceTime();
+    }
+
+    private void addAbsenceHistory(LocalDate standard, int day, List<LocalDateTime> copy) {
+        LocalDate time = LocalDate.of(standard.getYear(), standard.getMonthValue(), day);
+        if (!Holiday.isHoliday(time) && !checkHasAttendanceTime(copy, time)) {
+            copy.add(LocalDateTime.of(standard.getYear(), standard.getMonthValue(), time.getDayOfMonth(),
+                    ABSENT_DEFAULT_HOUR,
+                    ABSENT_DEFAULT_MINUTE));
+        }
+    }
+
+    private boolean checkHasAttendanceTime(List<LocalDateTime> histories, LocalDate standard) {
+        return histories.stream()
+                .map(LocalDateTime::toLocalDate)
+                .anyMatch(date -> date.equals(standard));
     }
 }
