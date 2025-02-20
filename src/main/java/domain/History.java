@@ -17,17 +17,12 @@ public class History implements Comparable<History> {
         attendanceResult = getAttendanceResult(attendanceTime);
     }
 
-    public AttendanceResult getAttendanceResult(LocalDateTime attendanceTime) {
-        return AttendanceResult.findAttendanceResult(attendanceTime);
-    }
-
-
     public LocalDateTime getAttendanceTime() {
         return attendanceTime;
     }
 
-    public AttendanceResult getAttendanceResult() {
-        return attendanceResult;
+    public String getAttendanceResult() {
+        return attendanceResult.getResult();
     }
 
     public boolean isBeforeHistory(LocalDateTime time) {
@@ -38,6 +33,10 @@ public class History implements Comparable<History> {
     @Override
     public int compareTo(History o) {
         return this.attendanceTime.compareTo(o.attendanceTime);
+    }
+
+    private AttendanceResult getAttendanceResult(LocalDateTime attendanceTime) {
+        return AttendanceResult.findAttendanceResult(attendanceTime);
     }
 
     private void validateHistory(LocalDateTime attendanceTime) {

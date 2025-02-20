@@ -29,7 +29,7 @@ public class Histories {
         Map<String, Integer> results = new HashMap<>();
         histories.stream().filter(history -> history.isBeforeHistory(standard))
                 .forEach(history -> {
-                    String result = history.getAttendanceResult().getResult();
+                    String result = history.getAttendanceResult();
                     results.put(result, results.getOrDefault(result, 0) + 1);
                 });
         return results;
@@ -56,7 +56,7 @@ public class Histories {
         histories.remove(findHistory);
     }
 
-    public List<History> getHistories(LocalDateTime standard) {
+    public List<History> getSortedHistories(LocalDateTime standard) {
         return histories.stream()
                 .filter(history -> history.isBeforeHistory(standard))
                 .sorted()
@@ -80,7 +80,7 @@ public class Histories {
                 .filter(history -> (history.getAttendanceTime().getDayOfMonth() == time.getDayOfMonth()) &&
                         (history.getAttendanceTime().getMonthValue() == time.getMonthValue())).findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 해당 날짜 출석 기록이 없습니다."));
-        return findHistory.getAttendanceResult().getResult();
+        return findHistory.getAttendanceResult();
     }
 
     public LocalDateTime getHistory(LocalDateTime time) {

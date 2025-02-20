@@ -21,16 +21,12 @@ public class Crew {
         }
     }
 
-    public boolean checkAttendance(LocalDateTime history) {
-        return histories.hasHistory(history);
-    }
-
     public void addAttendance(LocalDateTime history) {
         histories.addHistory(history);
     }
 
     public List<History> getBeforeHistories(LocalDateTime standard) {
-        return histories.getHistories(standard);
+        return histories.getSortedHistories(standard);
     }
 
     public String getHistoryResult(LocalDateTime attendanceTime) {
