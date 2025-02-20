@@ -1,5 +1,8 @@
 package util;
 
+import static domain.History.ABSENT_DEFAULT_HOUR;
+import static domain.History.ABSENT_DEFAULT_MINUTE;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -18,9 +21,9 @@ public class Convertor {
         return LocalDateTime.of(2024, 12, now.getDayOfMonth(), hour, minutes);
     }
 
-    public static String dateFormattingForOutput(LocalDateTime localDateTime){
+    public static String dateFormattingForOutput(LocalDateTime localDateTime) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM월 dd일 E요일 HH:mm", Locale.KOREAN);
-        if((localDateTime.getHour()==23)&(localDateTime.getMinute()==59)){
+        if ((localDateTime.getHour() == ABSENT_DEFAULT_HOUR) & (localDateTime.getMinute() == ABSENT_DEFAULT_MINUTE)) {
             dateFormat = new SimpleDateFormat("MM월 dd일 E요일 --:--", Locale.KOREAN);
         }
         Date dateAttendanceTime = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
@@ -28,28 +31,28 @@ public class Convertor {
 
     }
 
-    public static String dateFormattingForInput(LocalDateTime localDateTime){
-        LocalDateTime changedDate = LocalDateTime.of(2024,12,localDateTime.getDayOfMonth(),localDateTime.getHour(),localDateTime.getMinute());
-
+    public static String dateFormattingForInput(LocalDateTime localDateTime) {
+        LocalDateTime changedDate = LocalDateTime.of(2024, 12, localDateTime.getDayOfMonth(), localDateTime.getHour(),
+                localDateTime.getMinute());
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM월 dd일 E요일", Locale.KOREAN);
         Date dateAttendanceTime = Date.from(changedDate.atZone(ZoneId.systemDefault()).toInstant());
         return dateFormat.format(dateAttendanceTime);
     }
 
-    public static String timeFormattingForOutput(LocalDateTime localDateTime){
+    public static String timeFormattingForOutput(LocalDateTime localDateTime) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.KOREAN);
         Date dateAttendanceTime = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
         return dateFormat.format(dateAttendanceTime);
     }
 
-    public static LocalDateTime editDayOfMonth(String date, String time){
+    public static LocalDateTime editDayOfMonth(String date, String time) {
         Validator.validateDate(time.trim());
         Validator.validateNumber(date.trim());
         String[] words = time.split(":");
         int hour = Integer.parseInt(words[0].trim());
         int minutes = Integer.parseInt(words[1].trim());
         int day = Integer.parseInt(date);
-        return LocalDateTime.of(2024,12,day,hour,minutes);
+        return LocalDateTime.of(2024, 12, day, hour, minutes);
     }
 
 
@@ -62,8 +65,8 @@ public class Convertor {
             }
         }
 
-        public static void validateNumber(String input){
-            if(!input.matches("\\d+")){
+        public static void validateNumber(String input) {
+            if (!input.matches("\\d+")) {
                 throw new IllegalArgumentException("[ERROR]  숫자를 입력해주세요.");
             }
         }

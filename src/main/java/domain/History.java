@@ -4,11 +4,18 @@ import static java.time.DayOfWeek.MONDAY;
 import static java.time.DayOfWeek.SATURDAY;
 import static java.time.DayOfWeek.SUNDAY;
 
+import constants.Holiday;
 import java.time.LocalDateTime;
+import util.Convertor;
 
 public class History implements Comparable<History> {
     private final LocalDateTime attendanceTime;
     private final String attendanceResult;
+
+    public final static int ABSENT_DEFAULT_HOUR = 23;
+    public final static int ABSENT_DEFAULT_MINUTE = 59;
+    private final static int START_TIME = 8;
+    private final static int END_TIME = 23;
 
     public History(LocalDateTime attendanceTime) {
         validateHistory(attendanceTime);
@@ -44,28 +51,10 @@ public class History implements Comparable<History> {
     }
 
     private void validateHistory(LocalDateTime attendanceTime) {
-        if ((attendanceTime.getDayOfWeek() == SATURDAY) || (attendanceTime.getDayOfWeek() == SUNDAY)) {
-            throw new IllegalArgumentException(
-                    String.format("%d월 %d일 %s은 등교일이 아닙니다.",
-                            attendanceTime.getMonthValue(),
-                            attendanceTime.getDayOfMonth(), "토요일"
-
-                    )
-            );
-        }
-        if (attendanceTime.getMonthValue() == 12 && attendanceTime.getDayOfMonth() == 25) {
-            throw new IllegalArgumentException(
-                    String.format("%d월 %d일 %s은 등교일이 아닙니다.",
-                            attendanceTime.getMonthValue(),
-                            attendanceTime.getDayOfMonth(), "일요일"
-
-                    )
-            );
-        }
-
-        if (!(attendanceTime.getHour()==23 && attendanceTime.getMinute()==59)
-                && (attendanceTime.isBefore(LocalDateTime.of(attendanceTime.getYear(),attendanceTime.getMonthValue(),attendanceTime.getDayOfMonth(),8,0))||
-                (attendanceTime.isAfter(LocalDateTime.of(attendanceTime.getYear(),attendanceTime.getMonthValue(),attendanceTime.getDayOfMonth(),23,0)))
+        Holiday.validate(attendanceTime);
+        if (!(attendanceTime.getHour()==ABSENT_DEFAULT_HOUR  && attendanceTime.getMinute()==ABSENT_DEFAULT_MINUTE)
+                && (attendanceTime.isBefore(LocalDateTime.of(attendanceTime.getYear(),attendanceTime.getMonthValue(),attendanceTime.getDayOfMonth(),START_TIME,0))||
+                (attendanceTime.isAfter(LocalDateTime.of(attendanceTime.getYear(),attendanceTime.getMonthValue(),attendanceTime.getDayOfMonth(),END_TIME,0)))
         )){
             throw new IllegalArgumentException("[ERROR] 캠퍼스 운영 시간은 08:00~23:00 입니다.");
         }

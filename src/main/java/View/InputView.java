@@ -10,8 +10,7 @@ public class InputView {
     private static final Scanner SCANNER = new Scanner(System.in);
 
     public SelectionOption getMenu(){
-        String output = "오늘은 "+ Convertor.dateFormattingForInput(LocalDateTime.now())+"입니다. 기능을 선택해 주세요";
-        System.out.println(output);
+        System.out.printf("오늘은 %s입니다. 기능을 선택해주세요\n",Convertor.dateFormattingForInput(LocalDateTime.now()));
         System.out.println("1. 출석 확인");
         System.out.println("2. 출석 수정");
         System.out.println("3. 크루별 출석 기록 확인");
