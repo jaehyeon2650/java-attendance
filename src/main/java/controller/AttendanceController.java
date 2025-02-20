@@ -1,7 +1,5 @@
 package controller;
 
-import View.InputView;
-import View.OutputVIew;
 import constants.SelectionOption;
 import domain.AbsenceLevel;
 import domain.Crew;
@@ -14,6 +12,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import view.InputView;
+import view.OutputVIew;
 
 public class AttendanceController {
 
