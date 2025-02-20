@@ -2,6 +2,7 @@ package controller;
 
 import View.InputView;
 import View.OutputVIew;
+import constants.SelectionOption;
 import domain.Crew;
 import domain.Crews;
 import domain.History;
@@ -27,22 +28,22 @@ public class AttendanceController {
     }
 
     public void start() {
-        String answer;
+        SelectionOption answer;
         do{
             answer = inputView.getMenu();
-            if(answer.equals("1")){
+            if(answer == SelectionOption.ADD_ATTENDANCE){
                 addAttendance();
             }
-            if(answer.equals("2")){
+            if(answer == SelectionOption.EDIT_ATTENDANCE){
                 editAttendance();
             }
-            if(answer.equals("3")){
+            if(answer == SelectionOption.GET_ATTENDANCE_HISTORY){
                 getAllAttendance();
             }
-            if(answer.equals("4")){
+            if(answer == SelectionOption.CHECK_ABSENCE_USERS){
                 getAbsenceUsers();
             }
-        }while (!answer.equals("Q"));
+        }while (!(answer == SelectionOption.QUIT));
     }
 
     private void addAttendance(){

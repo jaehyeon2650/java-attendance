@@ -1,12 +1,13 @@
 package View;
 
+import constants.SelectionOption;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 import util.Convertor;
 
 public class InputView {
 
-    public String getMenu(){
+    public SelectionOption getMenu(){
         String output = "오늘은 "+ Convertor.dateFormattingForInput(LocalDateTime.now())+"입니다. 기능을 선택해 주세요";
         System.out.println(output);
         Scanner scanner = new Scanner(System.in);
@@ -15,7 +16,7 @@ public class InputView {
         System.out.println("3. 크루별 출석 기록 확인");
         System.out.println("4. 제적 위험자 확인");
         System.out.println("Q. 종료");
-        return scanner.nextLine();
+        return SelectionOption.getSelectOption(scanner.nextLine());
     }
 
     public String getName() {
