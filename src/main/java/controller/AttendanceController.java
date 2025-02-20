@@ -1,5 +1,7 @@
 package controller;
 
+import static util.Convertor.changeStandardDate;
+
 import constants.SelectionOption;
 import domain.AbsenceLevel;
 import domain.Crew;
@@ -31,19 +33,23 @@ public class AttendanceController {
         SelectionOption answer;
         do {
             answer = inputView.getMenu();
-            if (answer == SelectionOption.ADD_ATTENDANCE) {
-                addAttendance();
-            }
-            if (answer == SelectionOption.EDIT_ATTENDANCE) {
-                editAttendance();
-            }
-            if (answer == SelectionOption.GET_ATTENDANCE_HISTORY) {
-                getAllAttendance();
-            }
-            if (answer == SelectionOption.CHECK_ABSENCE_USERS) {
-                getAbsenceUsers();
-            }
+            startMenu(answer);
         } while (!(answer == SelectionOption.QUIT));
+    }
+
+    private void startMenu(SelectionOption answer) {
+        if (answer == SelectionOption.ADD_ATTENDANCE) {
+            addAttendance();
+        }
+        if (answer == SelectionOption.EDIT_ATTENDANCE) {
+            editAttendance();
+        }
+        if (answer == SelectionOption.GET_ATTENDANCE_HISTORY) {
+            getAllAttendance();
+        }
+        if (answer == SelectionOption.CHECK_ABSENCE_USERS) {
+            getAbsenceUsers();
+        }
     }
 
     private void addAttendance() {
@@ -65,8 +71,7 @@ public class AttendanceController {
 
     private void getAllAttendance() {
         String username = inputView.getName();
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime newDate = LocalDateTime.of(2024, 12, now.getDayOfMonth(), now.getHour(), now.getMinute());
+        LocalDateTime newDate = changeStandardDate(LocalDateTime.now());
         List<History> beforeHistory = crews.getBeforeHistory(username, newDate);
         Map<String, Integer> attendanceAllResult = crews.getAttendanceAllResult(username, newDate);
         AbsenceLevel classifyAbsenceLevel = crews.getClassifyAbsenceLevel(username, newDate);
@@ -75,8 +80,7 @@ public class AttendanceController {
     }
 
     private void getAbsenceUsers() {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime newDate = LocalDateTime.of(2024, 12, now.getDayOfMonth(), now.getHour(), now.getMinute());
+        LocalDateTime newDate = changeStandardDate(LocalDateTime.now());
         List<Crew> members = crews.getHighAbsenceLevelCrews(newDate);
         List<AbsenceCrewDto> crewDtos = members.stream().map(member -> {
             Map<String, Integer> results = crews.getAttendanceAllResult(member.getUserName(), newDate);
