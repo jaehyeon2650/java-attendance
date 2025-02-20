@@ -1,5 +1,7 @@
 package domain;
 
+import static domain.AttendanceResult.ABSENCE;
+import static domain.AttendanceResult.LATE;
 import static domain.History.ABSENT_DEFAULT_HOUR;
 import static domain.History.ABSENT_DEFAULT_MINUTE;
 
@@ -43,22 +45,11 @@ public class Histories {
         return results;
     }
 
-    public String classifyAbsenceLevel(LocalDateTime standard) {
+    public AbsenceLevel classifyAbsenceLevel(LocalDateTime standard) {
         Map<String, Integer> results = getAttendanceResultCount(standard);
-        int absentCount = results.getOrDefault("결석", 0);
-        int lateCount = results.getOrDefault("지각", 0);
-        absentCount += (lateCount / 3);
-
-        if (absentCount > 5) {
-            return "제적";
-        }
-        if (absentCount >= 3) {
-            return "면담";
-        }
-        if (absentCount >= 2) {
-            return "경고";
-        }
-        return "정상";
+        int absentCount = results.getOrDefault(ABSENCE.getResult(), 0);
+        int lateCount = results.getOrDefault(LATE.getResult(), 0);
+        return AbsenceLevel.findAbsenceLevel(absentCount, lateCount);
     }
 
     public boolean hasHistory(LocalDateTime time) {

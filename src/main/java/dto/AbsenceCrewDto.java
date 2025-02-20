@@ -1,28 +1,33 @@
 package dto;
 
+import static domain.AbsenceLevel.LATE_TO_ABSENCE_THRESHOLD;
+import static domain.AttendanceResult.ABSENCE;
+import static domain.AttendanceResult.LATE;
+
+import domain.AbsenceLevel;
 import java.util.Map;
 
 public class AbsenceCrewDto implements Comparable<AbsenceCrewDto> {
     private final String username;
-    private final Map<String,Integer> results;
+    private final Map<String, Integer> results;
     private final String classifyAbsenceLevel;
 
-    public AbsenceCrewDto(String username, Map<String, Integer> results, String classifyAbsenceLevel) {
+    public AbsenceCrewDto(String username, Map<String, Integer> results, AbsenceLevel classifyAbsenceLevel) {
         this.username = username;
         this.results = results;
-        this.classifyAbsenceLevel = classifyAbsenceLevel;
+        this.classifyAbsenceLevel = classifyAbsenceLevel.getLevel();
     }
 
     @Override
     public int compareTo(AbsenceCrewDto o) {
-        int myAbsenceCount = results.getOrDefault("지각",0);
-        myAbsenceCount+=results.getOrDefault("결석",0)*3;
-        int otherAbsenceCount = o.results.getOrDefault("지각",0);
-        otherAbsenceCount += o.results.getOrDefault("결석",0)*3;
+        int myAbsenceCount = results.getOrDefault(LATE.getResult(), 0);
+        myAbsenceCount += results.getOrDefault(ABSENCE.getResult(), 0) * LATE_TO_ABSENCE_THRESHOLD;
+        int otherAbsenceCount = o.results.getOrDefault(LATE.getResult(), 0);
+        otherAbsenceCount += o.results.getOrDefault(ABSENCE.getResult(), 0) * LATE_TO_ABSENCE_THRESHOLD;
 
-        int result = Integer.compare(otherAbsenceCount,myAbsenceCount);
+        int result = Integer.compare(otherAbsenceCount, myAbsenceCount);
 
-        if(result==0){
+        if (result == 0) {
             return this.username.compareTo(o.username);
         }
 

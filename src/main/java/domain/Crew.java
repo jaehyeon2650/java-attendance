@@ -12,7 +12,7 @@ public class Crew {
     public Crew(String userName, List<LocalDateTime> histories, LocalDate standard) {
         validateName(userName);
         this.userName = userName;
-        this.histories = new Histories(histories,standard);
+        this.histories = new Histories(histories, standard);
     }
 
     public void validateName(String userName) {
@@ -29,11 +29,11 @@ public class Crew {
         histories.addHistory(history);
     }
 
-    public List<History> getBeforeHistories(LocalDateTime standard){
+    public List<History> getBeforeHistories(LocalDateTime standard) {
         return histories.getHistories(standard);
     }
 
-    public String getHistoryResult(LocalDateTime attendanceTime){
+    public String getHistoryResult(LocalDateTime attendanceTime) {
         return histories.getHistoryResult(attendanceTime);
     }
 
@@ -41,19 +41,19 @@ public class Crew {
         return userName;
     }
 
-    public void editHistory(LocalDateTime attendanceTime){
+    public void editHistory(LocalDateTime attendanceTime) {
         histories.editHistory(attendanceTime);
     }
 
-    public LocalDateTime getHistoryDate(LocalDateTime time){
+    public LocalDateTime getHistoryDate(LocalDateTime time) {
         return histories.getHistory(time);
     }
 
-    public String getClassifyAbsenceLevel(LocalDateTime time){
+    public AbsenceLevel getClassifyAbsenceLevel(LocalDateTime time) {
         return histories.classifyAbsenceLevel(time);
     }
 
-    public Map<String,Integer> getAttendanceAllResult(LocalDateTime time){
+    public Map<String, Integer> getAttendanceAllResult(LocalDateTime time) {
         return histories.getAttendanceResultCount(time);
     }
 }

@@ -35,7 +35,7 @@ public class HistoriesTest {
                 LocalDateTime.of(2024, 12, 18, 10, 35));
         Histories histories = new Histories(historiesTimes, LocalDate.of(2024, 12, 19));
         LocalDateTime standard = LocalDateTime.of(2024, 12, 19, 10, 35);
-        String result = histories.classifyAbsenceLevel(standard);
+        String result = histories.classifyAbsenceLevel(standard).getLevel();
 
         assertThat(result).isEqualTo("제적");
     }
@@ -51,7 +51,7 @@ public class HistoriesTest {
         );
         Histories histories = new Histories(historiesTimes, LocalDate.of(2024, 12, 19));
         LocalDateTime standard = LocalDateTime.of(2024, 12, 19, 10, 40);
-        String result = histories.classifyAbsenceLevel(standard);
+        String result = histories.classifyAbsenceLevel(standard).getLevel();
 
         assertThat(result).isEqualTo("제적");
     }
