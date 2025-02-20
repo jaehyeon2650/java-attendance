@@ -18,52 +18,37 @@ public class Crews {
     }
 
     public List<History> getBeforeHistory(String username, LocalDateTime standard) {
-        Crew findCrew = crews.stream()
-                .filter(crew -> crew.getUserName().equals(username)).findAny()
-                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않은 크루입니다."));
+        Crew findCrew = getCrew(username);
         return findCrew.getBeforeHistories(standard);
     }
 
     public void addHistory(String username, LocalDateTime attendanceTime) {
-        Crew findCrew = crews.stream()
-                .filter(crew -> crew.getUserName().equals(username)).findAny()
-                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않은 크루입니다."));
+        Crew findCrew = getCrew(username);
         findCrew.addAttendance(attendanceTime);
     }
 
     public String getHistoryResult(String username, LocalDateTime attendanceTime) {
-        Crew findCrew = crews.stream()
-                .filter(crew -> crew.getUserName().equals(username)).findAny()
-                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않은 크루입니다."));
+        Crew findCrew = getCrew(username);
         return findCrew.getHistoryResult(attendanceTime);
     }
 
     public LocalDateTime getHistory(String username, LocalDateTime localDateTime) {
-        Crew findCrew = crews.stream()
-                .filter(crew -> crew.getUserName().equals(username)).findAny()
-                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않은 크루입니다."));
+        Crew findCrew = getCrew(username);
         return findCrew.getHistoryDate(localDateTime);
     }
 
     public AbsenceLevel getClassifyAbsenceLevel(String username, LocalDateTime localDateTime) {
-        Crew findCrew = crews.stream()
-                .filter(crew -> crew.getUserName().equals(username)).findAny()
-                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않은 크루입니다."));
+        Crew findCrew = getCrew(username);
         return findCrew.getClassifyAbsenceLevel(localDateTime);
     }
 
     public String editHistory(String username, LocalDateTime localDateTime) {
-        Crew findCrew = crews.stream()
-                .filter(crew -> crew.getUserName().equals(username)).findAny()
-                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않은 크루입니다."));
-        findCrew.editHistory(localDateTime);
+        Crew findCrew = getCrew(username);
         return findCrew.getHistoryResult(localDateTime);
     }
 
     public Map<String, Integer> getAttendanceAllResult(String username, LocalDateTime localDateTime) {
-        Crew findCrew = crews.stream()
-                .filter(crew -> crew.getUserName().equals(username)).findAny()
-                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않은 크루입니다."));
+        Crew findCrew = getCrew(username);
         return findCrew.getAttendanceAllResult(localDateTime);
     }
 
@@ -72,4 +57,9 @@ public class Crews {
                 .filter(crew -> !crew.getClassifyAbsenceLevel(localDateTime).equals(AbsenceLevel.NORMAL)).toList();
     }
 
+    private Crew getCrew(String username) {
+        return crews.stream()
+                .filter(crew -> crew.getUserName().equals(username)).findAny()
+                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않은 크루입니다."));
+    }
 }
