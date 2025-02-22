@@ -7,7 +7,6 @@ import static domain.AttendanceResult.LATE;
 import static domain.AttendanceResult.LATE_STANDARD_MINUTES;
 import static domain.History.ABSENT_DEFAULT_HOUR;
 import static domain.History.ABSENT_DEFAULT_MINUTE;
-import static java.time.DayOfWeek.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -23,11 +22,10 @@ public enum DailyAttendanceTime {
     THURSDAY(LocalTime.of(10, 0), DayOfWeek.THURSDAY),
     FRIDAY(LocalTime.of(10, 0), DayOfWeek.FRIDAY);
 
-    private final LocalTime attendanceTime;
-    private final DayOfWeek dayOfWeek;
-
     private final static int START_TIME = 8;
     private final static int END_TIME = 23;
+    private final LocalTime attendanceTime;
+    private final DayOfWeek dayOfWeek;
 
     DailyAttendanceTime(LocalTime attendanceTime, DayOfWeek dayOfWeek) {
         this.attendanceTime = attendanceTime;
