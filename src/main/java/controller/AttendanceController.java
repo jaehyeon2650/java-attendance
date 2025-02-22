@@ -34,7 +34,7 @@ public class AttendanceController {
         do {
             answer = inputView.getMenu();
             startMenu(answer);
-        } while (!(answer == SelectionOption.QUIT));
+        } while (answer != SelectionOption.QUIT);
     }
 
     private void startMenu(SelectionOption answer) {
