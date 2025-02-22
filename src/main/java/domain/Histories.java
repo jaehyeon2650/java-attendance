@@ -93,7 +93,7 @@ public class Histories {
 
     private void addAbsenceHistory(LocalDate standard, int day, List<LocalDateTime> copy) {
         LocalDate time = LocalDate.of(standard.getYear(), standard.getMonthValue(), day);
-        if (!Holiday.isHoliday(time) && !checkHasAttendanceTime(copy, time)) {
+        if (DailyAttendanceTime.canAttendance(time) && !checkHasAttendanceTime(copy, time)) {
             copy.add(LocalDateTime.of(standard.getYear(), standard.getMonthValue(), time.getDayOfMonth(),
                     ABSENT_DEFAULT_HOUR,
                     ABSENT_DEFAULT_MINUTE));

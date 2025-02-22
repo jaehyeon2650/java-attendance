@@ -8,13 +8,10 @@ public class History implements Comparable<History> {
 
     public final static int ABSENT_DEFAULT_HOUR = 23;
     public final static int ABSENT_DEFAULT_MINUTE = 59;
-    private final static int START_TIME = 8;
-    private final static int END_TIME = 23;
 
     public History(LocalDateTime attendanceTime) {
-        validateHistory(attendanceTime);
         this.attendanceTime = attendanceTime;
-        attendanceResult = getAttendanceResult(attendanceTime);
+        this.attendanceResult = DailyAttendanceTime.getDailyAttendanceResult(attendanceTime);
     }
 
     public LocalDateTime getAttendanceTime() {
@@ -35,23 +32,4 @@ public class History implements Comparable<History> {
         return this.attendanceTime.compareTo(o.attendanceTime);
     }
 
-    private AttendanceResult getAttendanceResult(LocalDateTime attendanceTime) {
-        return AttendanceResult.findAttendanceResult(attendanceTime);
-    }
-
-    private void validateHistory(LocalDateTime attendanceTime) {
-        Holiday.validate(attendanceTime);
-        validateOpeningHours(attendanceTime);
-    }
-
-    private void validateOpeningHours(LocalDateTime attendanceTime) {
-        if (!(attendanceTime.getHour() == ABSENT_DEFAULT_HOUR && attendanceTime.getMinute() == ABSENT_DEFAULT_MINUTE)
-                && (attendanceTime.isBefore(LocalDateTime.of(attendanceTime.getYear(), attendanceTime.getMonthValue(),
-                attendanceTime.getDayOfMonth(), START_TIME, 0)) ||
-                (attendanceTime.isAfter(LocalDateTime.of(attendanceTime.getYear(), attendanceTime.getMonthValue(),
-                        attendanceTime.getDayOfMonth(), END_TIME, 0)))
-        )) {
-            throw new IllegalArgumentException("[ERROR] 캠퍼스 운영 시간은 08:00~23:00 입니다.");
-        }
-    }
 }
