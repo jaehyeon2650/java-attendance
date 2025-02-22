@@ -37,7 +37,7 @@ public class Crews {
         return findCrew.getHistoryDate(localDateTime);
     }
 
-    public AbsenceLevel getClassifyAbsenceLevel(String username, LocalDateTime localDateTime) {
+    public AbsencePenalty getClassifyAbsenceLevel(String username, LocalDateTime localDateTime) {
         Crew findCrew = getCrew(username);
         return findCrew.getClassifyAbsenceLevel(localDateTime);
     }
@@ -55,7 +55,7 @@ public class Crews {
 
     public List<Crew> getHighAbsenceLevelCrews(LocalDateTime localDateTime) {
         return crews.stream()
-                .filter(crew -> !crew.getClassifyAbsenceLevel(localDateTime).equals(AbsenceLevel.NORMAL)).toList();
+                .filter(crew -> !crew.getClassifyAbsenceLevel(localDateTime).equals(AbsencePenalty.NORMAL)).toList();
     }
 
     private Crew getCrew(String username) {

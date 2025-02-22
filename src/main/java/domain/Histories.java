@@ -35,11 +35,11 @@ public class Histories {
         return results;
     }
 
-    public AbsenceLevel classifyAbsenceLevel(LocalDateTime standard) {
+    public AbsencePenalty classifyAbsenceLevel(LocalDateTime standard) {
         Map<String, Integer> results = getAttendanceResultCount(standard);
         int absentCount = results.getOrDefault(ABSENCE.getResult(), 0);
         int lateCount = results.getOrDefault(LATE.getResult(), 0);
-        return AbsenceLevel.findAbsenceLevel(absentCount, lateCount);
+        return AbsencePenalty.findAbsenceLevel(absentCount, lateCount);
     }
 
     public boolean hasHistory(LocalDateTime time) {

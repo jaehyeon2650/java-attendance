@@ -3,7 +3,7 @@ package controller;
 import static util.Convertor.changeStandardDate;
 
 import constants.SelectionOption;
-import domain.AbsenceLevel;
+import domain.AbsencePenalty;
 import domain.Crew;
 import domain.Crews;
 import domain.AttendanceHistory;
@@ -74,8 +74,9 @@ public class AttendanceController {
         LocalDateTime newDate = changeStandardDate(LocalDateTime.now());
         List<AttendanceHistory> beforeAttendanceHistory = crews.getBeforeHistory(username, newDate);
         Map<String, Integer> attendanceAllResult = crews.getAttendanceAllResult(username, newDate);
-        AbsenceLevel classifyAbsenceLevel = crews.getClassifyAbsenceLevel(username, newDate);
-        HistoriesDto historiesDto = HistoriesDto.of(username, beforeAttendanceHistory, attendanceAllResult, classifyAbsenceLevel);
+        AbsencePenalty classifyAbsencePenalty = crews.getClassifyAbsenceLevel(username, newDate);
+        HistoriesDto historiesDto = HistoriesDto.of(username, beforeAttendanceHistory, attendanceAllResult,
+                classifyAbsencePenalty);
         outputVIew.printHistories(historiesDto);
     }
 
@@ -84,8 +85,8 @@ public class AttendanceController {
         List<Crew> members = crews.getHighAbsenceLevelCrews(newDate);
         List<AbsenceCrewDto> crewDtos = members.stream().map(member -> {
             Map<String, Integer> results = crews.getAttendanceAllResult(member.getUserName(), newDate);
-            AbsenceLevel classifyAbsenceLevel = crews.getClassifyAbsenceLevel(member.getUserName(), newDate);
-            return new AbsenceCrewDto(member.getUserName(), results, classifyAbsenceLevel);
+            AbsencePenalty classifyAbsencePenalty = crews.getClassifyAbsenceLevel(member.getUserName(), newDate);
+            return new AbsenceCrewDto(member.getUserName(), results, classifyAbsencePenalty);
         }).collect(Collectors.toList());
         AbsenceCrewsDto crewsDto = new AbsenceCrewsDto(crewDtos);
         outputVIew.printDangerous(crewsDto);

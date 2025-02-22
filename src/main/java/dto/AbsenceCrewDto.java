@@ -1,10 +1,10 @@
 package dto;
 
-import static domain.AbsenceLevel.LATE_TO_ABSENCE_THRESHOLD;
+import static domain.AbsencePenalty.LATE_TO_ABSENCE_THRESHOLD;
 import static domain.AttendanceResult.ABSENCE;
 import static domain.AttendanceResult.LATE;
 
-import domain.AbsenceLevel;
+import domain.AbsencePenalty;
 import java.util.Map;
 
 public class AbsenceCrewDto implements Comparable<AbsenceCrewDto> {
@@ -12,10 +12,10 @@ public class AbsenceCrewDto implements Comparable<AbsenceCrewDto> {
     private final Map<String, Integer> results;
     private final String classifyAbsenceLevel;
 
-    public AbsenceCrewDto(String username, Map<String, Integer> results, AbsenceLevel classifyAbsenceLevel) {
+    public AbsenceCrewDto(String username, Map<String, Integer> results, AbsencePenalty classifyAbsencePenalty) {
         this.username = username;
         this.results = results;
-        this.classifyAbsenceLevel = classifyAbsenceLevel.getLevel();
+        this.classifyAbsenceLevel = classifyAbsencePenalty.getLevel();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package view;
 
-import static domain.AbsenceLevel.NORMAL;
+import static domain.AbsencePenalty.NORMAL;
 import static domain.AttendanceResult.ABSENCE;
 import static domain.AttendanceResult.ATTENDANCE;
 import static domain.AttendanceResult.LATE;

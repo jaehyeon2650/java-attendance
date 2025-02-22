@@ -45,7 +45,7 @@ public class Crew {
         return histories.getHistory(time);
     }
 
-    public AbsenceLevel getClassifyAbsenceLevel(LocalDateTime time) {
+    public AbsencePenalty getClassifyAbsenceLevel(LocalDateTime time) {
         return histories.classifyAbsenceLevel(time);
     }
 
