@@ -5,8 +5,8 @@ import static domain.AttendanceResult.ABSENCE_STANDARD_MINUTES;
 import static domain.AttendanceResult.ATTENDANCE;
 import static domain.AttendanceResult.LATE;
 import static domain.AttendanceResult.LATE_STANDARD_MINUTES;
-import static domain.History.ABSENT_DEFAULT_HOUR;
-import static domain.History.ABSENT_DEFAULT_MINUTE;
+import static domain.AttendanceHistory.ABSENT_DEFAULT_HOUR;
+import static domain.AttendanceHistory.ABSENT_DEFAULT_MINUTE;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

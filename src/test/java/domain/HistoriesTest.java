@@ -149,8 +149,8 @@ public class HistoriesTest {
         // when
         histories.editHistory(time);
         // then
-        List<History> historiesResult = histories.getSortedHistories(standard);
-        List<LocalDateTime> dateList = historiesResult.stream().map(History::getAttendanceTime).toList();
+        List<AttendanceHistory> historiesResult = histories.getSortedHistories(standard);
+        List<LocalDateTime> dateList = historiesResult.stream().map(AttendanceHistory::getAttendanceTime).toList();
         boolean editContain = dateList.contains(time);
         assertThat(editContain).isEqualTo(true);
     }

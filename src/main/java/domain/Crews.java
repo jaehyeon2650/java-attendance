@@ -17,7 +17,7 @@ public class Crews {
         }
     }
 
-    public List<History> getBeforeHistory(String username, LocalDateTime standard) {
+    public List<AttendanceHistory> getBeforeHistory(String username, LocalDateTime standard) {
         Crew findCrew = getCrew(username);
         return findCrew.getBeforeHistories(standard);
     }

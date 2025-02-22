@@ -2,13 +2,13 @@ package domain;
 
 import java.time.LocalDateTime;
 
-public class History implements Comparable<History> {
+public class AttendanceHistory implements Comparable<AttendanceHistory> {
     public final static int ABSENT_DEFAULT_HOUR = 23;
     public final static int ABSENT_DEFAULT_MINUTE = 59;
     private final LocalDateTime attendanceTime;
     private final AttendanceResult attendanceResult;
 
-    public History(LocalDateTime attendanceTime) {
+    public AttendanceHistory(LocalDateTime attendanceTime) {
         this.attendanceTime = attendanceTime;
         this.attendanceResult = DailyAttendanceTime.getDailyAttendanceResult(attendanceTime);
     }
@@ -27,7 +27,7 @@ public class History implements Comparable<History> {
     }
 
     @Override
-    public int compareTo(History o) {
+    public int compareTo(AttendanceHistory o) {
         return this.attendanceTime.compareTo(o.attendanceTime);
     }
 

@@ -25,7 +25,7 @@ public class Crew {
         histories.addHistory(history);
     }
 
-    public List<History> getBeforeHistories(LocalDateTime standard) {
+    public List<AttendanceHistory> getBeforeHistories(LocalDateTime standard) {
         return histories.getSortedHistories(standard);
     }
 
