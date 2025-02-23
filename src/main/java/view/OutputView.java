@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import util.Convertor;
 
-public class OutputVIew {
+public class OutputView {
 
     private static final String LINE_SEPARATOR = System.lineSeparator();
 

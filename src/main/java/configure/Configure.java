@@ -2,11 +2,11 @@ package configure;
 
 import controller.AttendanceController;
 import view.InputView;
-import view.OutputVIew;
+import view.OutputView;
 
 public class Configure {
     private static AttendanceController attendanceController;
-    private static OutputVIew outputVIew;
+    private static OutputView outputVIew;
     private static InputView inputView;
 
     public AttendanceController attendanceController() {
@@ -16,9 +16,9 @@ public class Configure {
         return attendanceController;
     }
 
-    private OutputVIew outputVIew() {
+    private OutputView outputVIew() {
         if (outputVIew == null) {
-            outputVIew = new OutputVIew();
+            outputVIew = new OutputView();
         }
         return outputVIew;
     }

@@ -17,14 +17,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import util.CsvReader;
 import view.InputView;
-import view.OutputVIew;
+import view.OutputView;
 
 public class AttendanceController {
 
-    private final OutputVIew outputVIew;
+    private final OutputView outputVIew;
     private final InputView inputView;
 
-    public AttendanceController(OutputVIew outputVIew, InputView inputView) {
+    public AttendanceController(OutputView outputVIew, InputView inputView) {
         this.outputVIew = outputVIew;
         this.inputView = inputView;
     }
