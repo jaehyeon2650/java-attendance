@@ -7,12 +7,12 @@ import java.util.Map;
 
 public class Crew {
     private final String userName;
-    private final Histories histories;
+    private final AttendanceHistories attendanceHistories;
 
     public Crew(String userName, List<LocalDateTime> histories, LocalDate standard) {
         validateName(userName);
         this.userName = userName;
-        this.histories = new Histories(histories, standard);
+        this.attendanceHistories = new AttendanceHistories(histories, standard);
     }
 
     public void validateName(String userName) {
@@ -22,15 +22,15 @@ public class Crew {
     }
 
     public void addAttendance(LocalDateTime history) {
-        histories.addHistory(history);
+        attendanceHistories.recordAttendance(history);
     }
 
     public List<AttendanceHistory> getBeforeHistories(LocalDateTime standard) {
-        return histories.getSortedHistories(standard);
+        return attendanceHistories.getSortedAttendanceHistories(standard);
     }
 
     public String getHistoryResult(LocalDateTime attendanceTime) {
-        return histories.getHistoryResult(attendanceTime);
+        return attendanceHistories.getAttendanceHistoryResult(attendanceTime);
     }
 
     public String getUserName() {
@@ -38,18 +38,18 @@ public class Crew {
     }
 
     public void editHistory(LocalDateTime attendanceTime) {
-        histories.editHistory(attendanceTime);
+        attendanceHistories.editAttendanceHistory(attendanceTime);
     }
 
     public LocalDateTime getHistoryDate(LocalDateTime time) {
-        return histories.getHistory(time);
+        return attendanceHistories.getAttendanceHistory(time);
     }
 
     public AbsencePenalty getClassifyAbsenceLevel(LocalDateTime time) {
-        return histories.classifyAbsenceLevel(time);
+        return attendanceHistories.classifyAbsenceLevel(time);
     }
 
     public Map<String, Integer> getAttendanceAllResult(LocalDateTime time) {
-        return histories.getAttendanceResultCount(time);
+        return attendanceHistories.countAttendanceResult(time);
     }
 }
