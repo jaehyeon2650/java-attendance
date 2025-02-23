@@ -42,7 +42,7 @@ public class AttendanceHistoriesTest {
             "13,제적"
     })
     @DisplayName("출석 결과 카운팅에 따른 제적 위험자 조회 테스트")
-    void classifyAbsenceLevel(int day, String expected) {
+    void classifyAbsenceLevelTest(int day, String expected) {
         // given
         LocalDate testDate = LocalDate.of(2024, 12, day);
         List<LocalDateTime> historiesTimes = List.of(

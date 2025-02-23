@@ -28,7 +28,7 @@ public class AttendanceHistoryTest {
 
     @Test
     @DisplayName("휴일일 경우 예외 발생 테스트")
-    void validateHoliday() {
+    void validateHolidayTest() {
         // given
         LocalDateTime time = LocalDateTime.of(2025, 2, 15, 10, 7);
         // when & then
@@ -40,7 +40,7 @@ public class AttendanceHistoryTest {
     @ParameterizedTest
     @DisplayName("캠퍼스 등록 시간이 아닌 경우 예외 발생 테스트")
     @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6, 7, 23})
-    void validateOpeningCompany(int hour) {
+    void validateOpeningCompanyTest(int hour) {
         // given
         LocalDateTime time = LocalDateTime.of(2024, 2, 16, hour, 7);
         // when & then

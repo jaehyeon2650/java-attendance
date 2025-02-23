@@ -13,7 +13,7 @@ public class CrewTest {
 
     @Test
     @DisplayName("크루 생성 시 이름 유효성 검사")
-    public void validateName() {
+    public void validateNameTest() {
         //given
         String userName = "가나다라마";
         List<LocalDateTime> histories = new ArrayList<>();
