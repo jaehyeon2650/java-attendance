@@ -17,39 +17,39 @@ public class Crews {
         }
     }
 
-    public List<AttendanceHistory> getBeforeHistory(String username, LocalDateTime standard) {
-        Crew findCrew = getCrew(username);
+    public List<AttendanceHistory> getBeforeAttendanceHistories(String username, LocalDateTime standard) {
+        Crew findCrew = findCrew(username);
         return findCrew.getBeforeHistories(standard);
     }
 
-    public void addHistory(String username, LocalDateTime attendanceTime) {
-        Crew findCrew = getCrew(username);
+    public void recordAttendance(String username, LocalDateTime attendanceTime) {
+        Crew findCrew = findCrew(username);
         findCrew.addAttendance(attendanceTime);
     }
 
-    public String getHistoryResult(String username, LocalDateTime attendanceTime) {
-        Crew findCrew = getCrew(username);
+    public String getRecordAttendanceResult(String username, LocalDateTime attendanceTime) {
+        Crew findCrew = findCrew(username);
         return findCrew.getHistoryResult(attendanceTime);
     }
 
-    public LocalDateTime getHistory(String username, LocalDateTime localDateTime) {
-        Crew findCrew = getCrew(username);
+    public LocalDateTime getAttendanceHistory(String username, LocalDateTime localDateTime) {
+        Crew findCrew = findCrew(username);
         return findCrew.getHistoryDate(localDateTime);
     }
 
     public AbsencePenalty getClassifyAbsenceLevel(String username, LocalDateTime localDateTime) {
-        Crew findCrew = getCrew(username);
+        Crew findCrew = findCrew(username);
         return findCrew.getClassifyAbsenceLevel(localDateTime);
     }
 
-    public String editHistory(String username, LocalDateTime localDateTime) {
-        Crew findCrew = getCrew(username);
+    public String editAttendanceHistory(String username, LocalDateTime localDateTime) {
+        Crew findCrew = findCrew(username);
         findCrew.editHistory(localDateTime);
         return findCrew.getHistoryResult(localDateTime);
     }
 
     public Map<String, Integer> getAttendanceAllResult(String username, LocalDateTime localDateTime) {
-        Crew findCrew = getCrew(username);
+        Crew findCrew = findCrew(username);
         return findCrew.getAttendanceAllResult(localDateTime);
     }
 
@@ -58,7 +58,7 @@ public class Crews {
                 .filter(crew -> !crew.getClassifyAbsenceLevel(localDateTime).equals(AbsencePenalty.NORMAL)).toList();
     }
 
-    private Crew getCrew(String username) {
+    private Crew findCrew(String username) {
         return crews.stream()
                 .filter(crew -> crew.getUserName().equals(username)).findAny()
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 존재하지 않은 크루입니다."));

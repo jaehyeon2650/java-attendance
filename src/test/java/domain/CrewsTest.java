@@ -37,28 +37,28 @@ public class CrewsTest {
 
     @Test
     @DisplayName("특정 시간 전날들의 출석 기록 테스트")
-    public void getCrewHistory() {
+    public void findCrewHistoryTest() {
         // given
         LocalDateTime standard = LocalDateTime.of(2024, 12, 19, 10, 35);
         List<LocalDateTime> expected = List.of(LocalDateTime.of(2024, 12, 2, 9, 59),
                 LocalDateTime.of(2024, 12, 3, 9, 59),
                 LocalDateTime.of(2024, 12, 4, 9, 59));
         // when
-        List<AttendanceHistory> result = crews.getBeforeHistory("쿠키", standard);
+        List<AttendanceHistory> result = crews.getBeforeAttendanceHistories("쿠키", standard);
         List<LocalDateTime> resultTime = result.stream().map(AttendanceHistory::getAttendanceTime).toList();
         assertThat(resultTime).isEqualTo(expected);
     }
 
     @Test
     @DisplayName("조회 정렬 테스트")
-    public void getSortedCrewHistory() {
+    public void getSortedCrewHistoryTest() {
         // given
         LocalDateTime standard = LocalDateTime.of(2024, 12, 19, 10, 35);
         List<LocalDateTime> expected = List.of(LocalDateTime.of(2024, 12, 2, 9, 59),
                 LocalDateTime.of(2024, 12, 3, 10, 35),
                 LocalDateTime.of(2024, 12, 4, 10, 35));
         // when
-        List<AttendanceHistory> result = crews.getBeforeHistory("빙봉", standard);
+        List<AttendanceHistory> result = crews.getBeforeAttendanceHistories("빙봉", standard);
         List<LocalDateTime> resultTime = result.stream().map(AttendanceHistory::getAttendanceTime).toList();
         // then
         assertThat(resultTime).isEqualTo(expected);
@@ -70,10 +70,10 @@ public class CrewsTest {
         // given
         String username = "빙봉";
         LocalDateTime attendanceTime = LocalDateTime.of(2024, 12, 19, 10, 35);
-        crews.addHistory(username, attendanceTime);
+        crews.recordAttendance(username, attendanceTime);
         LocalDateTime standardTime = LocalDateTime.of(2024, 12, 20, 10, 35);
         // when
-        List<AttendanceHistory> result = crews.getBeforeHistory(username, standardTime);
+        List<AttendanceHistory> result = crews.getBeforeAttendanceHistories(username, standardTime);
         List<LocalDateTime> resultTime = result.stream().map(AttendanceHistory::getAttendanceTime).toList();
         // then
         boolean check = resultTime.contains(attendanceTime);
@@ -94,8 +94,8 @@ public class CrewsTest {
 
     @Test
     @DisplayName("크루 맴버가 없을 때 조회")
-    void getCrew_Exception() {
-        assertThatThrownBy(() -> crews.addHistory("a", LocalDateTime.of(2024, 12, 23, 0, 0)))
+    void findCrew_Exception() {
+        assertThatThrownBy(() -> crews.recordAttendance("a", LocalDateTime.of(2024, 12, 23, 0, 0)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 존재하지 않은 크루입니다.");
     }

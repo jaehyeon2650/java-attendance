@@ -61,24 +61,24 @@ public class AttendanceController {
     private void addAttendance(Crews crews) {
         String name = inputView.getName();
         LocalDateTime time = inputView.getAttendanceTime();
-        crews.addHistory(name, time);
-        String historyResult = crews.getHistoryResult(name, time);
+        crews.recordAttendance(name, time);
+        String historyResult = crews.getRecordAttendanceResult(name, time);
         outputVIew.printAttendanceConfirmation(time, historyResult);
     }
 
     private void editAttendance(Crews crews) {
         String editName = inputView.getEditName();
         LocalDateTime editHistory = inputView.getEditAttendanceTime();
-        LocalDateTime beforeHistory = crews.getHistory(editName, editHistory);
-        String beforeResult = crews.getHistoryResult(editName, editHistory);
-        String editResult = crews.editHistory(editName, editHistory);
+        LocalDateTime beforeHistory = crews.getAttendanceHistory(editName, editHistory);
+        String beforeResult = crews.getRecordAttendanceResult(editName, editHistory);
+        String editResult = crews.editAttendanceHistory(editName, editHistory);
         outputVIew.printEditAttendance(beforeHistory, beforeResult, editHistory, editResult);
     }
 
     private void getAllAttendance(Crews crews) {
         String username = inputView.getName();
         LocalDateTime newDate = changeStandardDate(LocalDateTime.now());
-        List<AttendanceHistory> beforeAttendanceHistory = crews.getBeforeHistory(username, newDate);
+        List<AttendanceHistory> beforeAttendanceHistory = crews.getBeforeAttendanceHistories(username, newDate);
         Map<String, Integer> attendanceAllResult = crews.getAttendanceAllResult(username, newDate);
         AbsencePenalty classifyAbsencePenalty = crews.getClassifyAbsenceLevel(username, newDate);
         HistoriesDto historiesDto = HistoriesDto.of(username, beforeAttendanceHistory, attendanceAllResult,
