@@ -1,14 +1,15 @@
 package domain;
 
+import static domain.AttendanceHistory.ABSENT_DEFAULT_HOUR;
+import static domain.AttendanceHistory.ABSENT_DEFAULT_MINUTE;
 import static domain.AttendanceResult.ABSENCE;
 import static domain.AttendanceResult.ABSENCE_STANDARD_MINUTES;
 import static domain.AttendanceResult.ATTENDANCE;
 import static domain.AttendanceResult.LATE;
 import static domain.AttendanceResult.LATE_STANDARD_MINUTES;
-import static domain.AttendanceHistory.ABSENT_DEFAULT_HOUR;
-import static domain.AttendanceHistory.ABSENT_DEFAULT_MINUTE;
 
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -22,10 +23,11 @@ public enum DailyAttendanceTime {
     THURSDAY(LocalTime.of(10, 0), DayOfWeek.THURSDAY),
     FRIDAY(LocalTime.of(10, 0), DayOfWeek.FRIDAY);
 
-    private final static int START_TIME = 8;
-    private final static int END_TIME = 23;
     private final LocalTime attendanceTime;
     private final DayOfWeek dayOfWeek;
+
+    private final static int START_TIME = 8;
+    private final static int END_TIME = 23;
 
     DailyAttendanceTime(LocalTime attendanceTime, DayOfWeek dayOfWeek) {
         this.attendanceTime = attendanceTime;
@@ -58,10 +60,10 @@ public enum DailyAttendanceTime {
                                                         LocalDateTime attendanceTime) {
         LocalTime todayAttendanceTime = dailyAttendanceTime.attendanceTime;
         LocalTime attendanceLocalTime = attendanceTime.toLocalTime();
-        if (attendanceLocalTime.isAfter(todayAttendanceTime.plusMinutes(ABSENCE_STANDARD_MINUTES))) {
+        if (Duration.between(attendanceLocalTime, todayAttendanceTime).toMinutes() > ABSENCE_STANDARD_MINUTES) {
             return ABSENCE;
         }
-        if (attendanceLocalTime.isAfter(todayAttendanceTime.plusMinutes(LATE_STANDARD_MINUTES))) {
+        if (Duration.between(attendanceLocalTime, todayAttendanceTime).toMinutes() > LATE_STANDARD_MINUTES) {
             return LATE;
         }
         return ATTENDANCE;
