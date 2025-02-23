@@ -1,9 +1,6 @@
 package configure;
 
 import controller.AttendanceController;
-import domain.Crews;
-import java.time.LocalDate;
-import util.CsvReader;
 import view.InputView;
 import view.OutputVIew;
 
@@ -11,11 +8,10 @@ public class Configure {
     private static AttendanceController attendanceController;
     private static OutputVIew outputVIew;
     private static InputView inputView;
-    private static Crews crews;
 
     public AttendanceController attendanceController() {
         if (attendanceController == null) {
-            return new AttendanceController(outputVIew(), inputView(), crews());
+            return new AttendanceController(outputVIew(), inputView());
         }
         return attendanceController;
     }
@@ -32,14 +28,6 @@ public class Configure {
             inputView = new InputView();
         }
         return inputView;
-    }
-
-    private Crews crews() {
-        if (crews == null) {
-            LocalDate now = LocalDate.now();
-            crews = new Crews(CsvReader.loadAttendanceData(), LocalDate.of(2024, 12, now.getDayOfMonth()));
-        }
-        return crews;
     }
 
 }
