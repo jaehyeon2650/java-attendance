@@ -15,11 +15,11 @@ public enum SelectionOption {
         this.option = option;
     }
 
-    public static SelectionOption getSelectOption(String input) {
+    public static SelectionOption getSelectOption(String selection) {
         return Arrays.stream(SelectionOption.values())
-                .filter(select -> select.option.equals(input))
+                .filter(select -> select.option.equals(selection))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 잘못된 입력입니다."));
+                .orElseThrow(() -> new IllegalArgumentException(String.format("[ERROR] %s은 잘못된 입력입니다.",selection)));
     }
 
 }
