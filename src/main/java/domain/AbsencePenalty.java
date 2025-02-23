@@ -1,12 +1,16 @@
 package domain;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 public enum AbsencePenalty {
-    OUT("제적", 5),
+    OUT("제적", 6),
     MEETING("면담", 3),
     WARNING("경고", 2),
     NORMAL("정상", 0);
 
     public static final int LATE_TO_ABSENCE_THRESHOLD = 3;
+
     private final String level;
     private final int standard;
 
@@ -15,18 +19,18 @@ public enum AbsencePenalty {
         this.standard = standard;
     }
 
-    public static AbsencePenalty findAbsenceLevel(int absentCount, int lateCount) {
-        absentCount += (lateCount / LATE_TO_ABSENCE_THRESHOLD);
-        if (absentCount > OUT.standard) {
-            return OUT;
-        }
-        if (absentCount >= MEETING.standard) {
-            return MEETING;
-        }
-        if (absentCount >= WARNING.standard) {
-            return WARNING;
-        }
-        return NORMAL;
+    public static AbsencePenalty findAbsenceLevel(final int absentCount,final int lateCount) {
+        int calculatedAbsentCount = absentCount + (lateCount / LATE_TO_ABSENCE_THRESHOLD);
+
+        return Arrays.stream(AbsencePenalty.values())
+                .sorted(Comparator.comparingInt((AbsencePenalty absencePenalty)-> absencePenalty.standard).reversed())
+                .filter(penalty -> penalty.exceedsStandard(calculatedAbsentCount))
+                .findFirst()
+                .orElse(NORMAL);
+    }
+
+    private boolean exceedsStandard(int count){
+        return count >= standard;
     }
 
     public String getLevel() {
