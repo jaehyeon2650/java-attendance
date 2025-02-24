@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Crews {
     private final List<Crew> crews;
@@ -27,7 +28,7 @@ public class Crews {
         findCrew.addAttendance(attendanceTime);
     }
 
-    public String getRecordAttendanceResult(String username, LocalDateTime attendanceTime) {
+    public String getRecordedAttendanceResult(String username, LocalDateTime attendanceTime) {
         Crew findCrew = findCrew(username);
         return findCrew.getHistoryResult(attendanceTime);
     }
@@ -37,25 +38,26 @@ public class Crews {
         return findCrew.getHistoryDate(localDateTime);
     }
 
-    public AbsencePenalty getClassifyAbsenceLevel(String username, LocalDateTime localDateTime) {
-        Crew findCrew = findCrew(username);
-        return findCrew.getClassifyAbsenceLevel(localDateTime);
-    }
-
     public String editAttendanceHistory(String username, LocalDateTime localDateTime) {
         Crew findCrew = findCrew(username);
         findCrew.editHistory(localDateTime);
         return findCrew.getHistoryResult(localDateTime);
     }
 
-    public Map<String, Integer> getAttendanceAllResult(String username, LocalDateTime localDateTime) {
+    public AttendanceRecord getAttendanceAllResult(String username, LocalDateTime localDateTime) {
         Crew findCrew = findCrew(username);
         return findCrew.getAttendanceAllResult(localDateTime);
     }
 
-    public List<Crew> getHighAbsenceLevelCrews(LocalDateTime localDateTime) {
-        return crews.stream()
-                .filter(crew -> !crew.getClassifyAbsenceLevel(localDateTime).equals(AbsencePenalty.NORMAL)).toList();
+    public Map<Crew,AttendanceRecord> getHighAbsenceLevelCrews(LocalDateTime localDateTime) {
+        List<Crew> highAbsenceLevelCrews = crews.stream()
+                .filter(crew -> crew.isHighAbsenceLevel(localDateTime))
+                .toList();
+        Map<Crew, AttendanceRecord> result = new TreeMap<>();
+        highAbsenceLevelCrews.forEach(crew->{
+            result.put(crew,crew.getAttendanceAllResult(localDateTime));
+        });
+        return result;
     }
 
     private Crew findCrew(String username) {

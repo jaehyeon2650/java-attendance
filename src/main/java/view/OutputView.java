@@ -40,11 +40,10 @@ public class OutputView {
         System.out.println("제적 위험자 조회 결과");
         List<AbsenceCrewDto> crews = crewsDto.getCrews();
         crews.forEach(crew -> {
-            Map<String, Integer> results = crew.getResults();
-            System.out.printf("- %s: 결석 %d회,지각 %d회 (%s)\n", crew.getUsername(),
-                    results.getOrDefault(ABSENCE.getResult(), 0),
-                    results.getOrDefault(LATE.getResult(), 0),
-                    crew.getClassifyAbsenceLevel());
+            System.out.printf("- %s: 결석 %d회,지각 %d회 (%s)\n", crew.username(),
+                    crew.absenceCount(),
+                    crew.lateCount(),
+                    crew.classifyAbsenceLevel());
         });
         System.out.print(LINE_SEPARATOR);
     }
@@ -66,11 +65,10 @@ public class OutputView {
     }
 
     private void printAttendanceAllResult(HistoriesDto historiesDto) {
-        Map<String, Integer> result = historiesDto.attendanceAllResult();
         System.out.print(LINE_SEPARATOR);
-        System.out.printf("출석: %d회\n", result.getOrDefault(ATTENDANCE.getResult(), 0));
-        System.out.printf("지각: %d회\n", result.getOrDefault(LATE.getResult(), 0));
-        System.out.printf("결석: %d회\n", result.getOrDefault(ABSENCE.getResult(), 0));
+        System.out.printf("출석: %d회\n", historiesDto.attendanceCount());
+        System.out.printf("지각: %d회\n", historiesDto.lateCount());
+        System.out.printf("결석: %d회\n", historiesDto.absenceCount());
         System.out.print(LINE_SEPARATOR);
     }
 }

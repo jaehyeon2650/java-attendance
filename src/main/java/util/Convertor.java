@@ -4,6 +4,7 @@ import static domain.AttendanceHistory.ABSENT_DEFAULT_HOUR;
 import static domain.AttendanceHistory.ABSENT_DEFAULT_MINUTE;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -36,7 +37,7 @@ public class Convertor {
     }
 
     public static String dateFormattingForInput(LocalDateTime localDateTime) {
-        LocalDateTime changedDate = changeStandardDate(localDateTime);
+        LocalDateTime changedDate = changeStandardLocalDateTime(localDateTime);
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM월 dd일 E요일", Locale.KOREAN);
         Date dateAttendanceTime = Date.from(changedDate.atZone(ZoneId.systemDefault()).toInstant());
         return dateFormat.format(dateAttendanceTime);
@@ -58,10 +59,13 @@ public class Convertor {
         return LocalDateTime.of(STANDARD_YEAR, STANDARD_MONTH, day, hour, minutes);
     }
 
-    public static LocalDateTime changeStandardDate(LocalDateTime time) {
+    public static LocalDateTime changeStandardLocalDateTime(LocalDateTime time) {
         return LocalDateTime.of(STANDARD_YEAR, STANDARD_MONTH, time.getDayOfMonth(), time.getHour(), time.getMinute());
     }
 
+    public static LocalDate changeStandardLocalDate(LocalDate time) {
+        return LocalDate.of(STANDARD_YEAR,STANDARD_MONTH,time.getDayOfMonth());
+    }
 
     static class Validator {
         private final static String TIME_FORMAT = "^(?:[01]\\d|2[0-3])\\s*:\\s*[0-5]\\d$";

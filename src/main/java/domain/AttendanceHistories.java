@@ -25,20 +25,22 @@ public class AttendanceHistories {
         this.histories = copy.stream().map(AttendanceHistory::new).collect(Collectors.toList());
     }
 
-    public Map<String, Integer> countAttendanceResult(LocalDateTime standard) {
-        Map<String, Integer> results = new HashMap<>();
+    public AttendanceRecord countAttendanceResult(LocalDateTime standard) {
+        Map<AttendanceResult, Integer> results = new HashMap<>();
         histories.stream().filter(history -> history.isBeforeHistory(standard))
                 .forEach(history -> {
-                    String result = history.getAttendanceResult();
-                    results.put(result, results.getOrDefault(result, 0) + 1);
+                    AttendanceResult attendanceResult = history.getAttendanceResult();
+                    results.put(attendanceResult, results.getOrDefault(attendanceResult, 0) + 1);
                 });
-        return results;
+
+        return new AttendanceRecord(results);
     }
 
     public AbsencePenalty classifyAbsenceLevel(LocalDateTime standard) {
-        Map<String, Integer> results = countAttendanceResult(standard);
-        int absentCount = results.getOrDefault(ABSENCE.getResult(), 0);
-        int lateCount = results.getOrDefault(LATE.getResult(), 0);
+        AttendanceRecord attendanceRecord = countAttendanceResult(standard);
+        Map<AttendanceResult, Integer> results = attendanceRecord.getTotalAttendanceRecord();
+        int absentCount = results.getOrDefault(ABSENCE, 0);
+        int lateCount = results.getOrDefault(LATE, 0);
         return AbsencePenalty.findAbsenceLevel(absentCount, lateCount);
     }
 
@@ -88,7 +90,8 @@ public class AttendanceHistories {
                 .filter(history -> (history.getAttendanceTime().getDayOfMonth() == time.getDayOfMonth()) &&
                         (history.getAttendanceTime().getMonthValue() == time.getMonthValue())).findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 해당 날짜 출석 기록이 없습니다."));
-        return findAttendanceHistory.getAttendanceResult();
+        AttendanceResult attendanceResult = findAttendanceHistory.getAttendanceResult();
+        return attendanceResult.getResult();
     }
 
     private void addAbsenceHistory(LocalDate standard, int day, List<LocalDateTime> copy) {
