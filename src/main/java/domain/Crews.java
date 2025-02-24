@@ -49,7 +49,7 @@ public class Crews {
         return findCrew.getAttendanceAllResult(localDateTime);
     }
 
-    public Map<Crew, AttendanceRecord> getHighAbsenceLevelCrews(LocalDateTime localDateTime) {
+    public Map<Crew, AttendanceRecord> getHighAbsenceLevelCrewsInfo(LocalDateTime localDateTime) {
         List<Crew> highAbsenceLevelCrews = crews.stream()
                 .filter(crew -> crew.isHighAbsenceLevel(localDateTime))
                 .toList();

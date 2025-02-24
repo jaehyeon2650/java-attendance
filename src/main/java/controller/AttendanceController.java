@@ -85,7 +85,7 @@ public class AttendanceController {
 
     private void getAbsenceUsers(Crews crews) {
         LocalDateTime newDate = changeStandardLocalDateTime(LocalDateTime.now());
-        Map<Crew, AttendanceRecord> highAbsenceLevelCrews = crews.getHighAbsenceLevelCrews(newDate);
+        Map<Crew, AttendanceRecord> highAbsenceLevelCrews = crews.getHighAbsenceLevelCrewsInfo(newDate);
         AbsenceCrewsDto crewsDto = new AbsenceCrewsDto(highAbsenceLevelCrews);
         outputVIew.printDangerous(crewsDto);
     }

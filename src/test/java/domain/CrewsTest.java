@@ -83,9 +83,9 @@ public class CrewsTest {
 
     @Test
     @DisplayName("제적 위험자 조회 기능 테스트")
-    void getHighAbsenceLevelCrewsTest() {
+    void getHighAbsenceLevelCrewsInfoTest() {
         // when
-        Map<Crew, AttendanceRecord> highAbsenceLevelCrews = crews.getHighAbsenceLevelCrews(
+        Map<Crew, AttendanceRecord> highAbsenceLevelCrews = crews.getHighAbsenceLevelCrewsInfo(
                 LocalDateTime.of(2024, 12, 5, 11, 0));
         // then
         assertThat(highAbsenceLevelCrews.size()).isEqualTo(2);
