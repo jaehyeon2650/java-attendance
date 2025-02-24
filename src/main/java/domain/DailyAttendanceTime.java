@@ -9,7 +9,6 @@ import static domain.AttendanceResult.LATE;
 import static domain.AttendanceResult.LATE_STANDARD_MINUTES;
 
 import java.time.DayOfWeek;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -60,10 +59,10 @@ public enum DailyAttendanceTime {
                                                         LocalDateTime attendanceTime) {
         LocalTime todayAttendanceTime = dailyAttendanceTime.attendanceTime;
         LocalTime attendanceLocalTime = attendanceTime.toLocalTime();
-        if (Duration.between(attendanceLocalTime, todayAttendanceTime).toMinutes() > ABSENCE_STANDARD_MINUTES) {
+        if (attendanceLocalTime.isAfter(todayAttendanceTime.plusMinutes(ABSENCE_STANDARD_MINUTES))) {
             return ABSENCE;
         }
-        if (Duration.between(attendanceLocalTime, todayAttendanceTime).toMinutes() > LATE_STANDARD_MINUTES) {
+        if (attendanceLocalTime.isAfter(todayAttendanceTime.plusMinutes(LATE_STANDARD_MINUTES))) {
             return LATE;
         }
         return ATTENDANCE;
