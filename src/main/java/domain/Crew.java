@@ -37,11 +37,11 @@ public class Crew implements Comparable<Crew> {
     public boolean isHighAbsenceLevel(LocalDateTime standardTime) {
         return !getClassifyAbsenceLevel(standardTime).equals((AbsencePenalty.NORMAL));
     }
-
+    
     public void editHistory(LocalDateTime attendanceTime) {
         attendanceHistories.editAttendanceHistory(attendanceTime);
     }
-
+    
     public String getHistoryResult(LocalDateTime attendanceTime) {
         return attendanceHistories.getAttendanceHistoryResult(attendanceTime);
     }
@@ -65,22 +65,31 @@ public class Crew implements Comparable<Crew> {
     @Override
     public int compareTo(Crew o) {
         LocalDateTime standard = Convertor.changeStandardLocalDateTime(LocalDateTime.now());
-        AttendanceRecord attendanceAllResult = this.getAttendanceAllResult(standard);
-        Map<AttendanceResult, Integer> thisAttendanceResult = attendanceAllResult.getTotalAttendanceRecord();
-        AttendanceRecord otherAttendanceAllResult = o.getAttendanceAllResult(standard);
-        Map<AttendanceResult, Integer> otherAttendanceResult = otherAttendanceAllResult.getTotalAttendanceRecord();
-
-        int myAbsenceCount = thisAttendanceResult.getOrDefault(LATE, 0);
-        myAbsenceCount += thisAttendanceResult.getOrDefault(ABSENCE, 0) * LATE_TO_ABSENCE_THRESHOLD;
-        int otherAbsenceCount = otherAttendanceResult.getOrDefault(LATE, 0);
-        otherAbsenceCount += otherAttendanceResult.getOrDefault(ABSENCE, 0) * LATE_TO_ABSENCE_THRESHOLD;
-
-        int result = Integer.compare(otherAbsenceCount, myAbsenceCount);
-
+        Map<AttendanceResult, Integer> thisAttendanceResult = getAttendanceResultMap(standard,this);
+        Map<AttendanceResult, Integer> otherAttendanceResult = getAttendanceResultMap(standard,o);
+        int result = compareAttendanceResult(thisAttendanceResult, otherAttendanceResult);
         if (result == 0) {
             return this.userName.compareTo(o.userName);
         }
-
         return result;
+    }
+
+    private int compareAttendanceResult(Map<AttendanceResult, Integer> thisAttendanceResult,
+                          Map<AttendanceResult, Integer> otherAttendanceResult) {
+        int myAbsenceCount = calculateAbsenceCount(thisAttendanceResult);
+        int otherAbsenceCount = calculateAbsenceCount(otherAttendanceResult);
+
+        return Integer.compare(otherAbsenceCount, myAbsenceCount);
+    }
+
+    private Map<AttendanceResult, Integer> getAttendanceResultMap(LocalDateTime standard, Crew crew) {
+        AttendanceRecord attendanceAllResult = crew.getAttendanceAllResult(standard);
+        return attendanceAllResult.getTotalAttendanceRecord();
+    }
+
+    private int calculateAbsenceCount(Map<AttendanceResult, Integer> thisAttendanceResult) {
+        int myAbsenceCount = thisAttendanceResult.getOrDefault(LATE, 0);
+        myAbsenceCount += thisAttendanceResult.getOrDefault(ABSENCE, 0) * LATE_TO_ABSENCE_THRESHOLD;
+        return myAbsenceCount;
     }
 }
