@@ -19,7 +19,7 @@ public enum SelectionOption {
         return Arrays.stream(SelectionOption.values())
                 .filter(select -> select.option.equals(selection))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("[ERROR] %s은 잘못된 입력입니다.",selection)));
+                .orElseThrow(() -> new IllegalArgumentException(String.format("[ERROR] %s은 잘못된 입력입니다.", selection)));
     }
 
 }

@@ -19,17 +19,17 @@ public enum AbsencePenalty {
         this.standard = standard;
     }
 
-    public static AbsencePenalty findAbsenceLevel(final int absentCount,final int lateCount) {
+    public static AbsencePenalty findAbsenceLevel(final int absentCount, final int lateCount) {
         int calculatedAbsentCount = absentCount + (lateCount / LATE_TO_ABSENCE_THRESHOLD);
 
         return Arrays.stream(AbsencePenalty.values())
-                .sorted(Comparator.comparingInt((AbsencePenalty absencePenalty)-> absencePenalty.standard).reversed())
+                .sorted(Comparator.comparingInt((AbsencePenalty absencePenalty) -> absencePenalty.standard).reversed())
                 .filter(penalty -> penalty.exceedsStandard(calculatedAbsentCount))
                 .findFirst()
                 .orElse(NORMAL);
     }
 
-    private boolean exceedsStandard(int count){
+    private boolean exceedsStandard(int count) {
         return count >= standard;
     }
 

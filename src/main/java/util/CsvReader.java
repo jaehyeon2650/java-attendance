@@ -23,7 +23,7 @@ public class CsvReader {
         try (Scanner scanner = new Scanner(new File(FILE))) {
             readLines(scanner, crewsMap);
         } catch (FileNotFoundException e) {
-            throw new IllegalArgumentException("[ERROR] 파일 경로가 정확하지 않습니다.",e);
+            throw new IllegalArgumentException("[ERROR] 파일 경로가 정확하지 않습니다.", e);
         }
         return crewsMap;
     }

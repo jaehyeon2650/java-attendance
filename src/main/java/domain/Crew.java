@@ -37,11 +37,11 @@ public class Crew implements Comparable<Crew> {
     public boolean isHighAbsenceLevel(LocalDateTime standardTime) {
         return !getClassifyAbsenceLevel(standardTime).equals((AbsencePenalty.NORMAL));
     }
-    
+
     public void editHistory(LocalDateTime attendanceTime) {
         attendanceHistories.editAttendanceHistory(attendanceTime);
     }
-    
+
     public String getHistoryResult(LocalDateTime attendanceTime) {
         return attendanceHistories.getAttendanceHistoryResult(attendanceTime);
     }
@@ -65,8 +65,8 @@ public class Crew implements Comparable<Crew> {
     @Override
     public int compareTo(Crew o) {
         LocalDateTime standard = Convertor.changeStandardLocalDateTime(LocalDateTime.now());
-        Map<AttendanceResult, Integer> thisAttendanceResult = getAttendanceResultMap(standard,this);
-        Map<AttendanceResult, Integer> otherAttendanceResult = getAttendanceResultMap(standard,o);
+        Map<AttendanceResult, Integer> thisAttendanceResult = getAttendanceResultMap(standard, this);
+        Map<AttendanceResult, Integer> otherAttendanceResult = getAttendanceResultMap(standard, o);
         int result = compareAttendanceResult(thisAttendanceResult, otherAttendanceResult);
         if (result == 0) {
             return this.userName.compareTo(o.userName);
@@ -75,7 +75,7 @@ public class Crew implements Comparable<Crew> {
     }
 
     private int compareAttendanceResult(Map<AttendanceResult, Integer> thisAttendanceResult,
-                          Map<AttendanceResult, Integer> otherAttendanceResult) {
+                                        Map<AttendanceResult, Integer> otherAttendanceResult) {
         int myAbsenceCount = calculateAbsenceCount(thisAttendanceResult);
         int otherAbsenceCount = calculateAbsenceCount(otherAttendanceResult);
 

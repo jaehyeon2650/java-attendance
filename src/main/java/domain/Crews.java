@@ -49,13 +49,13 @@ public class Crews {
         return findCrew.getAttendanceAllResult(localDateTime);
     }
 
-    public Map<Crew,AttendanceRecord> getHighAbsenceLevelCrews(LocalDateTime localDateTime) {
+    public Map<Crew, AttendanceRecord> getHighAbsenceLevelCrews(LocalDateTime localDateTime) {
         List<Crew> highAbsenceLevelCrews = crews.stream()
                 .filter(crew -> crew.isHighAbsenceLevel(localDateTime))
                 .toList();
         Map<Crew, AttendanceRecord> result = new TreeMap<>();
-        highAbsenceLevelCrews.forEach(crew->{
-            result.put(crew,crew.getAttendanceAllResult(localDateTime));
+        highAbsenceLevelCrews.forEach(crew -> {
+            result.put(crew, crew.getAttendanceAllResult(localDateTime));
         });
         return result;
     }

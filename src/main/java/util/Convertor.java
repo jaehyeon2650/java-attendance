@@ -64,7 +64,7 @@ public class Convertor {
     }
 
     public static LocalDate changeStandardLocalDate(LocalDate time) {
-        return LocalDate.of(STANDARD_YEAR,STANDARD_MONTH,time.getDayOfMonth());
+        return LocalDate.of(STANDARD_YEAR, STANDARD_MONTH, time.getDayOfMonth());
     }
 
     static class Validator {

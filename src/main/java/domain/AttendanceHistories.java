@@ -1,9 +1,9 @@
 package domain;
 
-import static domain.AttendanceResult.ABSENCE;
-import static domain.AttendanceResult.LATE;
 import static domain.AttendanceHistory.ABSENT_DEFAULT_HOUR;
 import static domain.AttendanceHistory.ABSENT_DEFAULT_MINUTE;
+import static domain.AttendanceResult.ABSENCE;
+import static domain.AttendanceResult.LATE;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

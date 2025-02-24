@@ -1,9 +1,6 @@
 package view;
 
 import static domain.AbsencePenalty.NORMAL;
-import static domain.AttendanceResult.ABSENCE;
-import static domain.AttendanceResult.ATTENDANCE;
-import static domain.AttendanceResult.LATE;
 
 import dto.AbsenceCrewDto;
 import dto.AbsenceCrewsDto;
@@ -11,7 +8,6 @@ import dto.HistoriesDto;
 import dto.HistoryDto;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import util.Convertor;
 
 public class OutputView {

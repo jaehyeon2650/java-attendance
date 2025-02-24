@@ -1,6 +1,6 @@
 package controller;
 
-import static util.Convertor.*;
+import static util.Convertor.changeStandardLocalDate;
 import static util.Convertor.changeStandardLocalDateTime;
 
 import constants.SelectionOption;
@@ -28,6 +28,11 @@ public class AttendanceController {
         this.inputView = inputView;
     }
 
+    private static Crews intializeCrews() {
+        LocalDate now = LocalDate.now();
+        return new Crews(CsvReader.loadAttendanceData(), changeStandardLocalDate(now));
+    }
+
     public void start() {
         Crews crews = intializeCrews();
         SelectionOption answer;
@@ -35,11 +40,6 @@ public class AttendanceController {
             answer = inputView.getMenu();
             startMenu(answer, crews);
         } while (answer != SelectionOption.QUIT);
-    }
-
-    private static Crews intializeCrews() {
-        LocalDate now = LocalDate.now();
-        return new Crews(CsvReader.loadAttendanceData(), changeStandardLocalDate(now));
     }
 
     private void startMenu(SelectionOption answer, Crews crews) {
