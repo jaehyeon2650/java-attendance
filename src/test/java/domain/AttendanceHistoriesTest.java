@@ -24,11 +24,12 @@ public class AttendanceHistoriesTest {
         AttendanceHistories attendanceHistories = new AttendanceHistories(historiesTimes, LocalDate.of(2024, 12, 18));
         LocalDateTime standard = LocalDateTime.of(2024, 12, 18, 10, 35);
         // when
-        Map<String, Integer> result = attendanceHistories.countAttendanceResult(standard);
+        AttendanceRecord attendanceRecord = attendanceHistories.countAttendanceResult(standard);
+        Map<AttendanceResult, Integer> result = attendanceRecord.getTotalAttendanceRecord();
         // then
-        assertThat(result.get("지각")).isEqualTo(1);
-        assertThat(result.get("결석")).isEqualTo(10);
-        assertThat(result.get("출석")).isEqualTo(1);
+        assertThat(result.get(AttendanceResult.LATE)).isEqualTo(1);
+        assertThat(result.get(AttendanceResult.ABSENCE)).isEqualTo(10);
+        assertThat(result.get(AttendanceResult.ATTENDANCE)).isEqualTo(1);
     }
 
     @ParameterizedTest

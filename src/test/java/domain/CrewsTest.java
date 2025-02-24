@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -84,10 +85,12 @@ public class CrewsTest {
     @DisplayName("제적 위험자 조회 기능 테스트")
     void getHighAbsenceLevelCrewsTest() {
         // when
-        List<Crew> absenceLevelCrews = crews.getHighAbsenceLevelCrews(LocalDateTime.of(2024, 12, 5, 11, 0));
+        Map<Crew, AttendanceRecord> highAbsenceLevelCrews = crews.getHighAbsenceLevelCrews(
+                LocalDateTime.of(2024, 12, 5, 11, 0));
         // then
-        assertThat(absenceLevelCrews.size()).isEqualTo(2);
-        List<String> usernames = absenceLevelCrews.stream().map(Crew::getUserName).toList();
+        assertThat(highAbsenceLevelCrews.size()).isEqualTo(2);
+        Set<Crew> crews = highAbsenceLevelCrews.keySet();
+        List<String> usernames = crews.stream().map(Crew::getUserName).toList();
         assertThat(usernames.contains("빙봉")).isTrue();
         assertThat(usernames.contains("빙티")).isTrue();
     }
