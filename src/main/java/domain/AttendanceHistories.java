@@ -58,12 +58,6 @@ public class AttendanceHistories {
         histories.remove(findAttendanceHistory);
     }
 
-    public List<AttendanceHistory> getSortedAttendanceHistories(LocalDateTime standard) {
-        return histories.stream()
-                .filter(history -> history.isBeforeHistory(standard))
-                .sorted()
-                .toList();
-    }
 
     public void editAttendanceHistory(LocalDateTime time) {
         deleteAttendanceHistory(time);
@@ -75,6 +69,13 @@ public class AttendanceHistories {
             throw new IllegalArgumentException("[ERROR] 이미 출석하셨습니다.");
         }
         histories.add(new AttendanceHistory(time));
+    }
+
+    public List<AttendanceHistory> getSortedAttendanceHistories(LocalDateTime standard) {
+        return histories.stream()
+                .filter(history -> history.isBeforeHistory(standard))
+                .sorted()
+                .toList();
     }
 
     public LocalDateTime getAttendanceHistory(LocalDateTime time) {
