@@ -1,0 +1,54 @@
+package domain;
+
+import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.time.LocalDateTime;
+import java.util.stream.Stream;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+public class AttendanceHistoryTest {
+
+    @ParameterizedTest
+    @MethodSource
+    @DisplayName("출석 시간(08:00~23:00)을 벗어난 시간을 하면 예외가 발생한다.")
+    void createAttendanceHistory_exception(LocalDateTime time) {
+        assertThatThrownBy(() -> new AttendanceHistory(time))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 캠퍼스 운영 시간은 08:00 ~ 23:00 입니다.");
+    }
+
+    public static Stream<Arguments> createAttendanceHistory_exception() {
+        return Stream.of(
+                Arguments.of(LocalDateTime.of(2024, 12, 19, 7, 59)),
+                Arguments.of(LocalDateTime.of(2024, 12, 19, 6, 59)),
+                Arguments.of(LocalDateTime.of(2024, 12, 19, 5, 59)),
+                Arguments.of(LocalDateTime.of(2024, 12, 19, 4, 59)),
+                Arguments.of(LocalDateTime.of(2024, 12, 19, 23, 59)),
+                Arguments.of(LocalDateTime.of(2024, 12, 19, 23, 1))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    @DisplayName("정상적인 시간일 경우 출석 기록을 남긴다.")
+    void createAttendanceHistory_success(LocalDateTime time) {
+        assertThatNoException().isThrownBy(() -> new AttendanceHistory(time));
+    }
+
+    public static Stream<Arguments> createAttendanceHistory_success() {
+        return Stream.of(
+                Arguments.of(LocalDateTime.of(2024, 12, 19, 8, 0)),
+                Arguments.of(LocalDateTime.of(2024, 12, 19, 8, 59)),
+                Arguments.of(LocalDateTime.of(2024, 12, 19, 9, 59)),
+                Arguments.of(LocalDateTime.of(2024, 12, 19, 20, 59)),
+                Arguments.of(LocalDateTime.of(2024, 12, 19, 22, 59)),
+                Arguments.of(LocalDateTime.of(2024, 12, 19, 23, 0))
+        );
+    }
+
+
+}
