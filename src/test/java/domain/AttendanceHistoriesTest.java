@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -63,5 +64,18 @@ public class AttendanceHistoriesTest {
                 Arguments.of(LocalDateTime.of(2024, 12, 19, 23, 59)),
                 Arguments.of(LocalDateTime.of(2024, 12, 19, 23, 1))
         );
+    }
+
+    @Test
+    @DisplayName("이미 출석한 날짜면 예외를 발생한다.")
+    void isSameDateTest() {
+        // given
+        LocalDateTime attendanceTime = LocalDateTime.of(2024, 12, 24, 10, 31);
+        attendanceHistories.addAttendanceHistory(attendanceTime);
+        LocalDateTime addAttendanceTime = LocalDateTime.of(2024, 12, 24, 10, 31);
+        // when & then
+        assertThatThrownBy(() -> attendanceHistories.addAttendanceHistory(addAttendanceTime))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 오늘 이미 출석을 하셨습니다. 수정 메뉴로 이동해주세요!");
     }
 }
