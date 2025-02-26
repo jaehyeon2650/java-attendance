@@ -1,5 +1,6 @@
 package domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -50,5 +51,48 @@ public class AttendanceHistoryTest {
         );
     }
 
+    @ParameterizedTest
+    @MethodSource
+    @DisplayName("정상적인 시간인 경우 지각, 결석, 출석 상태를 결정한다.(월요일인 경우)")
+    void makeAttendanceResultWhenMonday(LocalDateTime attendanceTime, String expected) {
+        // when
+        AttendanceHistory attendanceHistory = new AttendanceHistory(attendanceTime);
+        String result = attendanceHistory.getAttendanceResult();
+        // then
+        assertThat(result).isEqualTo(expected);
+    }
+
+    public static Stream<Arguments> makeAttendanceResultWhenMonday() {
+        return Stream.of(
+                Arguments.of(LocalDateTime.of(2024, 12, 23, 12, 50), "출석"),
+                Arguments.of(LocalDateTime.of(2024, 12, 23, 13, 0), "출석"),
+                Arguments.of(LocalDateTime.of(2024, 12, 23, 13, 5), "출석"),
+                Arguments.of(LocalDateTime.of(2024, 12, 23, 13, 6), "지각"),
+                Arguments.of(LocalDateTime.of(2024, 12, 23, 13, 30), "지각"),
+                Arguments.of(LocalDateTime.of(2024, 12, 23, 13, 31), "결석")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    @DisplayName("정상적인 시간인 경우 지각, 결석, 출석 상태를 결정한다.(월요일이 아닌 경우)")
+    void makeAttendanceResultWhenNotMonday(LocalDateTime attendanceTime, String expected) {
+        // when
+        AttendanceHistory attendanceHistory = new AttendanceHistory(attendanceTime);
+        String result = attendanceHistory.getAttendanceResult();
+        // then
+        assertThat(result).isEqualTo(expected);
+    }
+
+    public static Stream<Arguments> makeAttendanceResultWhenNotMonday() {
+        return Stream.of(
+                Arguments.of(LocalDateTime.of(2024, 12, 24, 9, 50), "출석"),
+                Arguments.of(LocalDateTime.of(2024, 12, 24, 10, 0), "출석"),
+                Arguments.of(LocalDateTime.of(2024, 12, 24, 10, 5), "출석"),
+                Arguments.of(LocalDateTime.of(2024, 12, 24, 10, 6), "지각"),
+                Arguments.of(LocalDateTime.of(2024, 12, 24, 10, 30), "지각"),
+                Arguments.of(LocalDateTime.of(2024, 12, 24, 10, 31), "결석")
+        );
+    }
 
 }

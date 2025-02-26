@@ -1,13 +1,44 @@
 package domain;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class AttendanceHistory {
     private final LocalDateTime attendanceTime;
+    private final String AttendanceResult;
 
     public AttendanceHistory(LocalDateTime attendanceTime) {
         Validator.validateAttendanceTime(attendanceTime);
         this.attendanceTime = attendanceTime;
+        this.AttendanceResult = findAttendanceResult(attendanceTime);
+
+    }
+
+    private String findAttendanceResult(LocalDateTime attendanceDate) {
+        DayOfWeek dayOfWeek = attendanceDate.getDayOfWeek();
+        LocalTime attendanceTime = attendanceDate.toLocalTime();
+        if (dayOfWeek == DayOfWeek.MONDAY) {
+            if (attendanceTime.isAfter(LocalTime.of(13, 30))) {
+                return "결석";
+            }
+            if (attendanceTime.isAfter(LocalTime.of(13, 5))) {
+                return "지각";
+            }
+            return "출석";
+        }
+
+        if (attendanceTime.isAfter(LocalTime.of(10, 30))) {
+            return "결석";
+        }
+        if (attendanceTime.isAfter(LocalTime.of(10, 5))) {
+            return "지각";
+        }
+        return "출석";
+    }
+
+    public String getAttendanceResult() {
+        return AttendanceResult;
     }
 
     private static class Validator {
