@@ -1,6 +1,7 @@
 package domain;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -39,6 +40,12 @@ public class AttendanceHistory {
 
     public String getAttendanceResult() {
         return AttendanceResult;
+    }
+
+    public boolean isSameDate(LocalDateTime standard) {
+        LocalDate standardDate = standard.toLocalDate();
+        LocalDate attendanceDate = attendanceTime.toLocalDate();
+        return attendanceDate.isEqual(standardDate);
     }
 
     private static class Validator {

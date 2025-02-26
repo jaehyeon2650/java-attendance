@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -95,4 +96,19 @@ public class AttendanceHistoryTest {
         );
     }
 
+    @Test
+    @DisplayName("같은 날짜 출헉인지 확인한다.")
+    void isSameDateTest() {
+        // given
+        LocalDateTime attendanceTime = LocalDateTime.of(2024, 12, 23, 10, 0, 0);
+        AttendanceHistory attendanceHistory = new AttendanceHistory(attendanceTime);
+        LocalDateTime standardTime1 = LocalDateTime.of(2024, 12, 23, 23, 0, 0);
+        LocalDateTime standardTime2 = LocalDateTime.of(2024, 12, 22, 23, 0, 0);
+        // when
+        boolean sameDate1 = attendanceHistory.isSameDate(standardTime1);
+        boolean sameDate2 = attendanceHistory.isSameDate(standardTime2);
+        // then
+        assertThat(sameDate1).isTrue();
+        assertThat(sameDate2).isFalse();
+    }
 }
