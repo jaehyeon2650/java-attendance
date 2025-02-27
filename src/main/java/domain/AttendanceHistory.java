@@ -4,21 +4,32 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class AttendanceHistory {
-    private final LocalDateTime attendanceTime;
+    private final LocalDate attendanceDate;
+    private final LocalTime attendanceTime;
     private final String AttendanceResult;
 
     public AttendanceHistory(LocalDateTime attendanceTime) {
         Validator.validateAttendanceTime(attendanceTime);
-        this.attendanceTime = attendanceTime;
-        this.AttendanceResult = findAttendanceResult(attendanceTime);
-
+        this.attendanceDate = attendanceTime.toLocalDate();
+        this.attendanceTime = attendanceTime.toLocalTime();
+        this.AttendanceResult = findAttendanceResult(this.attendanceDate, this.attendanceTime);
     }
 
-    private String findAttendanceResult(LocalDateTime attendanceDate) {
+    public AttendanceHistory(LocalDate attendanceDate,LocalTime attendanceTime){
+        Validator.validateAttendanceTime(LocalDateTime.of(attendanceDate,attendanceTime));
+        this.attendanceDate = attendanceDate;
+        this.attendanceTime = attendanceTime;
+        this.AttendanceResult = findAttendanceResult(this.attendanceDate, this.attendanceTime);
+    }
+
+    private String findAttendanceResult(LocalDate attendanceDate,LocalTime attendanceTime) {
         DayOfWeek dayOfWeek = attendanceDate.getDayOfWeek();
-        LocalTime attendanceTime = attendanceDate.toLocalTime();
+        if(attendanceTime == null){
+            return "결석";
+        }
         if (dayOfWeek == DayOfWeek.MONDAY) {
             if (attendanceTime.isAfter(LocalTime.of(13, 30))) {
                 return "결석";
@@ -42,10 +53,26 @@ public class AttendanceHistory {
         return AttendanceResult;
     }
 
-    public boolean isSameDate(LocalDateTime standard) {
-        LocalDate standardDate = standard.toLocalDate();
-        LocalDate attendanceDate = attendanceTime.toLocalDate();
+    public boolean isSameDate(LocalDate standardDate) {
         return attendanceDate.isEqual(standardDate);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AttendanceHistory that = (AttendanceHistory) o;
+        return Objects.equals(attendanceDate, that.attendanceDate) && Objects.equals(attendanceTime,
+                that.attendanceTime) && Objects.equals(AttendanceResult, that.AttendanceResult);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(attendanceDate, attendanceTime, AttendanceResult);
     }
 
     private static class Validator {

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -102,8 +103,8 @@ public class AttendanceHistoryTest {
         // given
         LocalDateTime attendanceTime = LocalDateTime.of(2024, 12, 23, 10, 0, 0);
         AttendanceHistory attendanceHistory = new AttendanceHistory(attendanceTime);
-        LocalDateTime standardTime1 = LocalDateTime.of(2024, 12, 23, 23, 0, 0);
-        LocalDateTime standardTime2 = LocalDateTime.of(2024, 12, 22, 23, 0, 0);
+        LocalDate standardTime1 = LocalDate.of(2024, 12, 23);
+        LocalDate standardTime2 = LocalDate.of(2024, 12, 22);
         // when
         boolean sameDate1 = attendanceHistory.isSameDate(standardTime1);
         boolean sameDate2 = attendanceHistory.isSameDate(standardTime2);
