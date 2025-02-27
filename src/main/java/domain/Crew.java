@@ -14,11 +14,11 @@ public class Crew {
         this.attendanceHistories = new AttendanceHistories(histories,standardDate);
     }
 
-    public String addAttendanceHistory(LocalDateTime attendanceTime) {
+    public AttendanceResult addAttendanceHistory(LocalDateTime attendanceTime) {
         return attendanceHistories.addAttendanceHistory(attendanceTime);
     }
 
-    public String editAttendanceHistory(LocalDateTime editAttendanceTime){
+    public AttendanceResult editAttendanceHistory(LocalDateTime editAttendanceTime){
         return attendanceHistories.editAttendanceHistory(editAttendanceTime);
     }
 

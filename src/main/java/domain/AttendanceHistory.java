@@ -13,7 +13,7 @@ import java.util.Optional;
 public class AttendanceHistory {
     private final LocalDate attendanceDate;
     private final LocalTime attendanceTime;
-    private final String AttendanceResult;
+    private final AttendanceResult AttendanceResult;
 
     public AttendanceHistory(LocalDateTime attendanceTime) {
         AttendanceValidator.validateAttendanceTime(attendanceTime.toLocalTime());
@@ -31,28 +31,8 @@ public class AttendanceHistory {
         this.AttendanceResult = findAttendanceResult(this.attendanceDate, this.attendanceTime);
     }
 
-    private String findAttendanceResult(LocalDate attendanceDate, LocalTime attendanceTime) {
-        DayOfWeek dayOfWeek = attendanceDate.getDayOfWeek();
-        if (attendanceTime == null) {
-            return "결석";
-        }
-        if (dayOfWeek == DayOfWeek.MONDAY) {
-            if (attendanceTime.isAfter(LocalTime.of(13, 30))) {
-                return "결석";
-            }
-            if (attendanceTime.isAfter(LocalTime.of(13, 5))) {
-                return "지각";
-            }
-            return "출석";
-        }
-
-        if (attendanceTime.isAfter(LocalTime.of(10, 30))) {
-            return "결석";
-        }
-        if (attendanceTime.isAfter(LocalTime.of(10, 5))) {
-            return "지각";
-        }
-        return "출석";
+    private AttendanceResult findAttendanceResult(LocalDate attendanceDate, LocalTime attendanceTime) {
+        return domain.AttendanceResult.findAttendanceResult(attendanceDate,attendanceTime);
     }
 
     public boolean isSameDate(LocalDate standardDate) {
@@ -95,7 +75,7 @@ public class AttendanceHistory {
         }
     }
 
-    public String getAttendanceResult() {
+    public AttendanceResult getAttendanceResult() {
         return AttendanceResult;
     }
 

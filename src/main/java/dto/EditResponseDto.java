@@ -1,6 +1,7 @@
 package dto;
 
 import domain.AttendanceHistory;
+import domain.AttendanceResult;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -14,11 +15,11 @@ public record EditResponseDto(
         String afterResult
 ) {
     public static EditResponseDto of(AttendanceHistory beforeHistory, LocalDateTime afterAttendanceTime,
-                                     String afterResult) {
+                                     AttendanceResult afterResult) {
         LocalDate beforeDate = beforeHistory.getAttendanceDate();
         Optional<LocalTime> beforeTime = beforeHistory.getAttendanceTime();
-        String beforeResult = beforeHistory.getAttendanceResult();
+        String beforeResult = beforeHistory.getAttendanceResult().getResult();
         beforeHistory.getAttendanceTime();
-        return new EditResponseDto(beforeDate, beforeTime, beforeResult, afterAttendanceTime, afterResult);
+        return new EditResponseDto(beforeDate, beforeTime, beforeResult, afterAttendanceTime, afterResult.getResult());
     }
 }

@@ -18,12 +18,12 @@ public class Crews {
         findCrewByUsername(username);
     }
 
-    public String addAttendanceHistory(String username, LocalDateTime attendanceTime) {
+    public AttendanceResult addAttendanceHistory(String username, LocalDateTime attendanceTime) {
         Crew crew = findCrewByUsername(username);
         return crew.addAttendanceHistory(attendanceTime);
     }
 
-    public String editAttendanceHistory(String username, LocalDateTime editTime){
+    public AttendanceResult editAttendanceHistory(String username, LocalDateTime editTime){
         Crew crew = findCrewByUsername(username);
         return crew.editAttendanceHistory(editTime);
     }

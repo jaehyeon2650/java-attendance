@@ -33,9 +33,9 @@ public class CrewsTest {
         String username = "a";
         LocalDateTime time = LocalDateTime.of(2024, 12, 24, 10, 31);
         // when
-        String result = crews.addAttendanceHistory(username, time);
+        AttendanceResult result = crews.addAttendanceHistory(username, time);
         // then
-        assertThat(result).isEqualTo("결석");
+        assertThat(result).isEqualTo(AttendanceResult.ABSENCE);
     }
 
     @Test
@@ -65,9 +65,9 @@ public class CrewsTest {
         crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 24, 10, 31));
         LocalDateTime editTime = LocalDateTime.of(2024, 12, 24, 10, 0);
         // when
-        String result = crews.editAttendanceHistory("a",editTime);
+        AttendanceResult result = crews.editAttendanceHistory("a",editTime);
         // then
-        assertThat(result).isEqualTo("출석");
+        assertThat(result).isEqualTo(AttendanceResult.ATTENDANCE);
     }
 
     @Test

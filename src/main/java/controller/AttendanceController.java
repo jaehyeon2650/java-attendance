@@ -2,6 +2,7 @@ package controller;
 
 import domain.AttendanceHistory;
 import domain.AttendanceHistory.AttendanceValidator;
+import domain.AttendanceResult;
 import domain.Crews;
 import dto.EditResponseDto;
 import java.time.LocalDate;
@@ -33,8 +34,8 @@ public class AttendanceController {
             String username = inputView.getUsernameForAddHistory();
             crews.validateHasCrew(username);
             LocalDateTime attendanceTime = inputView.getAttendanceTime();
-            String result = crews.addAttendanceHistory(username, attendanceTime);
-            outputView.printAddAttendanceResult(attendanceTime,result);
+            AttendanceResult result = crews.addAttendanceHistory(username, attendanceTime);
+            outputView.printAddAttendanceResult(attendanceTime,result.getResult());
         }else if(selection.equals("2")){
             String username = inputView.getUsernameForEditHistory();
             crews.validateHasCrew(username);
@@ -43,7 +44,7 @@ public class AttendanceController {
             AttendanceHistory beforeHistory = crews.findAttendanceHistory(username, attendDate);
             LocalTime attendTime = inputView.getEditTime();
             LocalDateTime attendanceTime = LocalDateTime.of(attendDate,attendTime);
-            String result = crews.editAttendanceHistory(username, attendanceTime);
+            AttendanceResult result = crews.editAttendanceHistory(username, attendanceTime);
             outputView.printEditResult(EditResponseDto.of(beforeHistory,attendanceTime,result));
         }
     }

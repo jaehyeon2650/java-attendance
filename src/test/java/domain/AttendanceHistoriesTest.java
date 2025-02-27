@@ -26,25 +26,25 @@ public class AttendanceHistoriesTest {
     @ParameterizedTest
     @MethodSource
     @DisplayName("정상적으로 출석 기록을 추가하면 결과를 반환한다.")
-    void createAttendanceTest(LocalDateTime attendanceTime, String expected) {
-        String result = attendanceHistories.addAttendanceHistory(attendanceTime);
+    void createAttendanceTest(LocalDateTime attendanceTime, AttendanceResult expected) {
+        AttendanceResult result = attendanceHistories.addAttendanceHistory(attendanceTime);
         assertThat(result).isEqualTo(expected);
     }
 
     public static Stream<Arguments> createAttendanceTest() {
         return Stream.of(
-                Arguments.of(LocalDateTime.of(2024, 12, 23, 12, 50), "출석"),
-                Arguments.of(LocalDateTime.of(2024, 12, 23, 13, 0), "출석"),
-                Arguments.of(LocalDateTime.of(2024, 12, 23, 13, 5), "출석"),
-                Arguments.of(LocalDateTime.of(2024, 12, 23, 13, 6), "지각"),
-                Arguments.of(LocalDateTime.of(2024, 12, 23, 13, 30), "지각"),
-                Arguments.of(LocalDateTime.of(2024, 12, 23, 13, 31), "결석"),
-                Arguments.of(LocalDateTime.of(2024, 12, 24, 9, 50), "출석"),
-                Arguments.of(LocalDateTime.of(2024, 12, 24, 10, 0), "출석"),
-                Arguments.of(LocalDateTime.of(2024, 12, 24, 10, 5), "출석"),
-                Arguments.of(LocalDateTime.of(2024, 12, 24, 10, 6), "지각"),
-                Arguments.of(LocalDateTime.of(2024, 12, 24, 10, 30), "지각"),
-                Arguments.of(LocalDateTime.of(2024, 12, 24, 10, 31), "결석")
+                Arguments.of(LocalDateTime.of(2024, 12, 23, 12, 50), AttendanceResult.ATTENDANCE),
+                Arguments.of(LocalDateTime.of(2024, 12, 23, 13, 0), AttendanceResult.ATTENDANCE),
+                Arguments.of(LocalDateTime.of(2024, 12, 23, 13, 5), AttendanceResult.ATTENDANCE),
+                Arguments.of(LocalDateTime.of(2024, 12, 23, 13, 6), AttendanceResult.LATE),
+                Arguments.of(LocalDateTime.of(2024, 12, 23, 13, 30), AttendanceResult.LATE),
+                Arguments.of(LocalDateTime.of(2024, 12, 23, 13, 31), AttendanceResult.ABSENCE),
+                Arguments.of(LocalDateTime.of(2024, 12, 24, 9, 50), AttendanceResult.ATTENDANCE),
+                Arguments.of(LocalDateTime.of(2024, 12, 24, 10, 0), AttendanceResult.ATTENDANCE),
+                Arguments.of(LocalDateTime.of(2024, 12, 24, 10, 5), AttendanceResult.ATTENDANCE),
+                Arguments.of(LocalDateTime.of(2024, 12, 24, 10, 6), AttendanceResult.LATE),
+                Arguments.of(LocalDateTime.of(2024, 12, 24, 10, 30), AttendanceResult.LATE),
+                Arguments.of(LocalDateTime.of(2024, 12, 24, 10, 31), AttendanceResult.ABSENCE)
         );
     }
 
@@ -123,10 +123,10 @@ public class AttendanceHistoriesTest {
         LocalDateTime editTime = LocalDateTime.of(2024,12,23,13,10);
         AttendanceHistory expected = new AttendanceHistory(LocalDateTime.of(2024,12,23,13,10));
         // when
-        String result = histories.editAttendanceHistory(editTime);
+        AttendanceResult result = histories.editAttendanceHistory(editTime);
         // then
         AttendanceHistory findHistory = histories.findAttendanceHistoryByDate(editTime.toLocalDate());
-        assertThat(result).isEqualTo("지각");
+        assertThat(result).isEqualTo(AttendanceResult.LATE);
         assertThat(findHistory).isEqualTo(expected);
     }
 

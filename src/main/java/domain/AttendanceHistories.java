@@ -32,7 +32,7 @@ public class AttendanceHistories {
 
     }
 
-    public String addAttendanceHistory(LocalDateTime attendanceTime) {
+    public AttendanceResult addAttendanceHistory(LocalDateTime attendanceTime) {
         Validator.validateAddAttendanceHistory(attendanceHistories, attendanceTime);
         AttendanceHistory newAttendanceHistory = new AttendanceHistory(attendanceTime);
         attendanceHistories.add(newAttendanceHistory);
@@ -45,7 +45,7 @@ public class AttendanceHistories {
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 기록이 존재하지 않습니다."));
     }
 
-    public String editAttendanceHistory(LocalDateTime editTime) {
+    public AttendanceResult editAttendanceHistory(LocalDateTime editTime) {
         AttendanceHistory findBeforeHistory = findAttendanceHistoryByDate(editTime.toLocalDate());
         attendanceHistories.remove(findBeforeHistory);
         return addAttendanceHistory(editTime);
