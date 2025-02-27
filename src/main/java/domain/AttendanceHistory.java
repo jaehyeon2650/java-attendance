@@ -1,7 +1,6 @@
 package domain;
 
 import constant.Holiday;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -10,7 +9,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
-public class AttendanceHistory {
+public class AttendanceHistory implements Comparable<AttendanceHistory> {
     private final LocalDate attendanceDate;
     private final LocalTime attendanceTime;
     private final AttendanceResult AttendanceResult;
@@ -57,6 +56,23 @@ public class AttendanceHistory {
         return Objects.hash(attendanceDate, attendanceTime, AttendanceResult);
     }
 
+    @Override
+    public int compareTo(AttendanceHistory o) {
+        return this.attendanceTime.compareTo(o.attendanceTime);
+    }
+
+    public AttendanceResult getAttendanceResult() {
+        return AttendanceResult;
+    }
+
+    public LocalDate getAttendanceDate() {
+        return attendanceDate;
+    }
+
+    public Optional<LocalTime> getAttendanceTime() {
+        return Optional.ofNullable(attendanceTime);
+    }
+
     public static class AttendanceValidator {
         private static void validateAttendanceTime(LocalTime attendanceTime) {
             if (attendanceTime != null && (attendanceTime.isBefore(LocalTime.of(8, 0)) || attendanceTime.isAfter(
@@ -73,17 +89,5 @@ public class AttendanceHistory {
                 throw new IllegalArgumentException(errorMessage);
             }
         }
-    }
-
-    public AttendanceResult getAttendanceResult() {
-        return AttendanceResult;
-    }
-
-    public LocalDate getAttendanceDate() {
-        return attendanceDate;
-    }
-
-    public Optional<LocalTime> getAttendanceTime() {
-        return Optional.ofNullable(attendanceTime);
     }
 }
