@@ -1,15 +1,16 @@
 package domain;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Crew {
     private final String username;
     private final AttendanceHistories attendanceHistories;
 
-    public Crew(String username) {
+    public Crew(String username, List<LocalDateTime> histories) {
         Validator.validateNameLength(username);
         this.username = username;
-        this.attendanceHistories = new AttendanceHistories();
+        this.attendanceHistories = new AttendanceHistories(histories);
     }
 
     public String addAttendanceHistory(LocalDateTime attendanceTime) {

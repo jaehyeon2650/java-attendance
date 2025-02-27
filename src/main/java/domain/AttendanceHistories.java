@@ -1,14 +1,14 @@
 package domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AttendanceHistories {
     private final List<AttendanceHistory> attendanceHistories;
 
-    public AttendanceHistories() {
-        this.attendanceHistories = new ArrayList<>();
+    public AttendanceHistories(List<LocalDateTime> histories) {
+        this.attendanceHistories = histories.stream().map(AttendanceHistory::new).collect(Collectors.toList());
     }
 
     public String addAttendanceHistory(LocalDateTime attendanceTime) {
