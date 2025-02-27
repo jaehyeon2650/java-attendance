@@ -16,6 +16,10 @@ public class Crew {
         return attendanceHistories.addAttendanceHistory(attendanceTime);
     }
 
+    public boolean isSameName(String username) {
+        return this.username.equals(username);
+    }
+
     public static class Validator {
         public static void validateNameLength(String username) {
             if (username.length() > 5) {
@@ -23,4 +27,5 @@ public class Crew {
             }
         }
     }
+
 }
