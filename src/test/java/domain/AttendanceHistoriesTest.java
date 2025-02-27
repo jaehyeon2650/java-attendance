@@ -3,6 +3,7 @@ package domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
@@ -79,4 +80,35 @@ public class AttendanceHistoriesTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 오늘 이미 출석을 하셨습니다. 수정 메뉴로 이동해주세요!");
     }
+
+    @Test
+    @DisplayName("해당 날짜 기록 가져오기")
+    void getAttendanceHistory(){
+        // given
+        AttendanceHistories histories = new AttendanceHistories(List.of(
+                LocalDateTime.of(2024,12,23,10,0),
+                LocalDateTime.of(2024,12,26,10,0),
+                LocalDateTime.of(2024,12,27,10,0)));
+        LocalDate findDate = LocalDate.of(2024,12,23);
+        AttendanceHistory expected = new AttendanceHistory(LocalDateTime.of(2024,12,23,10,0));
+        // when
+        AttendanceHistory history = histories.findAttendanceHistoryByDate(findDate);
+        // then
+        assertThat(history).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("해당 날짜 기록 가져오기 - 출석 기록이 없으면 예외가 발생한다.")
+    void getAttendanceHistory_Exception(){
+        // given
+        AttendanceHistories histories = new AttendanceHistories(List.of(
+                LocalDateTime.of(2024,12,23,10,0),
+                LocalDateTime.of(2024,12,26,10,0),
+                LocalDateTime.of(2024,12,27,10,0)));
+        LocalDate findDate = LocalDate.of(2024,12,28);
+        assertThatThrownBy(()->histories.findAttendanceHistoryByDate(findDate))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 기록이 존재하지 않습니다.");
+    }
+
 }

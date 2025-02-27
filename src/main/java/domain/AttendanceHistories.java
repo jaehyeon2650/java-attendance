@@ -1,5 +1,6 @@
 package domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,11 +19,17 @@ public class AttendanceHistories {
         return newAttendanceHistory.getAttendanceResult();
     }
 
+    public AttendanceHistory findAttendanceHistoryByDate(LocalDate standardDate) {
+        return attendanceHistories.stream().filter(history -> history.isSameDate(standardDate))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 기록이 존재하지 않습니다."));
+    }
+
     public static class Validator {
         public static void validateAddAttendanceHistory(List<AttendanceHistory> attendanceHistories,
                                                         LocalDateTime localDateTime) {
             boolean check = attendanceHistories.stream()
-                    .anyMatch(attendanceHistory -> attendanceHistory.isSameDate(localDateTime));
+                    .anyMatch(attendanceHistory -> attendanceHistory.isSameDate(localDateTime.toLocalDate()));
             if (check) {
                 throw new IllegalArgumentException("[ERROR] 오늘 이미 출석을 하셨습니다. 수정 메뉴로 이동해주세요!");
             }
