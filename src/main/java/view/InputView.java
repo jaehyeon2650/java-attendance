@@ -39,4 +39,26 @@ public class InputView {
         LocalTime time = LocalTime.parse(input, formatter);
         return LocalDateTime.of(newDate,time);
     }
+
+    public String getUsernameForEditHistory(){
+        System.out.println("출석을 수정하려는 크루의 닉네임을 입력해 주세요.");
+        Scanner scan = new Scanner(System.in);
+        return scan.nextLine();
+    }
+
+    public LocalDate getEditDay(){
+        System.out.println("수정하려는 날짜(일)를 입력해 주세요.");
+        Scanner scan = new Scanner(System.in);
+        String input = scan.nextLine();
+        int day = Integer.parseInt(input);
+        return LocalDate.of(2024,12,day);
+    }
+
+    public LocalTime getEditTime(){
+        System.out.println("언제로 변경하겠습니까?");
+        Scanner scan = new Scanner(System.in);
+        String input = scan.nextLine();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm", Locale.KOREAN);
+        return LocalTime.parse(input, formatter);
+    }
 }
