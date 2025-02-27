@@ -1,5 +1,6 @@
 package domain;
 
+import constant.Holiday;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,12 +14,14 @@ public class AttendanceHistories {
         List<AttendanceHistory> allHistories = new ArrayList<>();
         for (int i = 1; i < standardDate.getDayOfMonth(); i++) {
             LocalDate localDate = LocalDate.of(standardDate.getYear(),standardDate.getMonth(),i);
-            Optional<LocalDateTime> date = histories.stream().filter(history -> {
-                        LocalDate historyDate = history.toLocalDate();
-                        return historyDate.isEqual(localDate);
-                    })
-                    .findAny();
-            allHistories.add(makeAttendanceHistory(date,localDate));
+            if(!Holiday.isHoliday(localDate)){
+                Optional<LocalDateTime> date = histories.stream().filter(history -> {
+                            LocalDate historyDate = history.toLocalDate();
+                            return historyDate.isEqual(localDate);
+                        })
+                        .findAny();
+                allHistories.add(makeAttendanceHistory(date,localDate));
+            }
         }
         this.attendanceHistories = allHistories;
     }
