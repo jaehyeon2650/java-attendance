@@ -69,4 +69,34 @@ public class CrewsTest {
         // then
         assertThat(result).isEqualTo("출석");
     }
+
+    @Test
+    @DisplayName("특정 날짜 출석 조회 기능 테스트")
+    void getAttendanceHistory(){
+        // given
+        crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 24, 10, 31));
+        crews.addAttendanceHistory("b",LocalDateTime.of(2024, 12, 23, 13, 31));
+        crews.addAttendanceHistory("c",LocalDateTime.of(2024, 12, 27, 13, 31));
+        LocalDate localDate = LocalDate.of(2024,12,24);
+        AttendanceHistory expected = new AttendanceHistory(LocalDateTime.of(2024, 12, 24, 10, 31));
+        // when
+        AttendanceHistory findHistory = crews.findAttendanceHistory("a",localDate);
+        // then
+        assertThat(findHistory).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("특정 날짜 출석 조회 기능 예외 테스트")
+    void getAttendanceHistory_Exception(){
+        // given
+        crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 24, 10, 31));
+        crews.addAttendanceHistory("b",LocalDateTime.of(2024, 12, 23, 13, 31));
+        crews.addAttendanceHistory("c",LocalDateTime.of(2024, 12, 27, 13, 31));
+        LocalDate localDate = LocalDate.of(2024,12,25);
+        // when & then
+        assertThatThrownBy(()->crews.findAttendanceHistory("a",localDate))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 기록이 존재하지 않습니다.");
+
+    }
 }

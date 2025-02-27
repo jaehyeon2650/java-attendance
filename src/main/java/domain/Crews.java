@@ -28,6 +28,11 @@ public class Crews {
         return crew.editAttendanceHistory(editTime);
     }
 
+    public AttendanceHistory findAttendanceHistory(String username, LocalDate standardTime) {
+        Crew crew = findCrewByUsername(username);
+        return crew.findAttendanceHistory(standardTime);
+    }
+
     private Crew findCrewByUsername(String username) {
         return crews.stream().filter(crew -> crew.isSameName(username))
                 .findAny()
