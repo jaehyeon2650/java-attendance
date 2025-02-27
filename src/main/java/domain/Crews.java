@@ -23,6 +23,11 @@ public class Crews {
         return crew.addAttendanceHistory(attendanceTime);
     }
 
+    public String editAttendanceHistory(String username, LocalDateTime editTime){
+        Crew crew = findCrewByUsername(username);
+        return crew.editAttendanceHistory(editTime);
+    }
+
     private Crew findCrewByUsername(String username) {
         return crews.stream().filter(crew -> crew.isSameName(username))
                 .findAny()

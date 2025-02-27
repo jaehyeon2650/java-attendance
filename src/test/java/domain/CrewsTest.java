@@ -57,4 +57,16 @@ public class CrewsTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 등록되지 않은 닉네임입니다.");
     }
+
+    @Test
+    @DisplayName("출석 수정 기능 테스트")
+    void editAttendanceTest(){
+        // given
+        crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 24, 10, 31));
+        LocalDateTime editTime = LocalDateTime.of(2024, 12, 24, 10, 0);
+        // when
+        String result = crews.editAttendanceHistory("a",editTime);
+        // then
+        assertThat(result).isEqualTo("출석");
+    }
 }

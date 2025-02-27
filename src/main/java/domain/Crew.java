@@ -18,6 +18,10 @@ public class Crew {
         return attendanceHistories.addAttendanceHistory(attendanceTime);
     }
 
+    public String editAttendanceHistory(LocalDateTime editAttendanceTime){
+        return attendanceHistories.editAttendanceHistory(editAttendanceTime);
+    }
+
     public boolean isSameName(String username) {
         return this.username.equals(username);
     }
