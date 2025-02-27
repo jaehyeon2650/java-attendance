@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class CrewsTest {
                 "b",List.of(),
                 "c",List.of()
         );
-        crews = new Crews(histories);
+        crews = new Crews(histories, LocalDate.of(2024,12,1));
     }
 
     @Test

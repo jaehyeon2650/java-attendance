@@ -12,14 +12,14 @@ public class AttendanceHistory {
     private final String AttendanceResult;
 
     public AttendanceHistory(LocalDateTime attendanceTime) {
-        Validator.validateAttendanceTime(attendanceTime);
+        Validator.validateAttendanceTime(attendanceTime.toLocalTime());
         this.attendanceDate = attendanceTime.toLocalDate();
         this.attendanceTime = attendanceTime.toLocalTime();
         this.AttendanceResult = findAttendanceResult(this.attendanceDate, this.attendanceTime);
     }
 
     public AttendanceHistory(LocalDate attendanceDate,LocalTime attendanceTime){
-        Validator.validateAttendanceTime(LocalDateTime.of(attendanceDate,attendanceTime));
+        Validator.validateAttendanceTime(attendanceTime);
         this.attendanceDate = attendanceDate;
         this.attendanceTime = attendanceTime;
         this.AttendanceResult = findAttendanceResult(this.attendanceDate, this.attendanceTime);
@@ -76,11 +76,9 @@ public class AttendanceHistory {
     }
 
     private static class Validator {
-        public static void validateAttendanceTime(LocalDateTime attendanceTime) {
-            if (attendanceTime.isBefore(LocalDateTime.of(attendanceTime.getYear(), attendanceTime.getMonth(),
-                    attendanceTime.getDayOfMonth(), 8, 0)) || attendanceTime.isAfter(
-                    LocalDateTime.of(attendanceTime.getYear(), attendanceTime.getMonth(),
-                            attendanceTime.getDayOfMonth(), 23, 0))) {
+        public static void validateAttendanceTime(LocalTime attendanceTime) {
+            if (attendanceTime !=null && (attendanceTime.isBefore(LocalTime.of( 8, 0)) || attendanceTime.isAfter(
+                    LocalTime.of(23, 0)))) {
                 throw new IllegalArgumentException("[ERROR] 캠퍼스 운영 시간은 08:00 ~ 23:00 입니다.");
             }
         }

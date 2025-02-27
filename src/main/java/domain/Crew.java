@@ -1,5 +1,6 @@
 package domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -7,10 +8,10 @@ public class Crew {
     private final String username;
     private final AttendanceHistories attendanceHistories;
 
-    public Crew(String username, List<LocalDateTime> histories) {
+    public Crew(String username, List<LocalDateTime> histories, LocalDate standardDate) {
         Validator.validateNameLength(username);
         this.username = username;
-        this.attendanceHistories = new AttendanceHistories(histories);
+        this.attendanceHistories = new AttendanceHistories(histories,standardDate);
     }
 
     public String addAttendanceHistory(LocalDateTime attendanceTime) {

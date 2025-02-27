@@ -1,6 +1,7 @@
 package controller;
 
 import domain.Crews;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,8 @@ public class AttendanceController {
 
     public Crews initializeCrews(){
         Map<String, List<LocalDateTime>> histories = FileReader.getCrewsAttendanceHistories();
-        return new Crews(histories);
+        LocalDate now = LocalDate.now();
+        LocalDate changed = LocalDate.of(2024,12,now.getDayOfMonth());
+        return new Crews(histories,changed);
     }
 }
