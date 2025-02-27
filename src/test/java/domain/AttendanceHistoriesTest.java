@@ -106,9 +106,28 @@ public class AttendanceHistoriesTest {
                 LocalDateTime.of(2024,12,26,10,0),
                 LocalDateTime.of(2024,12,27,10,0)));
         LocalDate findDate = LocalDate.of(2024,12,28);
+        // when & then
         assertThatThrownBy(()->histories.findAttendanceHistoryByDate(findDate))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 기록이 존재하지 않습니다.");
+    }
+
+    @Test
+    @DisplayName("날짜 수정 기능 테스트")
+    void editAttendanceHistory(){
+        // given
+        AttendanceHistories histories = new AttendanceHistories(List.of(
+                LocalDateTime.of(2024,12,23,13,0),
+                LocalDateTime.of(2024,12,26,10,0),
+                LocalDateTime.of(2024,12,27,10,0)));
+        LocalDateTime editTime = LocalDateTime.of(2024,12,23,13,10);
+        AttendanceHistory expected = new AttendanceHistory(LocalDateTime.of(2024,12,23,13,10));
+        // when
+        String result = histories.editAttendanceHistory(editTime);
+        // then
+        AttendanceHistory findHistory = histories.findAttendanceHistoryByDate(editTime.toLocalDate());
+        assertThat(result).isEqualTo("지각");
+        assertThat(findHistory).isEqualTo(expected);
     }
 
 }
