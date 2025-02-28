@@ -38,6 +38,11 @@ public class Crew {
         return this.username.equals(username);
     }
 
+    public boolean isExpulsionTarget(LocalDate standard) {
+        AttendanceAnalyze attendanceAnalyze = getAttendanceAnalyze(standard);
+        return attendanceAnalyze.isExpulsionTarget();
+    }
+
     public static class Validator {
         public static void validateNameLength(String username) {
             if (username.length() > 5) {
