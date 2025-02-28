@@ -51,6 +51,12 @@ public class AttendanceHistories {
         return addAttendanceHistory(editTime);
     }
 
+    public List<AttendanceHistory> getBeforeAttendanceHistories(LocalDate localDate){
+        return attendanceHistories.stream().filter(attendanceHistory -> attendanceHistory.isBeforeAttendanceHistory(localDate))
+                .sorted()
+                .toList();
+    }
+
     public static class Validator {
         public static void validateAddAttendanceHistory(List<AttendanceHistory> attendanceHistories,
                                                         LocalDateTime localDateTime) {

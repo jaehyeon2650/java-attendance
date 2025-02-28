@@ -7,7 +7,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -124,6 +123,6 @@ public class AttendanceHistoryTest {
         // when
         boolean check = attendanceHistory.isBeforeAttendanceHistory(LocalDate.of(2024, 12, day));
         // then
-        Assertions.assertThat(check).isEqualTo(expected);
+        assertThat(check).isEqualTo(expected);
     }
 }

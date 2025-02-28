@@ -20,7 +20,7 @@ public class AttendanceHistoriesTest {
 
     @BeforeEach
     void beforeEach() {
-        attendanceHistories = new AttendanceHistories(List.of(),LocalDate.of(2024,12,1));
+        attendanceHistories = new AttendanceHistories(List.of(), LocalDate.of(2024, 12, 1));
     }
 
     @ParameterizedTest
@@ -83,14 +83,14 @@ public class AttendanceHistoriesTest {
 
     @Test
     @DisplayName("해당 날짜 기록 가져오기")
-    void getAttendanceHistory(){
+    void getAttendanceHistory() {
         // given
         AttendanceHistories histories = new AttendanceHistories(List.of(
-                LocalDateTime.of(2024,12,23,10,0),
-                LocalDateTime.of(2024,12,26,10,0),
-                LocalDateTime.of(2024,12,27,10,0)),LocalDate.of(2024,12,28));
-        LocalDate findDate = LocalDate.of(2024,12,23);
-        AttendanceHistory expected = new AttendanceHistory(LocalDateTime.of(2024,12,23,10,0));
+                LocalDateTime.of(2024, 12, 23, 10, 0),
+                LocalDateTime.of(2024, 12, 26, 10, 0),
+                LocalDateTime.of(2024, 12, 27, 10, 0)), LocalDate.of(2024, 12, 28));
+        LocalDate findDate = LocalDate.of(2024, 12, 23);
+        AttendanceHistory expected = new AttendanceHistory(LocalDateTime.of(2024, 12, 23, 10, 0));
         // when
         AttendanceHistory history = histories.findAttendanceHistoryByDate(findDate);
         // then
@@ -99,29 +99,29 @@ public class AttendanceHistoriesTest {
 
     @Test
     @DisplayName("해당 날짜 기록 가져오기 - 출석 기록이 없으면 예외가 발생한다.")
-    void getAttendanceHistory_Exception(){
+    void getAttendanceHistory_Exception() {
         // given
         AttendanceHistories histories = new AttendanceHistories(List.of(
-                LocalDateTime.of(2024,12,23,10,0),
-                LocalDateTime.of(2024,12,26,10,0),
-                LocalDateTime.of(2024,12,27,10,0)),LocalDate.of(2024,12,28));
-        LocalDate findDate = LocalDate.of(2024,12,28);
+                LocalDateTime.of(2024, 12, 23, 10, 0),
+                LocalDateTime.of(2024, 12, 26, 10, 0),
+                LocalDateTime.of(2024, 12, 27, 10, 0)), LocalDate.of(2024, 12, 28));
+        LocalDate findDate = LocalDate.of(2024, 12, 28);
         // when & then
-        assertThatThrownBy(()->histories.findAttendanceHistoryByDate(findDate))
+        assertThatThrownBy(() -> histories.findAttendanceHistoryByDate(findDate))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 기록이 존재하지 않습니다.");
     }
 
     @Test
     @DisplayName("날짜 수정 기능 테스트")
-    void editAttendanceHistory(){
+    void editAttendanceHistory() {
         // given
         AttendanceHistories histories = new AttendanceHistories(List.of(
-                LocalDateTime.of(2024,12,23,13,0),
-                LocalDateTime.of(2024,12,26,10,0),
-                LocalDateTime.of(2024,12,27,10,0)),LocalDate.of(2024,12,28));
-        LocalDateTime editTime = LocalDateTime.of(2024,12,23,13,10);
-        AttendanceHistory expected = new AttendanceHistory(LocalDateTime.of(2024,12,23,13,10));
+                LocalDateTime.of(2024, 12, 23, 13, 0),
+                LocalDateTime.of(2024, 12, 26, 10, 0),
+                LocalDateTime.of(2024, 12, 27, 10, 0)), LocalDate.of(2024, 12, 28));
+        LocalDateTime editTime = LocalDateTime.of(2024, 12, 23, 13, 10);
+        AttendanceHistory expected = new AttendanceHistory(LocalDateTime.of(2024, 12, 23, 13, 10));
         // when
         AttendanceResult result = histories.editAttendanceHistory(editTime);
         // then
@@ -132,16 +132,36 @@ public class AttendanceHistoriesTest {
 
     @Test
     @DisplayName("csv 파일에 특정 날짜가 없으면 결석으로 처리한다.")
-    void readCsvAndCreateHistories(){
+    void readCsvAndCreateHistories() {
         // given & when
         AttendanceHistories histories = new AttendanceHistories(List.of(
-                LocalDateTime.of(2024,12,2,13,0),
-                LocalDateTime.of(2024,12,3,10,0),
-                LocalDateTime.of(2024,12,4,10,0)),LocalDate.of(2024,12,6));
-        AttendanceHistory expected = new AttendanceHistory(LocalDate.of(2024,12,5),null);
+                LocalDateTime.of(2024, 12, 2, 13, 0),
+                LocalDateTime.of(2024, 12, 3, 10, 0),
+                LocalDateTime.of(2024, 12, 4, 10, 0)), LocalDate.of(2024, 12, 6));
+        AttendanceHistory expected = new AttendanceHistory(LocalDate.of(2024, 12, 5), null);
         // then
         AttendanceHistory attendanceHistory = histories.findAttendanceHistoryByDate(LocalDate.of(2024, 12, 5));
         assertThat(attendanceHistory).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("특정 시점 이전의 기록을 조회하는 기능 테스트")
+    void findBeforeAttendanceHistories() {
+        // given
+        AttendanceHistories histories = new AttendanceHistories(List.of(
+                LocalDateTime.of(2024, 12, 3, 10, 0),
+                LocalDateTime.of(2024, 12, 2, 13, 0),
+                LocalDateTime.of(2024, 12, 4, 10, 0)), LocalDate.of(2024, 12, 13));
+        LocalDate standard = LocalDate.of(2024, 12, 7);
+        // when
+        List<AttendanceHistory> before = histories.getBeforeAttendanceHistories(standard);
+        // then
+        assertThat(before.size()).isEqualTo(5);
+        assertThat(before.get(0)).isEqualTo(new AttendanceHistory(LocalDateTime.of(2024, 12, 2, 13, 0)));
+        assertThat(before.get(1)).isEqualTo(new AttendanceHistory(LocalDateTime.of(2024, 12, 3, 10, 0)));
+        assertThat(before.get(2)).isEqualTo(new AttendanceHistory(LocalDateTime.of(2024, 12, 4, 10, 0)));
+        assertThat(before.get(3)).isEqualTo(new AttendanceHistory(LocalDate.of(2024, 12, 5), null));
+        assertThat(before.get(4)).isEqualTo(new AttendanceHistory(LocalDate.of(2024, 12, 6), null));
     }
 
 }

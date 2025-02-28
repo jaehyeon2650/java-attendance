@@ -31,7 +31,7 @@ public class AttendanceHistory implements Comparable<AttendanceHistory> {
     }
 
     private AttendanceResult findAttendanceResult(LocalDate attendanceDate, LocalTime attendanceTime) {
-        return domain.AttendanceResult.findAttendanceResult(attendanceDate,attendanceTime);
+        return domain.AttendanceResult.findAttendanceResult(attendanceDate, attendanceTime);
     }
 
     public boolean isSameDate(LocalDate standardDate) {
@@ -62,7 +62,7 @@ public class AttendanceHistory implements Comparable<AttendanceHistory> {
 
     @Override
     public int compareTo(AttendanceHistory o) {
-        return this.attendanceTime.compareTo(o.attendanceTime);
+        return this.attendanceDate.compareTo(o.attendanceDate);
     }
 
     public AttendanceResult getAttendanceResult() {
