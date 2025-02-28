@@ -1,5 +1,6 @@
 package view;
 
+import constant.Selection;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -8,12 +9,12 @@ import util.DateFormatter;
 
 public class InputView {
 
-    public String getSelection() {
+    public Selection getSelection() {
         Scanner scan = new Scanner(System.in);
         LocalDate now = DateFormatter.getTodayDate();
         String dateFormat = DateFormatter.dateFormat(now);
         printMenu(dateFormat);
-        return scan.nextLine();
+        return Selection.findSelection(scan.nextLine());
     }
 
     public String getUsername() {

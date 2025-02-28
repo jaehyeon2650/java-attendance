@@ -17,6 +17,7 @@ public class OutputView {
     public void printAddAttendanceResult(LocalDateTime time, String result) {
         String dateFormat = DateFormatter.dateFullFormat(time);
         System.out.printf("%s (%s)\n", dateFormat, result);
+        System.out.print(LINE_SEPARATOR);
     }
 
     public void printEditResult(EditResponseDto editResponseDto) {
@@ -28,6 +29,7 @@ public class OutputView {
         String afterResult = editResponseDto.afterResult();
         System.out.printf("%s (%s) -> %s (%s) 수정 완료!\n", dateFormat, beforeResult, afterTime,
                 afterResult);
+        System.out.print(LINE_SEPARATOR);
     }
 
     public void printAttendanceHistories(AttendanceHistoriesDto historiesDto) {
@@ -36,6 +38,7 @@ public class OutputView {
         printHistories(historiesDto);
         printStatistics(historiesDto);
         printExpulsionInfo(historiesDto.status());
+        System.out.print(LINE_SEPARATOR);
     }
 
     public void printExpulsionCrews(ExpulsionCrewsDto expulsionCrewsDto){
@@ -53,7 +56,7 @@ public class OutputView {
 
     private static void printExpulsionInfo(String result) {
         if (!result.equals(NORMAL.getStatus())) {
-            System.out.printf("%s 대상자입니다.", result);
+            System.out.printf("%s 대상자입니다.\n", result);
         }
     }
 
