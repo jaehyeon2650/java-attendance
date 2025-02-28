@@ -26,6 +26,10 @@ public class Crew {
         return attendanceHistories.findAttendanceHistoryByDate(standardTime);
     }
 
+    public List<AttendanceHistory> findAttendanceHistories(LocalDate standardTime){
+        return attendanceHistories.getBeforeAttendanceHistories(standardTime);
+    }
+
     public boolean isSameName(String username) {
         return this.username.equals(username);
     }

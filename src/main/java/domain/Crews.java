@@ -38,4 +38,10 @@ public class Crews {
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 등록되지 않은 닉네임입니다."));
     }
+
+    public List<AttendanceHistory> findAttendanceHistories(String username, LocalDate standard) {
+        Crew crew = findCrewByUsername(username);
+        return crew.findAttendanceHistories(standard);
+    }
+
 }
