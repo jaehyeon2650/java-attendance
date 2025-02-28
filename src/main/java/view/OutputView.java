@@ -4,6 +4,8 @@ import domain.AttendanceStatus;
 import dto.AttendanceHistoriesDto;
 import dto.AttendanceHistoryDto;
 import dto.EditResponseDto;
+import dto.ExpulsionCrewDto;
+import dto.ExpulsionCrewsDto;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -57,9 +59,17 @@ public class OutputView {
         }
     }
 
+    public void printExpulsionCrews(ExpulsionCrewsDto expulsionCrewsDto){
+        System.out.println("제적 위험자 조회 결과");
+        List<ExpulsionCrewDto> crews = expulsionCrewsDto.crews();
+        crews.forEach(crew->{
+            System.out.printf("- %s: 결석 %d회, 지각 %d회 (%s)\n",crew.username(),crew.absenceCount(),crew.lateCount(),crew.result());
+        });
+        System.out.println();
+    }
+
     private String getTime(LocalTime beforeTime) {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         return timeFormatter.format(beforeTime);
-
     }
 }
