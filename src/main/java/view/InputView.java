@@ -23,7 +23,7 @@ public class InputView {
         return scan.nextLine();
     }
 
-    public String getUsernameForAddHistory(){
+    public String getUsername(){
         System.out.println("닉네임을 입력해 주세요.");
         Scanner scan = new Scanner(System.in);
         return scan.nextLine();

@@ -1,9 +1,12 @@
 package controller;
 
+import domain.AttendanceAnalyze;
 import domain.AttendanceHistory;
 import domain.AttendanceHistory.AttendanceValidator;
 import domain.AttendanceResult;
 import domain.Crews;
+import dto.AttendanceHistoriesDto;
+import dto.AttendanceHistoryDto;
 import dto.EditResponseDto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,7 +34,7 @@ public class AttendanceController {
             LocalDate now = LocalDate.now();
             LocalDate changedDate = LocalDate.of(2024,12,now.getDayOfMonth());
             AttendanceValidator.validateAttendanceDate(changedDate);
-            String username = inputView.getUsernameForAddHistory();
+            String username = inputView.getUsername();
             crews.validateHasCrew(username);
             LocalDateTime attendanceTime = inputView.getAttendanceTime();
             AttendanceResult result = crews.addAttendanceHistory(username, attendanceTime);
@@ -46,6 +49,13 @@ public class AttendanceController {
             LocalDateTime attendanceTime = LocalDateTime.of(attendDate,attendTime);
             AttendanceResult result = crews.editAttendanceHistory(username, attendanceTime);
             outputView.printEditResult(EditResponseDto.of(beforeHistory,attendanceTime,result));
+        }else if(selection.equals("3")){
+            String username = inputView.getUsername();
+            LocalDate now = LocalDate.now();
+            LocalDate changed = LocalDate.of(2024,12,now.getDayOfMonth());
+            List<AttendanceHistory> attendanceHistories = crews.findAttendanceHistories(username, changed);
+            AttendanceAnalyze attendanceAnalyze = crews.getAttendanceAnalyze(username, changed);
+            outputView.printAttendanceHistories(AttendanceHistoriesDto.of(username,attendanceHistories,attendanceAnalyze));
         }
     }
 
