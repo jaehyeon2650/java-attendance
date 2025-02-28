@@ -16,6 +16,10 @@ public enum AttendanceStatus {
         this.count = count;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
     public static AttendanceStatus findAttendanceStatus(final int lateCount, final int absenceCount) {
         int totalCount = absenceCount + (lateCount / 3);
 
