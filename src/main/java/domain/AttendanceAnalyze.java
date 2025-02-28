@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class AttendanceAnalyze {
+public class AttendanceAnalyze implements Comparable<AttendanceAnalyze> {
     private final int lateCount;
     private final int absenceCount;
     private final int attendanceCount;
@@ -16,9 +16,9 @@ public class AttendanceAnalyze {
                 () -> new EnumMap<>(AttendanceResult.class),
                 Collectors.summingInt((e) -> 1)
         ));
-        this.lateCount = statics.getOrDefault(AttendanceResult.LATE,0);
-        this.absenceCount = statics.getOrDefault(AttendanceResult.ABSENCE,0);
-        this.attendanceCount = statics.getOrDefault(AttendanceResult.ATTENDANCE,0);
+        this.lateCount = statics.getOrDefault(AttendanceResult.LATE, 0);
+        this.absenceCount = statics.getOrDefault(AttendanceResult.ABSENCE, 0);
+        this.attendanceCount = statics.getOrDefault(AttendanceResult.ATTENDANCE, 0);
     }
 
     public int getLateCount() {
@@ -33,12 +33,19 @@ public class AttendanceAnalyze {
         return attendanceCount;
     }
 
-    public AttendanceStatus getAttendanceStatus(){
-        return AttendanceStatus.findAttendanceStatus(lateCount,absenceCount);
+    public AttendanceStatus getAttendanceStatus() {
+        return AttendanceStatus.findAttendanceStatus(lateCount, absenceCount);
     }
 
-    public boolean isExpulsionTarget(){
+    public boolean isExpulsionTarget() {
         AttendanceStatus attendanceStatus = getAttendanceStatus();
         return !attendanceStatus.equals(AttendanceStatus.NORMAL);
+    }
+
+    @Override
+    public int compareTo(AttendanceAnalyze o) {
+        int thisTotalCount = absenceCount * 3 + lateCount;
+        int otherTotalCount = o.absenceCount * 3 + o.lateCount;
+        return Integer.compare(otherTotalCount, thisTotalCount);
     }
 }

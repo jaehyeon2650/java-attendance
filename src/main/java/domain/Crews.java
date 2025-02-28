@@ -2,8 +2,11 @@ package domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Crews {
     private final List<Crew> crews;
@@ -33,12 +36,6 @@ public class Crews {
         return crew.findAttendanceHistory(standardTime);
     }
 
-    private Crew findCrewByUsername(String username) {
-        return crews.stream().filter(crew -> crew.isSameName(username))
-                .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 등록되지 않은 닉네임입니다."));
-    }
-
     public List<AttendanceHistory> findAttendanceHistories(String username, LocalDate standard) {
         Crew crew = findCrewByUsername(username);
         return crew.findAttendanceHistories(standard);
@@ -47,5 +44,42 @@ public class Crews {
     public AttendanceAnalyze getAttendanceAnalyze(String username, LocalDate standard) {
         Crew crew = findCrewByUsername(username);
         return crew.getAttendanceAnalyze(standard);
+    }
+
+    private Crew findCrewByUsername(String username) {
+        return crews.stream().filter(crew -> crew.isSameName(username))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 등록되지 않은 닉네임입니다."));
+    }
+
+    public Map<String, AttendanceAnalyze> findExpulsionCrews(LocalDate standard) {
+        List<Crew> expulsionCrews = getExpulsionCrewsWithOrders(standard);
+        return createExpulsionCrewsInfo(standard, expulsionCrews);
+    }
+
+    private static LinkedHashMap<String, AttendanceAnalyze> createExpulsionCrewsInfo(LocalDate standard, List<Crew> expulsionCrews) {
+        return expulsionCrews.stream().collect(Collectors.toMap(
+                Crew::getUsername,
+                crew -> crew.getAttendanceAnalyze(standard),
+                (existing, replacement) -> existing,
+                LinkedHashMap::new
+        ));
+    }
+
+    private List<Crew> getExpulsionCrewsWithOrders(LocalDate standard) {
+        return crews.stream().filter(crew -> crew.isExpulsionTarget(standard))
+                .sorted(new Comparator<Crew>() {
+                    @Override
+                    public int compare(Crew o1, Crew o2) {
+                        AttendanceAnalyze attendanceAnalyzeO1 = o1.getAttendanceAnalyze(standard);
+                        AttendanceAnalyze attendanceAnalyzeO2 = o2.getAttendanceAnalyze(standard);
+                        int compare = attendanceAnalyzeO1.compareTo(attendanceAnalyzeO2);
+                        if (compare == 0) {
+                            return o1.getUsername().compareTo(o2.getUsername());
+                        }
+                        return compare;
+                    }
+                })
+                .toList();
     }
 }

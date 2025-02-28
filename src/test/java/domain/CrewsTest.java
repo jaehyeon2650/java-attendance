@@ -138,4 +138,26 @@ public class CrewsTest {
         assertThat(analyze.getLateCount()).isEqualTo(1);
         assertThat(analyze.getAttendanceStatus()).isEqualTo(AttendanceStatus.NORMAL);
     }
+
+    @Test
+    @DisplayName("제적 대상자 조회 기능 테스트")
+    void findExpulsionCrew(){
+        // given
+        List<LocalDateTime> histories1 = List.of(LocalDateTime.of(2024, 12, 2, 13, 33),
+                LocalDateTime.of(2024, 12, 3, 10, 33),
+                LocalDateTime.of(2024, 12, 4, 10, 7));
+        List<LocalDateTime> histories2 = List.of(LocalDateTime.of(2024, 12, 2, 13, 33),
+                LocalDateTime.of(2024, 12, 3, 10, 33),
+                LocalDateTime.of(2024, 12, 4, 10, 0));
+        List<LocalDateTime> histories3 = List.of(LocalDateTime.of(2024, 12, 2, 13, 33),
+                LocalDateTime.of(2024, 12, 3, 10, 33),
+                LocalDateTime.of(2024, 12, 4, 10, 33));
+        Map<String, List<LocalDateTime>> crewsInfo = Map.of("a",histories1,"b",histories2,"c",histories3);
+        LocalDate standard = LocalDate.of(2024, 12, 5);
+        crews = new Crews(crewsInfo,standard);
+        // when
+        Map<String,AttendanceAnalyze> result = crews.findExpulsionCrews(standard);
+        // then
+        assertThat(result.keySet()).containsExactly("c","a","b");
+    }
 }

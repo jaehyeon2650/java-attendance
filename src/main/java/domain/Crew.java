@@ -43,6 +43,10 @@ public class Crew {
         return attendanceAnalyze.isExpulsionTarget();
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public static class Validator {
         public static void validateNameLength(String username) {
             if (username.length() > 5) {
