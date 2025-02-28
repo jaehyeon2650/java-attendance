@@ -11,27 +11,23 @@ public class Crew {
     public Crew(String username, List<LocalDateTime> histories, LocalDate standardDate) {
         Validator.validateNameLength(username);
         this.username = username;
-        this.attendanceHistories = new AttendanceHistories(histories,standardDate);
+        this.attendanceHistories = new AttendanceHistories(histories, standardDate);
     }
 
     public AttendanceResult addAttendanceHistory(LocalDateTime attendanceTime) {
         return attendanceHistories.addAttendanceHistory(attendanceTime);
     }
 
-    public AttendanceResult editAttendanceHistory(LocalDateTime editAttendanceTime){
+    public AttendanceResult editAttendanceHistory(LocalDateTime editAttendanceTime) {
         return attendanceHistories.editAttendanceHistory(editAttendanceTime);
     }
 
-    public AttendanceHistory findAttendanceHistory(LocalDate standardTime){
+    public AttendanceHistory findAttendanceHistory(LocalDate standardTime) {
         return attendanceHistories.findAttendanceHistoryByDate(standardTime);
     }
 
-    public List<AttendanceHistory> findAttendanceHistories(LocalDate standardTime){
+    public List<AttendanceHistory> findAttendanceHistories(LocalDate standardTime) {
         return attendanceHistories.getBeforeAttendanceHistories(standardTime);
-    }
-
-    public AttendanceAnalyze getAttendanceAnalyze(LocalDate standardDate){
-        return attendanceHistories.getAttendanceAnalyze(standardDate);
     }
 
     public boolean isSameName(String username) {
@@ -41,6 +37,10 @@ public class Crew {
     public boolean isExpulsionTarget(LocalDate standard) {
         AttendanceAnalyze attendanceAnalyze = getAttendanceAnalyze(standard);
         return attendanceAnalyze.isExpulsionTarget();
+    }
+
+    public AttendanceAnalyze getAttendanceAnalyze(LocalDate standardDate) {
+        return attendanceHistories.getAttendanceAnalyze(standardDate);
     }
 
     public String getUsername() {

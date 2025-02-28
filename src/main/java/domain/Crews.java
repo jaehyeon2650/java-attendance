@@ -13,7 +13,7 @@ public class Crews {
 
     public Crews(Map<String, List<LocalDateTime>> allAttendanceHistories, LocalDate standardDate) {
         this.crews = allAttendanceHistories.entrySet().stream()
-                .map(entry -> new Crew(entry.getKey(), entry.getValue(),standardDate))
+                .map(entry -> new Crew(entry.getKey(), entry.getValue(), standardDate))
                 .toList();
     }
 
@@ -26,7 +26,7 @@ public class Crews {
         return crew.addAttendanceHistory(attendanceTime);
     }
 
-    public AttendanceResult editAttendanceHistory(String username, LocalDateTime editTime){
+    public AttendanceResult editAttendanceHistory(String username, LocalDateTime editTime) {
         Crew crew = findCrewByUsername(username);
         return crew.editAttendanceHistory(editTime);
     }
@@ -46,18 +46,19 @@ public class Crews {
         return crew.getAttendanceAnalyze(standard);
     }
 
+    public Map<String, AttendanceAnalyze> findExpulsionCrews(LocalDate standard) {
+        List<Crew> expulsionCrews = getExpulsionCrewsWithOrders(standard);
+        return createExpulsionCrewsInfo(standard, expulsionCrews);
+    }
+
     private Crew findCrewByUsername(String username) {
         return crews.stream().filter(crew -> crew.isSameName(username))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 등록되지 않은 닉네임입니다."));
     }
 
-    public Map<String, AttendanceAnalyze> findExpulsionCrews(LocalDate standard) {
-        List<Crew> expulsionCrews = getExpulsionCrewsWithOrders(standard);
-        return createExpulsionCrewsInfo(standard, expulsionCrews);
-    }
-
-    private static LinkedHashMap<String, AttendanceAnalyze> createExpulsionCrewsInfo(LocalDate standard, List<Crew> expulsionCrews) {
+    private LinkedHashMap<String, AttendanceAnalyze> createExpulsionCrewsInfo(LocalDate standard,
+                                                                              List<Crew> expulsionCrews) {
         return expulsionCrews.stream().collect(Collectors.toMap(
                 Crew::getUsername,
                 crew -> crew.getAttendanceAnalyze(standard),

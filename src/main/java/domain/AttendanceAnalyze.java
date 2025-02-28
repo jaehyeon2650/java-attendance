@@ -21,6 +21,22 @@ public class AttendanceAnalyze implements Comparable<AttendanceAnalyze> {
         this.attendanceCount = statics.getOrDefault(AttendanceResult.ATTENDANCE, 0);
     }
 
+    public boolean isExpulsionTarget() {
+        AttendanceStatus attendanceStatus = getAttendanceStatus();
+        return !attendanceStatus.equals(AttendanceStatus.NORMAL);
+    }
+
+    public AttendanceStatus getAttendanceStatus() {
+        return AttendanceStatus.findAttendanceStatus(lateCount, absenceCount);
+    }
+
+    @Override
+    public int compareTo(AttendanceAnalyze o) {
+        int thisTotalCount = absenceCount * 3 + lateCount;
+        int otherTotalCount = o.absenceCount * 3 + o.lateCount;
+        return Integer.compare(otherTotalCount, thisTotalCount);
+    }
+
     public int getLateCount() {
         return lateCount;
     }
@@ -31,21 +47,5 @@ public class AttendanceAnalyze implements Comparable<AttendanceAnalyze> {
 
     public int getAttendanceCount() {
         return attendanceCount;
-    }
-
-    public AttendanceStatus getAttendanceStatus() {
-        return AttendanceStatus.findAttendanceStatus(lateCount, absenceCount);
-    }
-
-    public boolean isExpulsionTarget() {
-        AttendanceStatus attendanceStatus = getAttendanceStatus();
-        return !attendanceStatus.equals(AttendanceStatus.NORMAL);
-    }
-
-    @Override
-    public int compareTo(AttendanceAnalyze o) {
-        int thisTotalCount = absenceCount * 3 + lateCount;
-        int otherTotalCount = o.absenceCount * 3 + o.lateCount;
-        return Integer.compare(otherTotalCount, thisTotalCount);
     }
 }

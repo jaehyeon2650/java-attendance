@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public class DateFormatter {
 
-    public final static int YEAR =2024;
-    public final static int MONTH =12;
+    public final static int YEAR = 2024;
+    public final static int MONTH = 12;
     private final static String DATE_FORMAT = "M월 d일 EEEE";
     private final static String TIME_FORMAT = "HH:mm";
     private final static String DATE_TIME_FORMAT = "M월 d일 EEEE HH:mm";

@@ -10,7 +10,8 @@ public record AttendanceHistoryDto(
         Optional<LocalTime> attendanceTime,
         String result
 ) {
-    public static AttendanceHistoryDto from(AttendanceHistory history){
-        return new AttendanceHistoryDto(history.getAttendanceDate(),history.getAttendanceTime(),history.getAttendanceResult().getResult());
+    public static AttendanceHistoryDto from(AttendanceHistory history) {
+        return new AttendanceHistoryDto(history.getAttendanceDate(), history.getAttendanceTime(),
+                history.getAttendanceResult().getResult());
     }
 }

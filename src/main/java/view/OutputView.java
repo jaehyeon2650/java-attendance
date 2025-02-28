@@ -1,6 +1,6 @@
 package view;
 
-import static domain.AttendanceStatus.*;
+import static domain.AttendanceStatus.NORMAL;
 
 import dto.AttendanceHistoriesDto;
 import dto.AttendanceHistoryDto;
@@ -13,6 +13,20 @@ import util.DateFormatter;
 
 public class OutputView {
     private static final String LINE_SEPARATOR = System.lineSeparator();
+
+    private static void printExpulsionInfo(String result) {
+        if (!result.equals(NORMAL.getStatus())) {
+            System.out.printf("%s 대상자입니다.\n", result);
+        }
+    }
+
+    private static void printStatistics(AttendanceHistoriesDto historiesDto) {
+        System.out.print(LINE_SEPARATOR);
+        System.out.printf("출석: %d회\n", historiesDto.attendanceCount());
+        System.out.printf("지각: %d회\n", historiesDto.lateCount());
+        System.out.printf("결석: %d회\n", historiesDto.absenceCount());
+        System.out.print(LINE_SEPARATOR);
+    }
 
     public void printAddAttendanceResult(LocalDateTime time, String result) {
         String dateFormat = DateFormatter.dateFullFormat(time);
@@ -41,31 +55,18 @@ public class OutputView {
         System.out.print(LINE_SEPARATOR);
     }
 
-    public void printExpulsionCrews(ExpulsionCrewsDto expulsionCrewsDto){
+    public void printExpulsionCrews(ExpulsionCrewsDto expulsionCrewsDto) {
         System.out.println("제적 위험자 조회 결과");
         List<ExpulsionCrewDto> crews = expulsionCrewsDto.crews();
-        crews.forEach(crew->{
-            System.out.printf("- %s: 결석 %d회, 지각 %d회 (%s)\n",crew.username(),crew.absenceCount(),crew.lateCount(),crew.result());
+        crews.forEach(crew -> {
+            System.out.printf("- %s: 결석 %d회, 지각 %d회 (%s)\n", crew.username(), crew.absenceCount(), crew.lateCount(),
+                    crew.result());
         });
         System.out.print(LINE_SEPARATOR);
     }
 
-    public void printErrorMessage(String message){
+    public void printErrorMessage(String message) {
         System.out.println(message);
-        System.out.print(LINE_SEPARATOR);
-    }
-
-    private static void printExpulsionInfo(String result) {
-        if (!result.equals(NORMAL.getStatus())) {
-            System.out.printf("%s 대상자입니다.\n", result);
-        }
-    }
-
-    private static void printStatistics(AttendanceHistoriesDto historiesDto) {
-        System.out.print(LINE_SEPARATOR);
-        System.out.printf("출석: %d회\n", historiesDto.attendanceCount());
-        System.out.printf("지각: %d회\n", historiesDto.lateCount());
-        System.out.printf("결석: %d회\n", historiesDto.absenceCount());
         System.out.print(LINE_SEPARATOR);
     }
 

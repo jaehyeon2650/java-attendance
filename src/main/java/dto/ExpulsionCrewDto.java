@@ -8,7 +8,8 @@ public record ExpulsionCrewDto(
         int absenceCount,
         String result
 ) {
-    public static ExpulsionCrewDto of(String username, AttendanceAnalyze analyze){
-        return new ExpulsionCrewDto(username, analyze.getLateCount(), analyze.getAbsenceCount(), analyze.getAttendanceStatus().getStatus());
+    public static ExpulsionCrewDto of(String username, AttendanceAnalyze analyze) {
+        return new ExpulsionCrewDto(username, analyze.getLateCount(), analyze.getAbsenceCount(),
+                analyze.getAttendanceStatus().getStatus());
     }
 }

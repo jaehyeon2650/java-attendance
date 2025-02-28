@@ -66,17 +66,17 @@ public class InputView {
         System.out.println("Q. 종료");
     }
 
-    static class InputValidator{
+    static class InputValidator {
         private static final String TIME_FORMAT = "^(?:[01]\\d|2[0-3]):[0-5]\\d$";
 
-        private static void validateNumber(String input){
-            if(!Pattern.matches("\\d+",input)){
+        private static void validateNumber(String input) {
+            if (!Pattern.matches("\\d+", input)) {
                 throw new IllegalArgumentException("[ERROR] 숫자만 입력 가능합니다.");
             }
         }
 
-        private static void validateTime(String input){
-            if(!Pattern.matches(TIME_FORMAT,input)){
+        private static void validateTime(String input) {
+            if (!Pattern.matches(TIME_FORMAT, input)) {
                 throw new IllegalArgumentException("[ERROR] 00:00 형태로 입력해주세요!");
             }
         }

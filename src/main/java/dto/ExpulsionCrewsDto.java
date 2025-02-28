@@ -7,7 +7,7 @@ import java.util.Map;
 public record ExpulsionCrewsDto(
         List<ExpulsionCrewDto> crews
 ) {
-    public static ExpulsionCrewsDto from(Map<String, AttendanceAnalyze> crewsInfo){
+    public static ExpulsionCrewsDto from(Map<String, AttendanceAnalyze> crewsInfo) {
         List<ExpulsionCrewDto> crews = crewsInfo.entrySet().stream()
                 .map(entry -> ExpulsionCrewDto.of(entry.getKey(), entry.getValue()))
                 .toList();
