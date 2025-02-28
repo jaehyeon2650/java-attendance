@@ -11,6 +11,11 @@ public enum AttendanceResult {
 
     private final String result;
 
+    private static final int MONDAY_ATTENDANCE_HOUR = 13;
+    private static final int OTHER_ATTENDANCE_HOUR = 10;
+    private static final int LATE_MINUTES = 5;
+    private static final int ABSENCE_MINUTES = 30;
+
     AttendanceResult(String result) {
         this.result = result;
     }
@@ -23,6 +28,10 @@ public enum AttendanceResult {
         return getAttendanceResult(attendanceTime, dayOfWeek);
     }
 
+    public String getResult() {
+        return result;
+    }
+
     private static AttendanceResult getAttendanceResult(LocalTime attendanceTime, DayOfWeek dayOfWeek) {
         if (dayOfWeek == DayOfWeek.MONDAY) {
             return getMondayAttendanceResult(attendanceTime);
@@ -31,26 +40,22 @@ public enum AttendanceResult {
     }
 
     private static AttendanceResult getMondayAttendanceResult(LocalTime attendanceTime) {
-        if (attendanceTime.isAfter(LocalTime.of(13, 30))) {
+        if (attendanceTime.isAfter(LocalTime.of(MONDAY_ATTENDANCE_HOUR, ABSENCE_MINUTES))) {
             return ABSENCE;
         }
-        if (attendanceTime.isAfter(LocalTime.of(13, 5))) {
+        if (attendanceTime.isAfter(LocalTime.of(MONDAY_ATTENDANCE_HOUR, LATE_MINUTES))) {
             return LATE;
         }
         return ATTENDANCE;
     }
 
     private static AttendanceResult getDefaultAttendanceResult(LocalTime attendanceTime) {
-        if (attendanceTime.isAfter(LocalTime.of(10, 30))) {
+        if (attendanceTime.isAfter(LocalTime.of(OTHER_ATTENDANCE_HOUR, ABSENCE_MINUTES))) {
             return ABSENCE;
         }
-        if (attendanceTime.isAfter(LocalTime.of(10, 5))) {
+        if (attendanceTime.isAfter(LocalTime.of(OTHER_ATTENDANCE_HOUR, LATE_MINUTES))) {
             return LATE;
         }
         return ATTENDANCE;
-    }
-
-    public String getResult() {
-        return result;
     }
 }
