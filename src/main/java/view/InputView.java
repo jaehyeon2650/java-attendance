@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 import util.DateFormatter;
 
 public class InputView {
@@ -28,6 +29,7 @@ public class InputView {
         System.out.println("등교 시간을 입력해 주세요.");
         LocalDate now = DateFormatter.getTodayDate();
         String input = scan.nextLine();
+        InputValidator.validateTime(input);
         LocalTime time = DateFormatter.changeInputToTime(input);
         return LocalDateTime.of(now, time);
     }
@@ -42,6 +44,7 @@ public class InputView {
         System.out.println("수정하려는 날짜(일)를 입력해 주세요.");
         Scanner scan = new Scanner(System.in);
         String input = scan.nextLine();
+        InputValidator.validateNumber(input);
         int day = Integer.parseInt(input);
         return LocalDate.of(DateFormatter.YEAR, DateFormatter.MONTH, day);
     }
@@ -50,6 +53,7 @@ public class InputView {
         System.out.println("언제로 변경하겠습니까?");
         Scanner scan = new Scanner(System.in);
         String input = scan.nextLine();
+        InputValidator.validateTime(input);
         return DateFormatter.changeInputToTime(input);
     }
 
@@ -60,5 +64,21 @@ public class InputView {
         System.out.println("3. 크루별 출석 기록 확인");
         System.out.println("4. 제적 위험자 확인");
         System.out.println("Q. 종료");
+    }
+
+    static class InputValidator{
+        private static final String TIME_FORMAT = "^(?:[01]\\d|2[0-3]):[0-5]\\d$";
+
+        private static void validateNumber(String input){
+            if(!Pattern.matches("\\d+",input)){
+                throw new IllegalArgumentException("[ERROR] 숫자만 입력 가능합니다.");
+            }
+        }
+
+        private static void validateTime(String input){
+            if(!Pattern.matches(TIME_FORMAT,input)){
+                throw new IllegalArgumentException("[ERROR] 00:00 형태로 입력해주세요!");
+            }
+        }
     }
 }
