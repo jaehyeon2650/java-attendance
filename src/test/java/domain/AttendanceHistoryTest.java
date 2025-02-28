@@ -7,10 +7,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 public class AttendanceHistoryTest {
@@ -111,5 +113,17 @@ public class AttendanceHistoryTest {
         // then
         assertThat(sameDate1).isTrue();
         assertThat(sameDate2).isFalse();
+    }
+
+    @ParameterizedTest
+    @CsvSource({"4,false", "5,false", "6,true"})
+    @DisplayName("특정 날짜 이전 출석 기록인지 확인 테스트")
+    void isBeforeAttendanceHistory(int day, boolean expected) {
+        // given
+        AttendanceHistory attendanceHistory = new AttendanceHistory(LocalDateTime.of(2024, 12, 5, 10, 0));
+        // when
+        boolean check = attendanceHistory.isBeforeAttendanceHistory(LocalDate.of(2024, 12, day));
+        // then
+        Assertions.assertThat(check).isEqualTo(expected);
     }
 }

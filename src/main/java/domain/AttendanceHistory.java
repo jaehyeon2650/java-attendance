@@ -38,6 +38,10 @@ public class AttendanceHistory implements Comparable<AttendanceHistory> {
         return attendanceDate.isEqual(standardDate);
     }
 
+    public boolean isBeforeAttendanceHistory(LocalDate standard) {
+        return attendanceDate.isBefore(standard);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
