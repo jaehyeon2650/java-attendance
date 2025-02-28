@@ -12,6 +12,7 @@ import domain.AttendanceHistory;
 import domain.AttendanceHistory.AttendanceValidator;
 import domain.AttendanceResult;
 import domain.Crews;
+import domain.Username;
 import dto.AttendanceHistoriesDto;
 import dto.EditResponseDto;
 import dto.ExpulsionCrewsDto;
@@ -62,7 +63,7 @@ public class AttendanceController {
 
     private void showExpulsionCrews(Crews crews) {
         LocalDate now = DateFormatter.getTodayDate();
-        Map<String, AttendanceAnalyze> expulsionCrews = crews.findExpulsionCrews(now);
+        Map<Username, AttendanceAnalyze> expulsionCrews = crews.findExpulsionCrews(now);
         outputView.printExpulsionCrews(ExpulsionCrewsDto.from(expulsionCrews));
     }
 

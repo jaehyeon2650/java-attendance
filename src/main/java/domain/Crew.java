@@ -5,12 +5,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class Crew {
-    private final String username;
+    private final Username username;
     private final AttendanceHistories attendanceHistories;
 
     public Crew(String username, List<LocalDateTime> histories, LocalDate standardDate) {
-        Validator.validateNameLength(username);
-        this.username = username;
+        this.username = new Username(username);
         this.attendanceHistories = new AttendanceHistories(histories, standardDate);
     }
 
@@ -31,7 +30,7 @@ public class Crew {
     }
 
     public boolean isSameName(String username) {
-        return this.username.equals(username);
+        return this.username.isSameName(username);
     }
 
     public boolean isExpulsionTarget(LocalDate standard) {
@@ -43,16 +42,8 @@ public class Crew {
         return attendanceHistories.getAttendanceAnalyze(standardDate);
     }
 
-    public String getUsername() {
+    public Username getUsername() {
         return username;
-    }
-
-    public static class Validator {
-        public static void validateNameLength(String username) {
-            if (username.length() > 5) {
-                throw new IllegalArgumentException("[ERROR] 크루 이름은 최대 5글자입니다.");
-            }
-        }
     }
 
 }

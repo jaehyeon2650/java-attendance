@@ -46,7 +46,7 @@ public class Crews {
         return crew.getAttendanceAnalyze(standard);
     }
 
-    public Map<String, AttendanceAnalyze> findExpulsionCrews(LocalDate standard) {
+    public Map<Username, AttendanceAnalyze> findExpulsionCrews(LocalDate standard) {
         List<Crew> expulsionCrews = getExpulsionCrewsWithOrders(standard);
         return createExpulsionCrewsInfo(standard, expulsionCrews);
     }
@@ -57,7 +57,7 @@ public class Crews {
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 등록되지 않은 닉네임입니다."));
     }
 
-    private LinkedHashMap<String, AttendanceAnalyze> createExpulsionCrewsInfo(LocalDate standard,
+    private LinkedHashMap<Username, AttendanceAnalyze> createExpulsionCrewsInfo(LocalDate standard,
                                                                               List<Crew> expulsionCrews) {
         return expulsionCrews.stream().collect(Collectors.toMap(
                 Crew::getUsername,

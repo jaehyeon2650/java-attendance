@@ -1,6 +1,7 @@
 package dto;
 
 import domain.AttendanceAnalyze;
+import domain.Username;
 
 public record ExpulsionCrewDto(
         String username,
@@ -8,8 +9,8 @@ public record ExpulsionCrewDto(
         int absenceCount,
         String result
 ) {
-    public static ExpulsionCrewDto of(String username, AttendanceAnalyze analyze) {
-        return new ExpulsionCrewDto(username, analyze.getLateCount(), analyze.getAbsenceCount(),
+    public static ExpulsionCrewDto of(Username username, AttendanceAnalyze analyze) {
+        return new ExpulsionCrewDto(username.getName(), analyze.getLateCount(), analyze.getAbsenceCount(),
                 analyze.getAttendanceStatus().getStatus());
     }
 }

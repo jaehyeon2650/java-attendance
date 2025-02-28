@@ -156,8 +156,8 @@ public class CrewsTest {
         LocalDate standard = LocalDate.of(2024, 12, 5);
         crews = new Crews(crewsInfo,standard);
         // when
-        Map<String,AttendanceAnalyze> result = crews.findExpulsionCrews(standard);
+        Map<Username,AttendanceAnalyze> result = crews.findExpulsionCrews(standard);
         // then
-        assertThat(result.keySet()).containsExactly("c","a","b");
+        assertThat(result.keySet()).containsExactly(new Username("c"),new Username("a"),new Username("b"));
     }
 }
