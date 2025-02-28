@@ -25,6 +25,6 @@ class AttendanceAnalyzeTest {
         assertThat(attendanceAnalyze.getAbsenceCount()).isEqualTo(2);
         assertThat(attendanceAnalyze.getAttendanceCount()).isEqualTo(1);
         assertThat(attendanceAnalyze.getAttendanceStatus()).isEqualTo(AttendanceStatus.WARNING);
-
+        assertThat(attendanceAnalyze.isExpulsionTarget()).isTrue();
     }
 }

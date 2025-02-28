@@ -36,4 +36,9 @@ public class AttendanceAnalyze {
     public AttendanceStatus getAttendanceStatus(){
         return AttendanceStatus.findAttendanceStatus(lateCount,absenceCount);
     }
+
+    public boolean isExpulsionTarget(){
+        AttendanceStatus attendanceStatus = getAttendanceStatus();
+        return !attendanceStatus.equals(AttendanceStatus.NORMAL);
+    }
 }
