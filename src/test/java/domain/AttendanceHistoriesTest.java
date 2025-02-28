@@ -164,4 +164,21 @@ public class AttendanceHistoriesTest {
         assertThat(before.get(4)).isEqualTo(new AttendanceHistory(LocalDate.of(2024, 12, 6), null));
     }
 
+    @Test
+    @DisplayName("특정 시점 이전의 기록 통계 조회 기능 테스트")
+    void getBeforeAttendanceAnalyze(){
+        // given
+        AttendanceHistories histories = new AttendanceHistories(List.of(
+                LocalDateTime.of(2024, 12, 3, 10, 0),
+                LocalDateTime.of(2024, 12, 2, 13, 7),
+                LocalDateTime.of(2024, 12, 4, 10, 0)), LocalDate.of(2024, 12, 13));
+        LocalDate standard = LocalDate.of(2024, 12, 7);
+        // when
+        AttendanceAnalyze analyze = histories.getAttendanceAnalyze(standard);
+        // then
+        assertThat(analyze.getLateCount()).isEqualTo(1);
+        assertThat(analyze.getAbsenceCount()).isEqualTo(2);
+        assertThat(analyze.getAttendanceCount()).isEqualTo(2);
+    }
+
 }

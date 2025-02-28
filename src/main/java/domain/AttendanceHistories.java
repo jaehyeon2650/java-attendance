@@ -57,6 +57,11 @@ public class AttendanceHistories {
                 .toList();
     }
 
+    public AttendanceAnalyze getAttendanceAnalyze(LocalDate standard) {
+        return new AttendanceAnalyze(getBeforeAttendanceHistories(standard));
+    }
+
+
     public static class Validator {
         public static void validateAddAttendanceHistory(List<AttendanceHistory> attendanceHistories,
                                                         LocalDateTime localDateTime) {
