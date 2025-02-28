@@ -14,20 +14,6 @@ import util.DateFormatter;
 public class OutputView {
     private static final String LINE_SEPARATOR = System.lineSeparator();
 
-    private static void printExpulsionInfo(String result) {
-        if (!result.equals(NORMAL.getStatus())) {
-            System.out.printf("%s 대상자입니다.\n", result);
-        }
-    }
-
-    private static void printStatistics(AttendanceHistoriesDto historiesDto) {
-        System.out.print(LINE_SEPARATOR);
-        System.out.printf("출석: %d회\n", historiesDto.attendanceCount());
-        System.out.printf("지각: %d회\n", historiesDto.lateCount());
-        System.out.printf("결석: %d회\n", historiesDto.absenceCount());
-        System.out.print(LINE_SEPARATOR);
-    }
-
     public void printAddAttendanceResult(LocalDateTime time, String result) {
         String dateFormat = DateFormatter.dateFullFormat(time);
         System.out.printf("%s (%s)\n", dateFormat, result);
@@ -76,6 +62,20 @@ public class OutputView {
             String dateFormat = DateFormatter.dateFullFormat(history.attendanceDate(), history.attendanceTime());
             System.out.printf("%s (%s)\n", dateFormat, history.result());
         }
+    }
+
+    private void printExpulsionInfo(String result) {
+        if (!result.equals(NORMAL.getStatus())) {
+            System.out.printf("%s 대상자입니다.\n", result);
+        }
+    }
+
+    private void printStatistics(AttendanceHistoriesDto historiesDto) {
+        System.out.print(LINE_SEPARATOR);
+        System.out.printf("출석: %d회\n", historiesDto.attendanceCount());
+        System.out.printf("지각: %d회\n", historiesDto.lateCount());
+        System.out.printf("결석: %d회\n", historiesDto.absenceCount());
+        System.out.print(LINE_SEPARATOR);
     }
 
 }

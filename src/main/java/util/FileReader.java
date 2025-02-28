@@ -16,7 +16,7 @@ public class FileReader {
     private final static String DELIMITER = ",";
     private final static int USERNAME_INDEX = 0;
     private final static int TIME_INDEX = 1;
-    
+
     public static Map<String, List<LocalDateTime>> getCrewsAttendanceHistories() {
         Map<String, List<LocalDateTime>> allAttendanceResult = new HashMap<>();
         try (Scanner scanner = new Scanner(new File(FILE_PATH))) {

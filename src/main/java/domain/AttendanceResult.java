@@ -9,12 +9,11 @@ public enum AttendanceResult {
     LATE("지각"),
     ABSENCE("결석");
 
-    private final String result;
-
     private static final int MONDAY_ATTENDANCE_HOUR = 13;
     private static final int OTHER_ATTENDANCE_HOUR = 10;
     private static final int LATE_MINUTES = 5;
     private static final int ABSENCE_MINUTES = 30;
+    private final String result;
 
     AttendanceResult(String result) {
         this.result = result;
@@ -26,10 +25,6 @@ public enum AttendanceResult {
             return ABSENCE;
         }
         return getAttendanceResult(attendanceTime, dayOfWeek);
-    }
-
-    public String getResult() {
-        return result;
     }
 
     private static AttendanceResult getAttendanceResult(LocalTime attendanceTime, DayOfWeek dayOfWeek) {
@@ -57,5 +52,9 @@ public enum AttendanceResult {
             return LATE;
         }
         return ATTENDANCE;
+    }
+
+    public String getResult() {
+        return result;
     }
 }

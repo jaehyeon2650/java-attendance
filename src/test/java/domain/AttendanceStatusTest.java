@@ -10,16 +10,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 class AttendanceStatusTest {
 
-    @ParameterizedTest
-    @DisplayName("제적 상태 조회 테스트")
-    @MethodSource
-    void findAttendanceStatusTest(int lateCount, int absenceCount, AttendanceStatus expected) {
-        // when
-        AttendanceStatus attendanceStatus = AttendanceStatus.findAttendanceStatus(lateCount, absenceCount);
-        // then
-        assertThat(attendanceStatus).isEqualTo(expected);
-    }
-
     public static Stream<Arguments> findAttendanceStatusTest() {
         return Stream.of(
                 Arguments.of(0, 0, AttendanceStatus.NORMAL),
@@ -33,5 +23,15 @@ class AttendanceStatusTest {
                 Arguments.of(0, 6, AttendanceStatus.EXPULSION),
                 Arguments.of(4, 5, AttendanceStatus.EXPULSION)
         );
+    }
+
+    @ParameterizedTest
+    @DisplayName("제적 상태 조회 테스트")
+    @MethodSource
+    void findAttendanceStatusTest(int lateCount, int absenceCount, AttendanceStatus expected) {
+        // when
+        AttendanceStatus attendanceStatus = AttendanceStatus.findAttendanceStatus(lateCount, absenceCount);
+        // then
+        assertThat(attendanceStatus).isEqualTo(expected);
     }
 }

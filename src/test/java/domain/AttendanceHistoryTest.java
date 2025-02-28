@@ -16,15 +16,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class AttendanceHistoryTest {
 
-    @ParameterizedTest
-    @MethodSource
-    @DisplayName("출석 시간(08:00~23:00)을 벗어난 시간을 하면 예외가 발생한다.")
-    void createAttendanceHistory_exception(LocalDateTime time) {
-        assertThatThrownBy(() -> new AttendanceHistory(time))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("[ERROR] 캠퍼스 운영 시간은 08:00 ~ 23:00 입니다.");
-    }
-
     public static Stream<Arguments> createAttendanceHistory_exception() {
         return Stream.of(
                 Arguments.of(LocalDateTime.of(2024, 12, 19, 7, 59)),
@@ -34,13 +25,6 @@ public class AttendanceHistoryTest {
                 Arguments.of(LocalDateTime.of(2024, 12, 19, 23, 59)),
                 Arguments.of(LocalDateTime.of(2024, 12, 19, 23, 1))
         );
-    }
-
-    @ParameterizedTest
-    @MethodSource
-    @DisplayName("정상적인 시간일 경우 출석 기록을 남긴다.")
-    void createAttendanceHistory_success(LocalDateTime time) {
-        assertThatNoException().isThrownBy(() -> new AttendanceHistory(time));
     }
 
     public static Stream<Arguments> createAttendanceHistory_success() {
@@ -54,17 +38,6 @@ public class AttendanceHistoryTest {
         );
     }
 
-    @ParameterizedTest
-    @MethodSource
-    @DisplayName("정상적인 시간인 경우 지각, 결석, 출석 상태를 결정한다.(월요일인 경우)")
-    void makeAttendanceResultWhenMonday(LocalDateTime attendanceTime, AttendanceResult expected) {
-        // when
-        AttendanceHistory attendanceHistory = new AttendanceHistory(attendanceTime);
-        AttendanceResult result = attendanceHistory.getAttendanceResult();
-        // then
-        assertThat(result).isEqualTo(expected);
-    }
-
     public static Stream<Arguments> makeAttendanceResultWhenMonday() {
         return Stream.of(
                 Arguments.of(LocalDateTime.of(2024, 12, 23, 12, 50), AttendanceResult.ATTENDANCE),
@@ -76,17 +49,6 @@ public class AttendanceHistoryTest {
         );
     }
 
-    @ParameterizedTest
-    @MethodSource
-    @DisplayName("정상적인 시간인 경우 지각, 결석, 출석 상태를 결정한다.(월요일이 아닌 경우)")
-    void makeAttendanceResultWhenNotMonday(LocalDateTime attendanceTime, AttendanceResult expected) {
-        // when
-        AttendanceHistory attendanceHistory = new AttendanceHistory(attendanceTime);
-        AttendanceResult result = attendanceHistory.getAttendanceResult();
-        // then
-        assertThat(result).isEqualTo(expected);
-    }
-
     public static Stream<Arguments> makeAttendanceResultWhenNotMonday() {
         return Stream.of(
                 Arguments.of(LocalDateTime.of(2024, 12, 24, 9, 50), AttendanceResult.ATTENDANCE),
@@ -96,6 +58,44 @@ public class AttendanceHistoryTest {
                 Arguments.of(LocalDateTime.of(2024, 12, 24, 10, 30), AttendanceResult.LATE),
                 Arguments.of(LocalDateTime.of(2024, 12, 24, 10, 31), AttendanceResult.ABSENCE)
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    @DisplayName("출석 시간(08:00~23:00)을 벗어난 시간을 하면 예외가 발생한다.")
+    void createAttendanceHistory_exception(LocalDateTime time) {
+        assertThatThrownBy(() -> new AttendanceHistory(time))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 캠퍼스 운영 시간은 08:00 ~ 23:00 입니다.");
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    @DisplayName("정상적인 시간일 경우 출석 기록을 남긴다.")
+    void createAttendanceHistory_success(LocalDateTime time) {
+        assertThatNoException().isThrownBy(() -> new AttendanceHistory(time));
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    @DisplayName("정상적인 시간인 경우 지각, 결석, 출석 상태를 결정한다.(월요일인 경우)")
+    void makeAttendanceResultWhenMonday(LocalDateTime attendanceTime, AttendanceResult expected) {
+        // when
+        AttendanceHistory attendanceHistory = new AttendanceHistory(attendanceTime);
+        AttendanceResult result = attendanceHistory.getAttendanceResult();
+        // then
+        assertThat(result).isEqualTo(expected);
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    @DisplayName("정상적인 시간인 경우 지각, 결석, 출석 상태를 결정한다.(월요일이 아닌 경우)")
+    void makeAttendanceResultWhenNotMonday(LocalDateTime attendanceTime, AttendanceResult expected) {
+        // when
+        AttendanceHistory attendanceHistory = new AttendanceHistory(attendanceTime);
+        AttendanceResult result = attendanceHistory.getAttendanceResult();
+        // then
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test

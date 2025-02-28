@@ -17,13 +17,13 @@ public class CrewsTest {
     private Crews crews;
 
     @BeforeEach
-    void beforeEach(){
-        Map<String,List<LocalDateTime>> histories = Map.of(
-                "a",List.of(),
-                "b",List.of(),
-                "c",List.of()
+    void beforeEach() {
+        Map<String, List<LocalDateTime>> histories = Map.of(
+                "a", List.of(),
+                "b", List.of(),
+                "c", List.of()
         );
-        crews = new Crews(histories, LocalDate.of(2024,12,1));
+        crews = new Crews(histories, LocalDate.of(2024, 12, 1));
     }
 
     @Test
@@ -60,58 +60,58 @@ public class CrewsTest {
 
     @Test
     @DisplayName("출석 수정 기능 테스트")
-    void editAttendanceTest(){
+    void editAttendanceTest() {
         // given
-        crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 24, 10, 31));
+        crews.addAttendanceHistory("a", LocalDateTime.of(2024, 12, 24, 10, 31));
         LocalDateTime editTime = LocalDateTime.of(2024, 12, 24, 10, 0);
         // when
-        AttendanceResult result = crews.editAttendanceHistory("a",editTime);
+        AttendanceResult result = crews.editAttendanceHistory("a", editTime);
         // then
         assertThat(result).isEqualTo(AttendanceResult.ATTENDANCE);
     }
 
     @Test
     @DisplayName("특정 날짜 출석 조회 기능 테스트")
-    void getAttendanceHistory(){
+    void getAttendanceHistory() {
         // given
-        crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 24, 10, 31));
-        crews.addAttendanceHistory("b",LocalDateTime.of(2024, 12, 23, 13, 31));
-        crews.addAttendanceHistory("c",LocalDateTime.of(2024, 12, 27, 13, 31));
-        LocalDate localDate = LocalDate.of(2024,12,24);
+        crews.addAttendanceHistory("a", LocalDateTime.of(2024, 12, 24, 10, 31));
+        crews.addAttendanceHistory("b", LocalDateTime.of(2024, 12, 23, 13, 31));
+        crews.addAttendanceHistory("c", LocalDateTime.of(2024, 12, 27, 13, 31));
+        LocalDate localDate = LocalDate.of(2024, 12, 24);
         AttendanceHistory expected = new AttendanceHistory(LocalDateTime.of(2024, 12, 24, 10, 31));
         // when
-        AttendanceHistory findHistory = crews.findAttendanceHistory("a",localDate);
+        AttendanceHistory findHistory = crews.findAttendanceHistory("a", localDate);
         // then
         assertThat(findHistory).isEqualTo(expected);
     }
 
     @Test
     @DisplayName("특정 날짜 출석 조회 기능 예외 테스트")
-    void getAttendanceHistory_Exception(){
+    void getAttendanceHistory_Exception() {
         // given
-        crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 24, 10, 31));
-        crews.addAttendanceHistory("b",LocalDateTime.of(2024, 12, 23, 13, 31));
-        crews.addAttendanceHistory("c",LocalDateTime.of(2024, 12, 27, 13, 31));
-        LocalDate localDate = LocalDate.of(2024,12,25);
+        crews.addAttendanceHistory("a", LocalDateTime.of(2024, 12, 24, 10, 31));
+        crews.addAttendanceHistory("b", LocalDateTime.of(2024, 12, 23, 13, 31));
+        crews.addAttendanceHistory("c", LocalDateTime.of(2024, 12, 27, 13, 31));
+        LocalDate localDate = LocalDate.of(2024, 12, 25);
         // when & then
-        assertThatThrownBy(()->crews.findAttendanceHistory("a",localDate))
+        assertThatThrownBy(() -> crews.findAttendanceHistory("a", localDate))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 기록이 존재하지 않습니다.");
     }
 
     @Test
     @DisplayName("특정 날짜이전 기록 조회 테스트")
-    void getBeforeAttendanceHistoryTest(){
+    void getBeforeAttendanceHistoryTest() {
         // given
-        crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 24, 10, 7));
-        crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 23, 13, 31));
-        crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 26, 10, 5));
-        crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 27, 10, 5));
-        crews.addAttendanceHistory("b",LocalDateTime.of(2024, 12, 27, 13, 31));
-        LocalDate standard = LocalDate.of(2024,12,27);
+        crews.addAttendanceHistory("a", LocalDateTime.of(2024, 12, 24, 10, 7));
+        crews.addAttendanceHistory("a", LocalDateTime.of(2024, 12, 23, 13, 31));
+        crews.addAttendanceHistory("a", LocalDateTime.of(2024, 12, 26, 10, 5));
+        crews.addAttendanceHistory("a", LocalDateTime.of(2024, 12, 27, 10, 5));
+        crews.addAttendanceHistory("b", LocalDateTime.of(2024, 12, 27, 13, 31));
+        LocalDate standard = LocalDate.of(2024, 12, 27);
         String username = "a";
         // when
-        List<AttendanceHistory> histories = crews.findAttendanceHistories(username,standard);
+        List<AttendanceHistory> histories = crews.findAttendanceHistories(username, standard);
         // then
         assertThat(histories.size()).isEqualTo(3);
         assertThat(histories.get(0)).isEqualTo(new AttendanceHistory(LocalDateTime.of(2024, 12, 23, 13, 31)));
@@ -121,17 +121,17 @@ public class CrewsTest {
 
     @Test
     @DisplayName("특정 날짜 이전 기록 통계 테스트")
-    void getBeforeAttendanceAnalyzeTest(){
+    void getBeforeAttendanceAnalyzeTest() {
         // given
-        crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 24, 10, 7));
-        crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 23, 13, 31));
-        crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 26, 10, 5));
-        crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 27, 10, 5));
-        crews.addAttendanceHistory("b",LocalDateTime.of(2024, 12, 27, 13, 31));
-        LocalDate standard = LocalDate.of(2024,12,27);
+        crews.addAttendanceHistory("a", LocalDateTime.of(2024, 12, 24, 10, 7));
+        crews.addAttendanceHistory("a", LocalDateTime.of(2024, 12, 23, 13, 31));
+        crews.addAttendanceHistory("a", LocalDateTime.of(2024, 12, 26, 10, 5));
+        crews.addAttendanceHistory("a", LocalDateTime.of(2024, 12, 27, 10, 5));
+        crews.addAttendanceHistory("b", LocalDateTime.of(2024, 12, 27, 13, 31));
+        LocalDate standard = LocalDate.of(2024, 12, 27);
         String username = "a";
         // when
-        AttendanceAnalyze analyze = crews.getAttendanceAnalyze(username,standard);
+        AttendanceAnalyze analyze = crews.getAttendanceAnalyze(username, standard);
         // then
         assertThat(analyze.getAttendanceCount()).isEqualTo(1);
         assertThat(analyze.getAbsenceCount()).isEqualTo(1);
@@ -141,7 +141,7 @@ public class CrewsTest {
 
     @Test
     @DisplayName("제적 대상자 조회 기능 테스트")
-    void findExpulsionCrew(){
+    void findExpulsionCrew() {
         // given
         List<LocalDateTime> histories1 = List.of(LocalDateTime.of(2024, 12, 2, 13, 33),
                 LocalDateTime.of(2024, 12, 3, 10, 33),
@@ -152,12 +152,12 @@ public class CrewsTest {
         List<LocalDateTime> histories3 = List.of(LocalDateTime.of(2024, 12, 2, 13, 33),
                 LocalDateTime.of(2024, 12, 3, 10, 33),
                 LocalDateTime.of(2024, 12, 4, 10, 33));
-        Map<String, List<LocalDateTime>> crewsInfo = Map.of("a",histories1,"b",histories2,"c",histories3);
+        Map<String, List<LocalDateTime>> crewsInfo = Map.of("a", histories1, "b", histories2, "c", histories3);
         LocalDate standard = LocalDate.of(2024, 12, 5);
-        crews = new Crews(crewsInfo,standard);
+        crews = new Crews(crewsInfo, standard);
         // when
-        Map<Username,AttendanceAnalyze> result = crews.findExpulsionCrews(standard);
+        Map<Username, AttendanceAnalyze> result = crews.findExpulsionCrews(standard);
         // then
-        assertThat(result.keySet()).containsExactly(new Username("c"),new Username("a"),new Username("b"));
+        assertThat(result.keySet()).containsExactly(new Username("c"), new Username("a"), new Username("b"));
     }
 }

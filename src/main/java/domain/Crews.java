@@ -58,7 +58,7 @@ public class Crews {
     }
 
     private LinkedHashMap<Username, AttendanceAnalyze> createExpulsionCrewsInfo(LocalDate standard,
-                                                                              List<Crew> expulsionCrews) {
+                                                                                List<Crew> expulsionCrews) {
         return expulsionCrews.stream().collect(Collectors.toMap(
                 Crew::getUsername,
                 crew -> crew.getAttendanceAnalyze(standard),

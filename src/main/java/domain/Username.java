@@ -2,7 +2,7 @@ package domain;
 
 import java.util.Objects;
 
-public class Username implements Comparable<Username>{
+public class Username implements Comparable<Username> {
     private final String name;
 
     public Username(String name) {
@@ -10,7 +10,7 @@ public class Username implements Comparable<Username>{
         this.name = name;
     }
 
-    public boolean isSameName(String name){
+    public boolean isSameName(String name) {
         return this.name.equals(name);
     }
 
