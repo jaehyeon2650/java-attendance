@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
+import util.DateFormatter;
 import util.FileReader;
 import view.InputView;
 import view.OutputView;
@@ -34,9 +35,8 @@ public class AttendanceController {
         while(!selection.equals("Q")){
             try{
                 if(selection.equals("1")){
-                    LocalDate now = LocalDate.now();
-                    LocalDate changedDate = LocalDate.of(2024,12,now.getDayOfMonth());
-                    AttendanceValidator.validateAttendanceDate(changedDate);
+                    LocalDate now = DateFormatter.getTodayDate();
+                    AttendanceValidator.validateAttendanceDate(now);
                     String username = inputView.getUsername();
                     crews.validateHasCrew(username);
                     LocalDateTime attendanceTime = inputView.getAttendanceTime();
@@ -54,16 +54,14 @@ public class AttendanceController {
                     outputView.printEditResult(EditResponseDto.of(beforeHistory,attendanceTime,result));
                 }else if(selection.equals("3")) {
                     String username = inputView.getUsername();
-                    LocalDate now = LocalDate.now();
-                    LocalDate changed = LocalDate.of(2024, 12, now.getDayOfMonth());
-                    List<AttendanceHistory> attendanceHistories = crews.findAttendanceHistories(username, changed);
-                    AttendanceAnalyze attendanceAnalyze = crews.getAttendanceAnalyze(username, changed);
+                    LocalDate now = DateFormatter.getTodayDate();
+                    List<AttendanceHistory> attendanceHistories = crews.findAttendanceHistories(username, now);
+                    AttendanceAnalyze attendanceAnalyze = crews.getAttendanceAnalyze(username, now);
                     outputView.printAttendanceHistories(
                             AttendanceHistoriesDto.of(username, attendanceHistories, attendanceAnalyze));
                 } else if(selection.equals("4")){
-                    LocalDate now = LocalDate.now();
-                    LocalDate changed = LocalDate.of(2024, 12, now.getDayOfMonth());
-                    Map<String, AttendanceAnalyze> expulsionCrews = crews.findExpulsionCrews(changed);
+                    LocalDate now = DateFormatter.getTodayDate();
+                    Map<String, AttendanceAnalyze> expulsionCrews = crews.findExpulsionCrews(now);
                     outputView.printExpulsionCrews(ExpulsionCrewsDto.from(expulsionCrews));
                 }
             }catch(IllegalArgumentException e){
