@@ -8,6 +8,7 @@ import domain.Crews;
 import dto.AttendanceHistoriesDto;
 import dto.AttendanceHistoryDto;
 import dto.EditResponseDto;
+import dto.ExpulsionCrewsDto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -49,13 +50,19 @@ public class AttendanceController {
             LocalDateTime attendanceTime = LocalDateTime.of(attendDate,attendTime);
             AttendanceResult result = crews.editAttendanceHistory(username, attendanceTime);
             outputView.printEditResult(EditResponseDto.of(beforeHistory,attendanceTime,result));
-        }else if(selection.equals("3")){
+        }else if(selection.equals("3")) {
             String username = inputView.getUsername();
             LocalDate now = LocalDate.now();
-            LocalDate changed = LocalDate.of(2024,12,now.getDayOfMonth());
+            LocalDate changed = LocalDate.of(2024, 12, now.getDayOfMonth());
             List<AttendanceHistory> attendanceHistories = crews.findAttendanceHistories(username, changed);
             AttendanceAnalyze attendanceAnalyze = crews.getAttendanceAnalyze(username, changed);
-            outputView.printAttendanceHistories(AttendanceHistoriesDto.of(username,attendanceHistories,attendanceAnalyze));
+            outputView.printAttendanceHistories(
+                    AttendanceHistoriesDto.of(username, attendanceHistories, attendanceAnalyze));
+        } else if(selection.equals("4")){
+            LocalDate now = LocalDate.now();
+            LocalDate changed = LocalDate.of(2024, 12, now.getDayOfMonth());
+            Map<String, AttendanceAnalyze> expulsionCrews = crews.findExpulsionCrews(changed);
+            outputView.printExpulsionCrews(ExpulsionCrewsDto.from(expulsionCrews));
         }
     }
 
