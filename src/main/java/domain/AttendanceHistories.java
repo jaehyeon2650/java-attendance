@@ -13,23 +13,10 @@ public class AttendanceHistories {
     public AttendanceHistories(final List<LocalDateTime> histories, LocalDate standardDate) {
         List<AttendanceHistory> allHistories = new ArrayList<>();
         for (int i = 1; i < standardDate.getDayOfMonth(); i++) {
-            LocalDate localDate = LocalDate.of(standardDate.getYear(),standardDate.getMonth(),i);
-            if(!Holiday.isHoliday(localDate)){
-                Optional<LocalDateTime> date = histories.stream().filter(history -> {
-                            LocalDate historyDate = history.toLocalDate();
-                            return historyDate.isEqual(localDate);
-                        })
-                        .findAny();
-                allHistories.add(makeAttendanceHistory(date,localDate));
-            }
+            LocalDate localDate = LocalDate.of(standardDate.getYear(), standardDate.getMonth(), i);
+            createAttendance(histories, localDate, allHistories);
         }
         this.attendanceHistories = allHistories;
-    }
-
-    private AttendanceHistory makeAttendanceHistory(Optional<LocalDateTime> date,LocalDate standardDate){
-        return date.map(AttendanceHistory::new)
-                .orElseGet(() -> new AttendanceHistory(standardDate, null));
-
     }
 
     public AttendanceResult addAttendanceHistory(LocalDateTime attendanceTime) {
@@ -51,14 +38,33 @@ public class AttendanceHistories {
         return addAttendanceHistory(editTime);
     }
 
-    public List<AttendanceHistory> getBeforeAttendanceHistories(LocalDate localDate){
-        return attendanceHistories.stream().filter(attendanceHistory -> attendanceHistory.isBeforeAttendanceHistory(localDate))
+    public List<AttendanceHistory> getBeforeAttendanceHistories(LocalDate localDate) {
+        return attendanceHistories.stream()
+                .filter(attendanceHistory -> attendanceHistory.isBeforeAttendanceHistory(localDate))
                 .sorted()
                 .toList();
     }
 
     public AttendanceAnalyze getAttendanceAnalyze(LocalDate standard) {
         return new AttendanceAnalyze(getBeforeAttendanceHistories(standard));
+    }
+
+    private void createAttendance(List<LocalDateTime> histories, LocalDate localDate,
+                                  List<AttendanceHistory> allHistories) {
+        if (!Holiday.isHoliday(localDate)) {
+            Optional<LocalDateTime> date = histories.stream().filter(history -> {
+                        LocalDate historyDate = history.toLocalDate();
+                        return historyDate.isEqual(localDate);
+                    })
+                    .findAny();
+            allHistories.add(makeAttendanceHistory(date, localDate));
+        }
+    }
+
+    private AttendanceHistory makeAttendanceHistory(Optional<LocalDateTime> date, LocalDate standardDate) {
+        return date.map(AttendanceHistory::new)
+                .orElseGet(() -> new AttendanceHistory(standardDate, null));
+
     }
 
 
