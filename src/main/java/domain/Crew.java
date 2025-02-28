@@ -30,6 +30,10 @@ public class Crew {
         return attendanceHistories.getBeforeAttendanceHistories(standardTime);
     }
 
+    public AttendanceAnalyze getAttendanceAnalyze(LocalDate standardDate){
+        return attendanceHistories.getAttendanceAnalyze(standardDate);
+    }
+
     public boolean isSameName(String username) {
         return this.username.equals(username);
     }

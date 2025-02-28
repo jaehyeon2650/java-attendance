@@ -118,4 +118,24 @@ public class CrewsTest {
         assertThat(histories.get(1)).isEqualTo(new AttendanceHistory(LocalDateTime.of(2024, 12, 24, 10, 7)));
         assertThat(histories.get(2)).isEqualTo(new AttendanceHistory(LocalDateTime.of(2024, 12, 26, 10, 5)));
     }
+
+    @Test
+    @DisplayName("특정 날짜 이전 기록 통계 테스트")
+    void getBeforeAttendanceAnalyzeTest(){
+        // given
+        crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 24, 10, 7));
+        crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 23, 13, 31));
+        crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 26, 10, 5));
+        crews.addAttendanceHistory("a",LocalDateTime.of(2024, 12, 27, 10, 5));
+        crews.addAttendanceHistory("b",LocalDateTime.of(2024, 12, 27, 13, 31));
+        LocalDate standard = LocalDate.of(2024,12,27);
+        String username = "a";
+        // when
+        AttendanceAnalyze analyze = crews.getAttendanceAnalyze(username,standard);
+        // then
+        assertThat(analyze.getAttendanceCount()).isEqualTo(1);
+        assertThat(analyze.getAbsenceCount()).isEqualTo(1);
+        assertThat(analyze.getLateCount()).isEqualTo(1);
+        assertThat(analyze.getAttendanceStatus()).isEqualTo(AttendanceStatus.NORMAL);
+    }
 }

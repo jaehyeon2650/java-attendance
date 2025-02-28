@@ -44,4 +44,8 @@ public class Crews {
         return crew.findAttendanceHistories(standard);
     }
 
+    public AttendanceAnalyze getAttendanceAnalyze(String username, LocalDate standard) {
+        Crew crew = findCrewByUsername(username);
+        return crew.getAttendanceAnalyze(standard);
+    }
 }
