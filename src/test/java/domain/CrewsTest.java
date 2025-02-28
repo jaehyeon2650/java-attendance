@@ -27,7 +27,7 @@ public class CrewsTest {
     }
 
     @Test
-    @DisplayName("크루들")
+    @DisplayName("특정 크루 출석 기록 추가하는 테스트")
     void addAttendanceHistory() {
         // given
         String username = "a";
