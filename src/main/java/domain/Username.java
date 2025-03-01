@@ -5,6 +5,8 @@ import java.util.Objects;
 public class Username implements Comparable<Username> {
     private final String name;
 
+    private static final int NAME_MAX_LENGTH = 5;
+
     public Username(String name) {
         validateNameLength(name);
         this.name = name;
@@ -15,7 +17,7 @@ public class Username implements Comparable<Username> {
     }
 
     private void validateNameLength(String username) {
-        if (username.length() > 5) {
+        if (username.length() > NAME_MAX_LENGTH) {
             throw new IllegalArgumentException("[ERROR] 크루 이름은 최대 5글자입니다.");
         }
     }
