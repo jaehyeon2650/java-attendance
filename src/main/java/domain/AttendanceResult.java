@@ -13,6 +13,7 @@ public enum AttendanceResult {
     private static final int OTHER_ATTENDANCE_HOUR = 10;
     private static final int LATE_MINUTES = 5;
     private static final int ABSENCE_MINUTES = 30;
+
     private final String result;
 
     AttendanceResult(String result) {

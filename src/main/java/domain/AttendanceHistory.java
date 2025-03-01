@@ -1,13 +1,13 @@
 package domain;
 
+import constant.CampusOpenTime;
 import constant.Holiday;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
+import util.DateFormatter;
 
 public class AttendanceHistory implements Comparable<AttendanceHistory> {
     private final LocalDate attendanceDate;
@@ -79,16 +79,14 @@ public class AttendanceHistory implements Comparable<AttendanceHistory> {
 
     public static class AttendanceValidator {
         private static void validateAttendanceTime(LocalTime attendanceTime) {
-            if (attendanceTime != null && (attendanceTime.isBefore(LocalTime.of(8, 0)) || attendanceTime.isAfter(
-                    LocalTime.of(23, 0)))) {
+            if (attendanceTime != null && CampusOpenTime.cantAttendance(attendanceTime)) {
                 throw new IllegalArgumentException("[ERROR] 캠퍼스 운영 시간은 08:00 ~ 23:00 입니다.");
             }
         }
 
         public static void validateAttendanceDate(LocalDate localDate) {
             if (Holiday.isHoliday(localDate)) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M월 d일 EEEE", Locale.KOREAN);
-                String dateFormat = formatter.format(localDate);
+                String dateFormat = DateFormatter.dateFormat(localDate);
                 String errorMessage = String.format("[ERROR] %S은 등교일이 아닙니다.", dateFormat);
                 throw new IllegalArgumentException(errorMessage);
             }
