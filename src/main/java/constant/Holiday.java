@@ -2,23 +2,22 @@ package constant;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.MonthDay;
 import java.util.Arrays;
 
 public enum Holiday {
-    CHRISTMAS(12, 25);
+    CHRISTMAS(MonthDay.of(12, 25));
 
-    private final int month;
-    private final int day;
+    private final MonthDay monthDay;
 
-    Holiday(int month, int day) {
-        this.month = month;
-        this.day = day;
+    Holiday(MonthDay monthDay) {
+        this.monthDay = monthDay;
     }
 
     public static boolean isHoliday(LocalDate localDate) {
         boolean isHoliday = Arrays.stream(Holiday.values())
-                .anyMatch(holiday -> holiday.month == localDate.getMonthValue()
-                        && holiday.day == localDate.getDayOfMonth());
+                .anyMatch(holiday -> holiday.monthDay.getMonthValue() == localDate.getMonthValue()
+                        && holiday.monthDay.getDayOfMonth() == localDate.getDayOfMonth());
         return isHoliday || isWeekend(localDate);
     }
 
